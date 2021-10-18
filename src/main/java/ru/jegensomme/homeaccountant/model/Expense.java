@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Expense extends BaseEntity {
     private @NotNull User user;
 
-    private @NotNull ExpenseCategory category;
+    private @NotNull Category category;
 
     private @NotNull LocalDateTime dateTime;
 
@@ -21,7 +21,7 @@ public class Expense extends BaseEntity {
 
     public Expense(@NotNull Integer id,
                    @NotNull User user,
-                   @NotNull ExpenseCategory category,
+                   @NotNull Category category,
                    @NotNull LocalDateTime dateTime,
                    int amount) {
         super(id);

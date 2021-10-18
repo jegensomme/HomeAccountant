@@ -9,22 +9,22 @@ import org.jetbrains.annotations.Nullable;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-public class ExpenseCategory extends NamedEntity {
+public class Category extends NamedEntity {
     private @NotNull User user;
 
     private @Nullable Integer limit;
 
     private @Nullable ExpensePeriod period;
 
-    public ExpenseCategory(@NotNull Integer id, @NotNull String name, @NotNull User user) {
+    public Category(@NotNull Integer id, @NotNull String name, @NotNull User user) {
         this(id, name, user, null, null);
     }
 
-    public ExpenseCategory(@NotNull Integer id,
-                           @NotNull String name,
-                           @NotNull User user,
-                           @Nullable Integer limit,
-                           @Nullable ExpensePeriod period) {
+    public Category(@NotNull Integer id,
+                    @NotNull String name,
+                    @NotNull User user,
+                    @Nullable Integer limit,
+                    @Nullable ExpensePeriod period) {
         super(id, name);
         this.user = user;
         if (limit == null && period != null || limit != null && period == null) {

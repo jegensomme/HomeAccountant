@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS expenses;
-DROP TABLE IF EXISTS expense_categories;
+DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS users;
 DROP SEQUENCE IF EXISTS global_seq;
@@ -24,7 +24,7 @@ CREATE TABLE user_roles
 
 CREATE UNIQUE INDEX users_unique_email_idx on users(email);
 
-CREATE TABLE expense_categories
+CREATE TABLE categories
 (
     id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     user_id       INTEGER NOT NULL REFERENCES users(id),
@@ -34,13 +34,13 @@ CREATE TABLE expense_categories
     period_unit   VARCHAR
 );
 
-CREATE UNIQUE INDEX expense_category_unique_idx on expense_categories(user_id, name);
+CREATE UNIQUE INDEX expense_category_unique_idx on categories(user_id, name);
 
 CREATE TABLE expenses
 (
     id          INTEGER   PRIMARY KEY DEFAULT nextval('global_seq'),
     user_id     INTEGER   NOT NULL REFERENCES users(id),
-    category_id INTEGER   NOT NULL REFERENCES expense_categories(id),
+    category_id INTEGER   NOT NULL REFERENCES categories(id),
     date_time   TIMESTAMP NOT NULL,
     amount      INTEGER   NOT NULL CHECK ( expenses.amount >= 0 )
 );
