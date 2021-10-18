@@ -42,7 +42,8 @@ CREATE TABLE expenses
     user_id     INTEGER   NOT NULL REFERENCES users(id),
     category_id INTEGER   NOT NULL REFERENCES categories(id),
     date_time   TIMESTAMP NOT NULL,
-    amount      INTEGER   NOT NULL CHECK ( expenses.amount >= 0 )
+    amount      INTEGER   NOT NULL CHECK ( expenses.amount >= 0 ),
+    description VARCHAR
 );
 
 CREATE INDEX expenses_unique_idx on expenses(user_id, date_time);

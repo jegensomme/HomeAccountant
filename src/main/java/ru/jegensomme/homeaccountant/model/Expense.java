@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 
@@ -19,15 +20,19 @@ public class Expense extends BaseEntity {
 
     private int amount;
 
+    private @Nullable String description;
+
     public Expense(@NotNull Integer id,
                    @NotNull User user,
                    @NotNull Category category,
                    @NotNull LocalDateTime dateTime,
-                   int amount) {
+                   int amount,
+                   @Nullable String description) {
         super(id);
         this.user = user;
         this.category = category;
         this.dateTime = dateTime;
         this.amount = amount;
+        this.description = description;
     }
 }
