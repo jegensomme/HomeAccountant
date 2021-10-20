@@ -8,9 +8,12 @@ import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.repository.ExpenseRepository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
+import static ru.jegensomme.homeaccountant.util.DateTimeUtil.atStartOfDayOrMin;
+import static ru.jegensomme.homeaccountant.util.DateTimeUtil.atStartOfNextDayOrMax;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -18,9 +21,9 @@ import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWith
 public class ExpenseService {
     private final ExpenseRepository repository;
 
-    public @Nullable Expense create(@Nullable Expense expense, int userId) {
+    public @NotNull Expense create(@Nullable Expense expense, int userId) {
         Assert.notNull(expense, "expense must not be null");
-        return repository.save(expense, userId);
+        return Objects.requireNonNull(repository.save(expense, userId));
     }
 
     public void delete(int id, int userId) {
@@ -44,16 +47,16 @@ public class ExpenseService {
         return repository.getWithoutCategory(userId);
     }
 
-    public List<Expense> getBetween(int userId, @NotNull LocalDateTime startInclusive, @NotNull LocalDateTime endExclusive) {
-        return repository.getBetween(userId, startInclusive, endExclusive);
+    public List<Expense> getBetween(int userId, @NotNull LocalDate startInclusive, @NotNull LocalDate endInclusive) {
+        return repository.getBetween(userId, atStartOfDayOrMin(startInclusive), atStartOfNextDayOrMax(endInclusive));
     }
 
-    public List<Expense> getByCategory(int userId, int categoryId) {
-        return repository.getByCategory(userId, categoryId);
+    public List<Expense> getByCategory(int categoryId, int userId) {
+        return repository.getByCategory(categoryId, userId);
     }
 
-    public List<Expense> getByCategoryBetween(int userId, int categoryId,
-                                              @NotNull LocalDateTime startInclusive, @NotNull LocalDateTime endExclusive) {
-        return repository.getByCategoryBetween(userId, categoryId, startInclusive, endExclusive);
+    public List<Expense> getByCategoryBetween(int categoryId, int userId,
+                                              @NotNull LocalDate startInclusive, @NotNull LocalDate endExclusive) {
+        return repository.getByCategoryBetween(categoryId, userId, atStartOfDayOrMin(startInclusive), atStartOfNextDayOrMax(endExclusive));
     }
 }

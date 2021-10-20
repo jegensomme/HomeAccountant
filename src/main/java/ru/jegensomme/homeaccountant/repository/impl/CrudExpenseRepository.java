@@ -18,37 +18,42 @@ public interface CrudExpenseRepository extends JpaRepository<Expense, Integer> {
     @Query("DELETE FROM Expense e WHERE e.id=:id AND e.user.id=:userId")
     int delete(@Param("id") int id, @Param("userId") int userId);
 
-    @Query("SELECT e FROM Expense e WHERE e.user.id=:userId ORDER BY e.dateTime ASC")
+    @Query("""
+        SELECT e FROM Expense e LEFT JOIN FETCH e.category
+        WHERE e.user.id=:userId
+        ORDER BY e.dateTime DESC
+        """)
     List<Expense> getAll(@Param("userId") int userId);
 
     @Query("""
         SELECT e FROM Expense e
         WHERE e.user.id=:userId AND e.category IS NULL
-        ORDER BY e.dateTime ASC
+        ORDER BY e.dateTime DESC
         """)
     List<Expense> getWithoutCategory(@Param("userId") int userId);
 
     @Query("""
-        SELECT e FROM Expense e
+        SELECT e FROM Expense e LEFT JOIN FETCH e.category
         WHERE e.user.id=:userId AND e.dateTime>=:start AND e.dateTime<:end
-        ORDER BY e.dateTime ASC
+        ORDER BY e.dateTime DESC
         """)
     List<Expense> getBetween(@Param("userId") int userId,
                              @Param("start") LocalDateTime startInclusive, @Param("end") LocalDateTime endExclusive);
 
     @Query("""
-        SELECT e FROM Expense e
+        SELECT e FROM Expense e LEFT JOIN FETCH e.category
         WHERE e.user.id=:userId AND e.category.id=:categoryId
-        ORDER BY e.dateTime ASC
+        ORDER BY e.dateTime DESC
         """)
     List<Expense> getByCategory(@Param("categoryId") int categoryId, @Param("userId") int userId);
 
     @Query("""
-        SELECT e FROM Expense e
+        SELECT e FROM Expense e LEFT JOIN FETCH e.category
         WHERE e.user.id=:userId AND e.category.id=:categoryId
               AND e.dateTime>=:start AND e.dateTime<:end
-        ORDER BY e.dateTime ASC
+        ORDER BY e.dateTime DESC
         """)
-    List<Expense> getByCategoryBetween(int categoryId, int userId,
-                                       @NotNull LocalDateTime startInclusive, @NotNull LocalDateTime endExclusive);
+    List<Expense> getByCategoryBetween(@Param("categoryId") int categoryId, @Param("userId") int userId,
+                                       @Param("start") @NotNull LocalDateTime startInclusive,
+                                       @Param("end") @NotNull LocalDateTime endExclusive);
 }
