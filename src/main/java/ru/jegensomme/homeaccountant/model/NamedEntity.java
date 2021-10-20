@@ -18,7 +18,7 @@ public abstract class NamedEntity extends BaseEntity {
     @NotBlank
     @Size(min = 2, max = 100)
     @Column(name = "name")
-    private @NotNull String name;
+    protected @NotNull String name;
 
     public NamedEntity(@Nullable Integer id, @NotNull String name) {
         super(id);

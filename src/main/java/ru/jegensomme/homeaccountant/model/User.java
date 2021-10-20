@@ -52,6 +52,10 @@ public class User extends NamedEntity {
     @BatchSize(size = 200)
     private @NotNull Set<Role> roles;
 
+    public User(@NotNull User user) {
+        this(user.id, user.name, user.email, user.password, user.registered, user.monthlyLimit, user.roles);
+    }
+
     public User(@Nullable Integer id,
                 @NotNull String name, @NotNull String email, @NotNull String password,
                 @NotNull Role role, @NotNull Role... roles) {

@@ -44,6 +44,10 @@ public class Expense extends BaseEntity {
     @Size(min = 2, max = 120)
     private @Nullable String description;
 
+    public Expense(@NotNull Expense expense) {
+        this(expense.id, expense.user, expense.category, expense.dateTime, expense.amount, expense.description);
+    }
+
     public Expense(@Nullable Integer id, @NotNull User user, @NotNull LocalDateTime dateTime, int amount) {
         this(id, user, null, dateTime, amount, null);
     }
