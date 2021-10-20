@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -51,26 +52,28 @@ public class User extends NamedEntity {
     @BatchSize(size = 200)
     private @NotNull Set<Role> roles;
 
-    public User(@NotNull Integer id,
+    public User(@Nullable Integer id,
                 @NotNull String name, @NotNull String email, @NotNull String password,
                 @NotNull Role role, @NotNull Role... roles) {
-        this(id, name, email, password, null, EnumSet.of(role, roles));
+        this(id, name, email, password, null, null, EnumSet.of(role, roles));
     }
 
-    public User(@NotNull Integer id,
+    public User(@Nullable Integer id,
                 @NotNull String name, @NotNull String email, @NotNull String password,
                 @Nullable Integer monthlyLimit,
                 @NotNull Role role, @NotNull Role... roles) {
-        this(id, name, email, password, monthlyLimit, EnumSet.of(role, roles));
+        this(id, name, email, password, null, monthlyLimit, EnumSet.of(role, roles));
     }
 
-    public User(@NotNull Integer id,
+    public User(@Nullable Integer id,
                 @NotNull String name, @NotNull String email, @NotNull String password,
+                @Nullable Date registered,
                 @Nullable Integer monthlyLimit,
                 @NotNull Set<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
+        this.registered = Objects.requireNonNullElse(registered, new Date());
         this.monthlyLimit = monthlyLimit;
         this.roles = roles;
     }

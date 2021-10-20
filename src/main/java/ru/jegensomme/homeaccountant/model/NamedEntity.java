@@ -2,6 +2,7 @@ package ru.jegensomme.homeaccountant.model;
 
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -19,7 +20,7 @@ public abstract class NamedEntity extends BaseEntity {
     @Column(name = "name")
     private @NotNull String name;
 
-    public NamedEntity(@NotNull Integer id, @NotNull String name) {
+    public NamedEntity(@Nullable Integer id, @NotNull String name) {
         super(id);
         this.name = name;
     }

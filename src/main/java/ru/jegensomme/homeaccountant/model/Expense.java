@@ -44,21 +44,21 @@ public class Expense extends BaseEntity {
     @Size(min = 2, max = 120)
     private @Nullable String description;
 
-    public Expense(@NotNull Integer id, @NotNull User user, @NotNull LocalDateTime dateTime, int amount) {
+    public Expense(@Nullable Integer id, @NotNull User user, @NotNull LocalDateTime dateTime, int amount) {
         this(id, user, null, dateTime, amount, null);
     }
 
-    public Expense(@NotNull Integer id, @NotNull User user,
+    public Expense(@Nullable Integer id, @NotNull User user,
                    @NotNull LocalDateTime dateTime, int amount, @Nullable String description) {
         this(id, user, null, dateTime, amount, description);
     }
 
-    public Expense(@NotNull Integer id, @NotNull User user, @Nullable Category category,
+    public Expense(@Nullable Integer id, @NotNull User user, @Nullable Category category,
                    @NotNull LocalDateTime dateTime, int amount) {
         this(id, user, category, dateTime, amount, null);
     }
 
-    public Expense(@NotNull Integer id, @NotNull User user, @Nullable Category category,
+    public Expense(@Nullable Integer id, @NotNull User user, @Nullable Category category,
                    @NotNull LocalDateTime dateTime, int amount, @Nullable String description) {
         super(id);
         this.user = user;

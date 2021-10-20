@@ -36,11 +36,11 @@ public class Category extends NamedEntity {
     })
     private @Nullable ExpensePeriod period;
 
-    public Category(@NotNull Integer id, @NotNull String name, @NotNull User user) {
+    public Category(@Nullable Integer id, @NotNull String name, @NotNull User user) {
         this(id, name, user, null, null);
     }
 
-    public Category(@NotNull Integer id,
+    public Category(@Nullable Integer id,
                     @NotNull String name,
                     @NotNull User user,
                     @Nullable Integer limit,

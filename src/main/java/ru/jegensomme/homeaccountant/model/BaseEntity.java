@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Persistable;
 import org.springframework.util.Assert;
@@ -26,7 +25,7 @@ public abstract class BaseEntity implements Persistable<Integer> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     private @Nullable Integer id;
 
-    public BaseEntity(@NotNull Integer id) {
+    public BaseEntity(@Nullable Integer id) {
         this.id = id;
     }
 
