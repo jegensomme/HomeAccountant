@@ -32,6 +32,7 @@ public class User extends NamedEntity {
     @Column(name = "password")
     @NotBlank
     @Size(min = 5, max = 100)
+    @ToString.Exclude
     private @NotNull String password;
 
     @Column(name = "registered")
