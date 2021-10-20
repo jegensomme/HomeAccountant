@@ -1,25 +1,48 @@
 package ru.jegensomme.homeaccountant.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "expenses", indexes = {
+        @Index(name = "expenses_user_id_date_time_idx", columnList = "user_id, date_time")
+})
 public class Expense extends BaseEntity {
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @javax.validation.constraints.NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private @NotNull User user;
 
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    @javax.validation.constraints.NotNull
     private @NotNull Category category;
 
+    @Column(name = "date_time")
+    @javax.validation.constraints.NotNull
     private @NotNull LocalDateTime dateTime;
 
+    @Column(name = "amount")
+    @Min(0)
     private int amount;
 
+    @Column(name = "description")
+    @Size(min = 2, max = 120)
     private @Nullable String description;
 
     public Expense(@NotNull Integer id,

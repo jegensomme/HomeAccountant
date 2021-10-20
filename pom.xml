@@ -16,6 +16,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+    <tomcat.version>10.1.0-M6</tomcat.version>
+
     <spring.version>5.3.11</spring.version>
 
     <!-- Logging -->
@@ -26,6 +28,14 @@
     <junit.version>4.13.2</junit.version>
 
     <lombok.version>1.18.22</lombok.version>
+
+    <!-- DB -->
+    <postgresql.version>42.2.24</postgresql.version>
+
+    <!-- Hibernate -->
+    <hibernate.version>5.6.0.Final</hibernate.version>
+    <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
+    <javax.validation.version>2.0.1.Final</javax.validation.version>
   </properties>
 
   <dependencies>
@@ -51,9 +61,53 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Spring -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+
+    <!--- ORM -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate-validator.version}</version>
+    </dependency>
+    <!--http://hibernate.org/validator/documentation/getting-started/#unified-expression-language-el-->
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>${javax.validation.version}</version>
+    </dependency>
+
+    <!-- Postgres -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-jdbc</artifactId>
+      <version>${tomcat.version}</version>
+      <!--<scope>provided</scope>-->
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>runtime</scope>
     </dependency>
 
     <!-- Useful annotations -->

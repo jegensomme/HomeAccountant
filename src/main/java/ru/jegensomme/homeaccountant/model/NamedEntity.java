@@ -1,14 +1,22 @@
 package ru.jegensomme.homeaccountant.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
-@Data
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@MappedSuperclass
 public abstract class NamedEntity extends BaseEntity {
+    @NotBlank
+    @Size(min = 2, max = 100)
+    @Column(name = "name")
     private @NotNull String name;
 
     public NamedEntity(@NotNull Integer id, @NotNull String name) {

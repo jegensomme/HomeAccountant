@@ -1,19 +1,39 @@
 package ru.jegensomme.homeaccountant.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@Data
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "categories", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "name"}, name = "expense_category_unique_idx")
+})
 public class Category extends NamedEntity {
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @javax.validation.constraints.NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private @NotNull User user;
 
+    @Column(name = "limit")
+    @Min(1)
     private @Nullable Integer limit;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride( name = "number", column = @Column(name = "period_number")),
+            @AttributeOverride( name = "unit", column = @Column(name = "period_unit"))
+    })
     private @Nullable ExpensePeriod period;
 
     public Category(@NotNull Integer id, @NotNull String name, @NotNull User user) {

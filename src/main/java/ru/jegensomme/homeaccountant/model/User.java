@@ -1,24 +1,45 @@
 package ru.jegensomme.homeaccountant.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")
+})
 public class User extends NamedEntity {
+    @Column(name = "email")
+    @Email
+    @NotBlank
+    @Size(max = 100)
     private @NotNull String email;
 
+    @Column(name = "password")
+    @NotBlank
+    @Size(min = 5, max = 100)
     private @NotNull String password;
 
+    @Column(name = "registered")
+    @javax.validation.constraints.NotNull
     private @NotNull Date registered = new Date();
 
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique_idx")})
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER)
     private @NotNull Set<Role> roles;
 
     public User(@NotNull Integer id,

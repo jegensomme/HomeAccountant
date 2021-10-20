@@ -17,7 +17,7 @@ CREATE TABLE users
 
 CREATE TABLE user_roles
 (
-    user_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     role    VARCHAR NOT NULL,
     CONSTRAINT user_roles_idx UNIQUE (user_id, role)
 );
@@ -27,7 +27,7 @@ CREATE UNIQUE INDEX users_unique_email_idx on users(email);
 CREATE TABLE categories
 (
     id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    user_id       INTEGER NOT NULL REFERENCES users(id),
+    user_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     name          VARCHAR NOT NULL,
     "limit"       INTEGER CHECK ( "limit" > 0 ),
     period_number INTEGER CHECK ( period_number > 0 ),
@@ -39,11 +39,11 @@ CREATE UNIQUE INDEX expense_category_unique_idx on categories(user_id, name);
 CREATE TABLE expenses
 (
     id          INTEGER   PRIMARY KEY DEFAULT nextval('global_seq'),
-    user_id     INTEGER   NOT NULL REFERENCES users(id),
+    user_id     INTEGER   NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     category_id INTEGER   NOT NULL REFERENCES categories(id),
     date_time   TIMESTAMP NOT NULL,
     amount      INTEGER   NOT NULL CHECK ( expenses.amount >= 0 ),
     description VARCHAR
 );
 
-CREATE INDEX expenses_unique_idx on expenses(user_id, date_time);
+CREATE INDEX expenses_user_id_date_time_idx on expenses(user_id, date_time);
