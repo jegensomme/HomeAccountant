@@ -40,6 +40,10 @@ public class ExpenseService {
         return repository.getAll(userId);
     }
 
+    public List<Expense> getWithoutCategory(int userId) {
+        return repository.getWithoutCategory(userId);
+    }
+
     public List<Expense> getBetween(int userId, @NotNull LocalDateTime startInclusive, @NotNull LocalDateTime endExclusive) {
         return repository.getBetween(userId, startInclusive, endExclusive);
     }

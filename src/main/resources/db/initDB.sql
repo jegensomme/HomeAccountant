@@ -40,7 +40,7 @@ CREATE TABLE expenses
 (
     id          INTEGER   PRIMARY KEY DEFAULT nextval('global_seq'),
     user_id     INTEGER   NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    category_id INTEGER   NOT NULL REFERENCES categories(id),
+    category_id INTEGER            REFERENCES categories(id) ON DELETE SET NULL,
     date_time   TIMESTAMP NOT NULL,
     amount      INTEGER   NOT NULL CHECK ( expenses.amount >= 0 ),
     description VARCHAR

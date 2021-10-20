@@ -23,6 +23,13 @@ public interface CrudExpenseRepository extends JpaRepository<Expense, Integer> {
 
     @Query("""
         SELECT e FROM Expense e
+        WHERE e.user.id=:userId AND e.category IS NULL
+        ORDER BY e.dateTime ASC
+        """)
+    List<Expense> getWithoutCategory(@Param("userId") int userId);
+
+    @Query("""
+        SELECT e FROM Expense e
         WHERE e.user.id=:userId AND e.dateTime>=:start AND e.dateTime<:end
         ORDER BY e.dateTime ASC
         """)

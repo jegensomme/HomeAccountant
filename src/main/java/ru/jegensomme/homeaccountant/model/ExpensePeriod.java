@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.time.temporal.ChronoUnit;
 
 @Data
@@ -12,6 +14,8 @@ import java.time.temporal.ChronoUnit;
 @Embeddable
 public class ExpensePeriod {
     private int number;
+
+    @Enumerated(EnumType.STRING)
     private @NotNull ChronoUnit unit;
 
     public ExpensePeriod(int number, @NotNull ChronoUnit unit) {

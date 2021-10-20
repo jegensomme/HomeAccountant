@@ -47,6 +47,11 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
+    public List<Expense> getWithoutCategory(int userId) {
+        return crudRepository.getWithoutCategory(userId);
+    }
+
+    @Override
     public List<Expense> getBetween(int userId, @NotNull LocalDateTime startInclusive, @NotNull LocalDateTime endExclusive) {
         return crudRepository.getBetween(userId, startInclusive, endExclusive);
     }

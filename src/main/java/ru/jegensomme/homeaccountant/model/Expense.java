@@ -30,8 +30,7 @@ public class Expense extends BaseEntity {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    @javax.validation.constraints.NotNull
-    private @NotNull Category category;
+    private @Nullable Category category;
 
     @Column(name = "date_time")
     @javax.validation.constraints.NotNull
@@ -45,12 +44,22 @@ public class Expense extends BaseEntity {
     @Size(min = 2, max = 120)
     private @Nullable String description;
 
-    public Expense(@NotNull Integer id,
-                   @NotNull User user,
-                   @NotNull Category category,
-                   @NotNull LocalDateTime dateTime,
-                   int amount,
-                   @Nullable String description) {
+    public Expense(@NotNull Integer id, @NotNull User user, @NotNull LocalDateTime dateTime, int amount) {
+        this(id, user, null, dateTime, amount, null);
+    }
+
+    public Expense(@NotNull Integer id, @NotNull User user,
+                   @NotNull LocalDateTime dateTime, int amount, @Nullable String description) {
+        this(id, user, null, dateTime, amount, description);
+    }
+
+    public Expense(@NotNull Integer id, @NotNull User user, @Nullable Category category,
+                   @NotNull LocalDateTime dateTime, int amount) {
+        this(id, user, category, dateTime, amount, null);
+    }
+
+    public Expense(@NotNull Integer id, @NotNull User user, @Nullable Category category,
+                   @NotNull LocalDateTime dateTime, int amount, @Nullable String description) {
         super(id);
         this.user = user;
         this.category = category;
