@@ -1,7 +1,8 @@
 package ru.jegensomme.homeaccountant.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.model.Category;
@@ -12,11 +13,11 @@ import java.util.List;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CategoryService {
-    private CategoryRepository repository;
+    private final CategoryRepository repository;
 
-    public Category create(Category category, int userId) {
+    public @Nullable Category create(@Nullable Category category, int userId) {
         Assert.notNull(category, "category must not be null");
         return repository.save(category, userId);
     }
@@ -25,7 +26,7 @@ public class CategoryService {
         checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
-    public void update(Category Category, int userId) {
+    public void update(@Nullable Category Category, int userId) {
         Assert.notNull(Category, "category must not be null");
         checkNotFoundWithId(repository.save(Category, userId), Category.id());
     }

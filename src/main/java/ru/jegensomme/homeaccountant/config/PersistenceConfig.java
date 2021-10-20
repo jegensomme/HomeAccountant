@@ -1,5 +1,6 @@
 package ru.jegensomme.homeaccountant.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +20,9 @@ import static org.hibernate.cfg.AvailableSettings.*;
 @Configuration
 @EnableTransactionManagement
 @Import(DatabaseConfig.class)
+@RequiredArgsConstructor
 public class PersistenceConfig {
     private final DatabaseConfig databaseConfig;
-
-    public PersistenceConfig(DatabaseConfig databaseConfig) {
-        this.databaseConfig = databaseConfig;
-    }
 
     @Value("${jpa.showSql}")
     private boolean showSql;

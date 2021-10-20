@@ -1,7 +1,8 @@
 package ru.jegensomme.homeaccountant.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.model.Expense;
@@ -13,11 +14,11 @@ import java.util.List;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ExpenseService {
-    private ExpenseRepository repository;
+    private final ExpenseRepository repository;
 
-    public Expense create(Expense expense, int userId) {
+    public @Nullable Expense create(@Nullable Expense expense, int userId) {
         Assert.notNull(expense, "expense must not be null");
         return repository.save(expense, userId);
     }
@@ -26,7 +27,7 @@ public class ExpenseService {
         checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
-    public void update(Expense expense, int userId) {
+    public void update(@Nullable Expense expense, int userId) {
         Assert.notNull(expense, "expense must not be null");
         checkNotFoundWithId(repository.save(expense, userId), expense.id());
     }
