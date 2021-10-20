@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.data.domain.Persistable;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Persistable<Integer> {
     public static final int  START_SEQ = 100000;
 
     @Id
@@ -35,6 +36,7 @@ public abstract class BaseEntity {
         return id;
     }
 
+    @Override
     public boolean isNew() {
         return id == null;
     }
