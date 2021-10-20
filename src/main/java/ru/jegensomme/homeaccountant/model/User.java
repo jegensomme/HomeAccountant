@@ -1,6 +1,7 @@
 package ru.jegensomme.homeaccountant.model;
 
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
@@ -40,6 +41,7 @@ public class User extends NamedEntity {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique_idx")})
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
+    @BatchSize(size = 200)
     private @NotNull Set<Role> roles;
 
     public User(@NotNull Integer id,
