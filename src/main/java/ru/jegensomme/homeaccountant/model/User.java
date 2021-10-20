@@ -10,10 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -80,5 +77,9 @@ public class User extends NamedEntity {
         this.registered = Objects.requireNonNullElse(registered, new Date());
         this.monthlyLimit = monthlyLimit;
         this.roles = roles;
+    }
+
+    public void setRoles(@NotNull Collection<Role> roles) {
+        this.roles = roles.isEmpty() ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 }

@@ -25,10 +25,10 @@ public class Expense extends BaseEntity {
     @JoinColumn(name = "user_id")
     @javax.validation.constraints.NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private @NotNull User user;
+    private @Nullable User user;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private @Nullable Category category;
 
@@ -44,28 +44,23 @@ public class Expense extends BaseEntity {
     @Size(min = 2, max = 120)
     private @Nullable String description;
 
-    public Expense(@NotNull Expense expense) {
-        this(expense.id, expense.user, expense.category, expense.dateTime, expense.amount, expense.description);
+    public Expense(@Nullable Integer id, @NotNull LocalDateTime dateTime, int amount) {
+        this(id, null, dateTime, amount, null);
     }
 
-    public Expense(@Nullable Integer id, @NotNull User user, @NotNull LocalDateTime dateTime, int amount) {
-        this(id, user, null, dateTime, amount, null);
-    }
-
-    public Expense(@Nullable Integer id, @NotNull User user,
+    public Expense(@Nullable Integer id,
                    @NotNull LocalDateTime dateTime, int amount, @Nullable String description) {
-        this(id, user, null, dateTime, amount, description);
+        this(id, null, dateTime, amount, description);
     }
 
-    public Expense(@Nullable Integer id, @NotNull User user, @Nullable Category category,
+    public Expense(@Nullable Integer id, @Nullable Category category,
                    @NotNull LocalDateTime dateTime, int amount) {
-        this(id, user, category, dateTime, amount, null);
+        this(id, category, dateTime, amount, null);
     }
 
-    public Expense(@Nullable Integer id, @NotNull User user, @Nullable Category category,
+    public Expense(@Nullable Integer id, @Nullable Category category,
                    @NotNull LocalDateTime dateTime, int amount, @Nullable String description) {
         super(id);
-        this.user = user;
         this.category = category;
         this.dateTime = dateTime;
         this.amount = amount;

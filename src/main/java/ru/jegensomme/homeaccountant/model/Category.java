@@ -23,9 +23,9 @@ public class Category extends NamedEntity {
     @JoinColumn(name = "user_id")
     @javax.validation.constraints.NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private @NotNull User user;
+    private @Nullable User user;
 
-    @Column(name = "limit")
+    @Column(name = "\"limit\"")
     @Min(1)
     private @Nullable Integer limit;
 
@@ -36,21 +36,15 @@ public class Category extends NamedEntity {
     })
     private @Nullable ExpensePeriod period;
 
-    public Category(@NotNull Category category) {
-        this(category.id, category.name, category.user, category.limit, category.period);
-    }
-
-    public Category(@Nullable Integer id, @NotNull String name, @NotNull User user) {
-        this(id, name, user, null, null);
+    public Category(@Nullable Integer id, @NotNull String name) {
+        this(id, name, null, null);
     }
 
     public Category(@Nullable Integer id,
                     @NotNull String name,
-                    @NotNull User user,
                     @Nullable Integer limit,
                     @Nullable ExpensePeriod period) {
         super(id, name);
-        this.user = user;
         if (limit == null && period != null || limit != null && period == null) {
             throw new IllegalArgumentException("Limit and period must be both null or not null");
         }

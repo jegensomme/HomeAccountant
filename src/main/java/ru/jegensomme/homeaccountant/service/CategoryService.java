@@ -9,6 +9,7 @@ import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.repository.CategoryRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
 
@@ -17,18 +18,18 @@ import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWith
 public class CategoryService {
     private final CategoryRepository repository;
 
-    public @Nullable Category create(@Nullable Category category, int userId) {
+    public @NotNull Category create(@Nullable Category category, int userId) {
         Assert.notNull(category, "category must not be null");
-        return repository.save(category, userId);
+        return Objects.requireNonNull(repository.save(category, userId));
     }
 
     public void delete(int id, int userId) {
         checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
-    public void update(@Nullable Category Category, int userId) {
-        Assert.notNull(Category, "category must not be null");
-        checkNotFoundWithId(repository.save(Category, userId), Category.id());
+    public void update(@Nullable Category category, int userId) {
+        Assert.notNull(category, "category must not be null");
+        checkNotFoundWithId(repository.save(category, userId), category.id());
     }
 
     public @NotNull Category get(int id, int userId) {

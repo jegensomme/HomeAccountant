@@ -26,6 +26,8 @@ public class DatabaseConfig {
 
     @Value("classpath:db/initDB.sql")
     private Resource initDBScript;
+    @Value("classpath:db/populateDB.sql")
+    private Resource populateDBScript;
     @Value("${database.init}")
     private boolean initializerEnabled;
 
@@ -36,7 +38,7 @@ public class DatabaseConfig {
 
     @Bean
     public DatabasePopulator populator() {
-        return new ResourceDatabasePopulator(initDBScript);
+        return new ResourceDatabasePopulator(initDBScript, populateDBScript);
     }
 
     @Bean

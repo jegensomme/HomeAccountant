@@ -9,6 +9,7 @@ import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.repository.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFound;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
@@ -18,9 +19,9 @@ import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWith
 public class UserService {
     private final UserRepository repository;
 
-    public @Nullable User create(@Nullable User user) {
+    public @NotNull User create(@Nullable User user) {
         Assert.notNull(user, "user must not be null");
-        return repository.save(user);
+        return Objects.requireNonNull(repository.save(user));
     }
 
     public void delete(int id) {
