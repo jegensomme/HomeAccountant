@@ -1,6 +1,8 @@
 package ru.jegensomme.homeaccountant.model;
 
 import lombok.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +19,8 @@ import javax.validation.constraints.Min;
 @Table(name = "categories", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "name"}, name = "expense_category_unique_idx")
 })
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Category extends NamedEntity {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)

@@ -2,11 +2,14 @@ package ru.jegensomme.home.accountant.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 
 import static org.junit.Assert.assertThrows;
@@ -95,5 +98,11 @@ public class ExpenseServiceTest extends ServiceTestBase {
                 service.getByCategoryBetween(USER_FOOD_ID, USER_ID, LocalDate.of(2021, Month.JANUARY, 30), LocalDate.of(2021, Month.FEBRUARY, 10)),
                 EXPENSE2, EXPENSE1
         );
+    }
+
+    @Test
+    public void createWithException() {
+        validateRootCause(() -> service.create(new Expense(null, null, 10000, null), USER_ID), IllegalArgumentException.class);
+        validateRootCause(() -> service.create(new Expense(null, LocalDateTime.now(), -10, null), USER_ID), ConstraintViolationException.class);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.jegensomme.homeaccountant.repository.JpaUtil;
 
 import java.util.Map;
 import java.util.Objects;
@@ -55,13 +56,21 @@ public class PersistenceConfig {
         return new JpaTransactionManager(Objects.requireNonNull(entityManagerFactory().getObject()));
     }
 
+    @Bean
+    public JpaUtil jpaUtil() {
+        return new JpaUtil();
+    }
+
     private Properties getJpaProperties() {
         Properties properties = new Properties();
         properties.putAll(Map.of(
                 FORMAT_SQL, formatSql,
                 USE_SQL_COMMENTS, useSqlComments,
                 JPA_PROXY_COMPLIANCE, false,
-                DIALECT, "org.hibernate.dialect.PostgreSQLDialect"
+                DIALECT, "org.hibernate.dialect.PostgreSQLDialect",
+                USE_SECOND_LEVEL_CACHE, true,
+                CACHE_REGION_FACTORY, "org.hibernate.cache.jcache.JCacheRegionFactory",
+                CACHE_PROVIDER_CONFIG, "cache/ehcache.xml"
         ));
         return properties;
     }

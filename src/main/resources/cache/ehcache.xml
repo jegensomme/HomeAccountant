@@ -5,20 +5,16 @@
     <!--http://www.ehcache.org/documentation/3.4/xml.html-->
     <!--http://www.ehcache.org/documentation/3.1/107.html#supplement-jsr-107-configurations-->
 
-    <cache-template name="expiryCache">
+    <cache-template name="default">
         <expiry>
-            <ttl unit="minutes">5</ttl>
+            <ttl unit="minutes">10</ttl>
         </expiry>
         <heap>5000</heap>
     </cache-template>
 
-    <cache-template name="singleNonExpiryCache">
-        <expiry>
-            <none/>
-        </expiry>
-        <heap>1</heap>
-    </cache-template>
+    <cache alias="users" uses-template="default"/>
+    <cache alias="categories" uses-template="default"/>
 
-    <cache alias="users" uses-template="singleNonExpiryCache"/>
-    <cache alias="categories" uses-template="singleNonExpiryCache"/>
+    <cache alias="ru.jegensomme.homeaccountant.model.User" uses-template="default"/>
+    <cache alias="ru.jegensomme.homeaccountant.model.Category" uses-template="default"/>
 </config>

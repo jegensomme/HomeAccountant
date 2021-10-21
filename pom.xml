@@ -36,8 +36,8 @@
 
     <!-- Hibernate -->
     <hibernate.version>5.6.0.Final</hibernate.version>
-    <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
-    <javax.validation.version>2.0.1.Final</javax.validation.version>
+    <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
+    <javax-el.version>3.0.1-b12</javax-el.version>
 
     <!--Cache-->
     <javax.cache.version>1.1.1</javax.cache.version>
@@ -106,11 +106,17 @@
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate-validator.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jcache</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
     <!--http://hibernate.org/validator/documentation/getting-started/#unified-expression-language-el-->
     <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <version>${javax.validation.version}</version>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.el</artifactId>
+      <version>${javax-el.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Cache -->

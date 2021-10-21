@@ -3,13 +3,12 @@ package ru.jegensomme.home.accountant.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import ru.jegensomme.homeaccountant.model.Category;
-import ru.jegensomme.homeaccountant.model.Expense;
+import ru.jegensomme.homeaccountant.model.*;
 import ru.jegensomme.homeaccountant.service.CategoryService;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,9 +24,6 @@ public class CategoryServiceTest extends ServiceTestBase {
 
     @Autowired
     private ExpenseService expenseService;
-
-    @Autowired
-    private CacheManager cacheManager;
 
     @Before
     public void setUp() {
@@ -91,5 +87,13 @@ public class CategoryServiceTest extends ServiceTestBase {
     @Test
     public void getAll() {
         CATEGORY_MATCHER.assertMatch(service.getAll(USER_ID), USER_FOOD, USER_HOUSEHOLD);
+    }
+
+    @Test
+    public void createWithException() {
+        validateRootCause(() -> service.create(new Category(null, "   "), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Category(null, "Category", -10, ExpensePeriod.MONTH), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Category(null, "Category", null, ExpensePeriod.MONTH), USER_ID), IllegalArgumentException.class);
+        validateRootCause(() -> service.create(new Category(null, "Category", 10000, null), USER_ID), IllegalArgumentException.class);
     }
 }

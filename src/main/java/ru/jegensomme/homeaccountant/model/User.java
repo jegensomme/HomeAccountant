@@ -2,14 +2,17 @@ package ru.jegensomme.homeaccountant.model;
 
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import javax.persistence.*;
+
 import java.util.*;
 
 @Getter
@@ -20,6 +23,8 @@ import java.util.*;
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")
 })
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends NamedEntity {
     @Column(name = "email")
     @Email
@@ -47,6 +52,7 @@ public class User extends NamedEntity {
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     @BatchSize(size = 200)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private @NotNull Set<Role> roles;
 
     public User(@NotNull User user) {
