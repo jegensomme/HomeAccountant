@@ -3,6 +3,9 @@ package ru.jegensomme.homeaccountant.service;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.model.User;
@@ -19,15 +22,24 @@ import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWith
 public class UserService {
     private final UserRepository repository;
 
+    @CacheEvict(value = "users", allEntries = true)
     public @NotNull User create(@Nullable User user) {
         Assert.notNull(user, "user must not be null");
         return Objects.requireNonNull(repository.save(user));
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "users", allEntries = true),
+            @CacheEvict(value = "categories", key = "#id")
+    })
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id), id);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "users", allEntries = true),
+            @CacheEvict(value = "categories", key = "#user.id")
+    })
     public void update(@Nullable User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.id());
@@ -42,6 +54,7 @@ public class UserService {
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
+    @Cacheable("users")
     public List<User> getAll() {
         return repository.getAll();
     }

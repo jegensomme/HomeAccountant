@@ -1,7 +1,9 @@
 package ru.jegensomme.home.accountant.service;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.CategoryService;
@@ -9,6 +11,7 @@ import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +25,14 @@ public class CategoryServiceTest extends ServiceTestBase {
 
     @Autowired
     private ExpenseService expenseService;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Before
+    public void setUp() {
+        Objects.requireNonNull(cacheManager.getCache("categories")).clear();
+    }
 
     @Test
     public void create() {

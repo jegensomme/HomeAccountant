@@ -38,6 +38,10 @@
     <hibernate.version>5.6.0.Final</hibernate.version>
     <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
     <javax.validation.version>2.0.1.Final</javax.validation.version>
+
+    <!--Cache-->
+    <javax.cache.version>1.1.1</javax.cache.version>
+    <ehcache.version>3.9.7</ehcache.version>
   </properties>
 
   <dependencies>
@@ -109,6 +113,19 @@
       <version>${javax.validation.version}</version>
     </dependency>
 
+    <!-- Cache -->
+    <dependency>
+      <groupId>javax.cache</groupId>
+      <artifactId>cache-api</artifactId>
+      <version>${javax.cache.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <scope>runtime</scope>
+      <version>${ehcache.version}</version>
+    </dependency>
+
     <!-- Postgres -->
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -119,7 +136,7 @@
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-jdbc</artifactId>
       <version>${tomcat.version}</version>
-      <!--<scope>provided</scope>-->
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
