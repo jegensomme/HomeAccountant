@@ -11,7 +11,6 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ru.jegensomme.homeaccountant.repository.JpaUtil;
 
 import java.util.Map;
 import java.util.Objects;
@@ -54,11 +53,6 @@ public class PersistenceConfig {
     @Bean
     public JpaTransactionManager transactionManager() {
         return new JpaTransactionManager(Objects.requireNonNull(entityManagerFactory().getObject()));
-    }
-
-    @Bean
-    public JpaUtil jpaUtil() {
-        return new JpaUtil();
     }
 
     private Properties getJpaProperties() {

@@ -101,7 +101,6 @@ public class ExpenseServiceTest extends ServiceTestBase {
 
     @Test
     public void createWithException() {
-        validateRootCause(() -> service.create(new Expense(null, null, 10000, null), USER_ID), IllegalArgumentException.class);
         validateRootCause(() -> service.create(new Expense(null, LocalDateTime.now(), -10, null), USER_ID), ConstraintViolationException.class);
     }
 }

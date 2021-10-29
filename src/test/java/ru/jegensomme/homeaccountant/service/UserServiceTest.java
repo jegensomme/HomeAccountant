@@ -1,7 +1,6 @@
 package ru.jegensomme.homeaccountant.service;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -10,7 +9,6 @@ import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Objects;
 
 import static org.junit.Assert.assertThrows;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.*;
@@ -18,11 +16,6 @@ import static ru.jegensomme.homeaccountant.testdata.UserTestData.*;
 public class UserServiceTest extends ServiceTestBase {
     @Autowired
     private UserService service;
-
-    @Before
-    public void setUp() {
-        Objects.requireNonNull(cacheManager.getCache("users")).clear();
-    }
 
     @Test
     public void create() {
@@ -53,10 +46,6 @@ public class UserServiceTest extends ServiceTestBase {
     @Test
     public void get() {
         USER_MATCHER.assertMatch(USER, service.get(USER_ID));
-        service.get(USER_ID);
-        service.get(ADMIN_ID);
-        service.get(USER_ID);
-        service.get(ADMIN_ID);
     }
 
     @Test
