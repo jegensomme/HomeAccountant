@@ -1,15 +1,14 @@
-package ru.jegensomme.home.accountant.testdata;
+package ru.jegensomme.homeaccountant.testdata;
 
 import lombok.experimental.UtilityClass;
-import ru.jegensomme.home.accountant.util.TestMatcher;
+import ru.jegensomme.homeaccountant.util.TestMatcher;
 import ru.jegensomme.homeaccountant.model.Expense;
 
 import java.time.Month;
-import java.util.List;
 
 import static java.time.LocalDateTime.of;
-import static ru.jegensomme.home.accountant.testdata.CategoryTestData.*;
-import static ru.jegensomme.home.accountant.util.TestMatcher.usingIgnoringFieldsComparator;
+import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.*;
+import static ru.jegensomme.homeaccountant.util.TestMatcher.usingIgnoringFieldsComparator;
 import static ru.jegensomme.homeaccountant.model.BaseEntity.START_SEQ;
 
 @UtilityClass

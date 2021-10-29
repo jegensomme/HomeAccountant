@@ -1,4 +1,4 @@
-package ru.jegensomme.home.accountant.util;
+package ru.jegensomme.homeaccountant.util;
 
 import java.util.List;
 

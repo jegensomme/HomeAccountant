@@ -1,4 +1,4 @@
-package ru.jegensomme.home.accountant.util;
+package ru.jegensomme.homeaccountant.util;
 
 import lombok.experimental.UtilityClass;
 import org.junit.rules.ExternalResource;

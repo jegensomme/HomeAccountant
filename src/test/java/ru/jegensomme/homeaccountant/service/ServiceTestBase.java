@@ -1,4 +1,4 @@
-package ru.jegensomme.home.accountant.service;
+package ru.jegensomme.homeaccountant.service;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.jegensomme.home.accountant.util.TimingRules;
+import ru.jegensomme.homeaccountant.util.TimingRules;
 import ru.jegensomme.homeaccountant.config.ApplicationConfig;
 import ru.jegensomme.homeaccountant.repository.JpaUtil;
 

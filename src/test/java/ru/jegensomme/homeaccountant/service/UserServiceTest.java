@@ -1,4 +1,4 @@
-package ru.jegensomme.home.accountant.service;
+package ru.jegensomme.homeaccountant.service;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -7,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import ru.jegensomme.homeaccountant.model.Role;
 import ru.jegensomme.homeaccountant.model.User;
-import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Objects;
 
 import static org.junit.Assert.assertThrows;
-import static ru.jegensomme.home.accountant.testdata.UserTestData.*;
+import static ru.jegensomme.homeaccountant.testdata.UserTestData.*;
 
 public class UserServiceTest extends ServiceTestBase {
     @Autowired

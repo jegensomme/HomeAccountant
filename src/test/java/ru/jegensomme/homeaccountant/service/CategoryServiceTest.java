@@ -1,11 +1,9 @@
-package ru.jegensomme.home.accountant.service;
+package ru.jegensomme.homeaccountant.service;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.jegensomme.homeaccountant.model.*;
-import ru.jegensomme.homeaccountant.service.CategoryService;
-import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
@@ -14,9 +12,9 @@ import java.util.Objects;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static ru.jegensomme.home.accountant.testdata.CategoryTestData.*;
-import static ru.jegensomme.home.accountant.testdata.UserTestData.ADMIN_ID;
-import static ru.jegensomme.home.accountant.testdata.UserTestData.USER_ID;
+import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.*;
+import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
+import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
 
 public class CategoryServiceTest extends ServiceTestBase {
     @Autowired

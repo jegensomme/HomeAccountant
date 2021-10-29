@@ -1,10 +1,9 @@
-package ru.jegensomme.home.accountant.service;
+package ru.jegensomme.homeaccountant.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ru.jegensomme.homeaccountant.model.Expense;
-import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
@@ -13,10 +12,10 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 import static org.junit.Assert.assertThrows;
-import static ru.jegensomme.home.accountant.testdata.ExpenseTestData.*;
-import static ru.jegensomme.home.accountant.testdata.UserTestData.ADMIN_ID;
-import static ru.jegensomme.home.accountant.testdata.UserTestData.USER_ID;
-import static ru.jegensomme.home.accountant.testdata.CategoryTestData.USER_FOOD_ID;
+import static ru.jegensomme.homeaccountant.testdata.ExpenseTestData.*;
+import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
+import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
+import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.USER_FOOD_ID;
 
 public class ExpenseServiceTest extends ServiceTestBase {
     @Autowired
