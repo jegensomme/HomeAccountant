@@ -5,6 +5,7 @@ import org.junit.Rule;
 import org.junit.rules.ExternalResource;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -18,6 +19,7 @@ import static ru.jegensomme.homeaccountant.util.ValidationUtil.getRootCause;
 @ContextConfiguration(classes = { ApplicationConfig.class })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@ActiveProfiles("postgres")
 public abstract class ServiceTestBase {
     @ClassRule
     public static final ExternalResource SUMMARY = TimingRules.SUMMARY;

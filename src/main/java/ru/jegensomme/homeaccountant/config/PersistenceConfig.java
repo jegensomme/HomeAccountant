@@ -12,6 +12,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
@@ -24,7 +25,7 @@ import static org.hibernate.cfg.AvailableSettings.*;
 @Import(DatabaseConfig.class)
 @RequiredArgsConstructor
 public class PersistenceConfig {
-    private final DatabaseConfig databaseConfig;
+    private final DataSource dataSource;
 
     @Value("${jpa.showSql}")
     private boolean showSql;
@@ -36,7 +37,7 @@ public class PersistenceConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setDataSource(databaseConfig.dataSource());
+        factory.setDataSource(dataSource);
         factory.setPackagesToScan("ru.jegensomme.homeaccountant.model");
         factory.setJpaProperties(getJpaProperties());
         factory.setJpaVendorAdapter(jpaVendorAdapter());
