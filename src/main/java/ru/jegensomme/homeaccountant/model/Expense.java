@@ -3,13 +3,16 @@ package ru.jegensomme.homeaccountant.model;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -73,5 +76,13 @@ public class Expense extends BaseEntity {
         this.dateTime = dateTime;
         this.amount = amount;
         this.description = description;
+    }
+
+    public @NonNull LocalDate getDate() {
+        return dateTime.toLocalDate();
+    }
+
+    public @NonNull LocalTime getTime() {
+        return dateTime.toLocalTime();
     }
 }

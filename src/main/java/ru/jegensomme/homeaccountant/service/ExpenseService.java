@@ -1,6 +1,7 @@
 package ru.jegensomme.homeaccountant.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.model.Expense;
@@ -46,8 +47,8 @@ public class ExpenseService {
     }
 
     public List<Expense> getBetween(int userId,
-                                    LocalDate startInclusive,
-                                    LocalDate endInclusive) {
+                                    @Nullable LocalDate startInclusive,
+                                    @Nullable LocalDate endInclusive) {
         return repository.getBetween(userId,
                 atStartOfDayOrMin(startInclusive),
                 atStartOfNextDayOrMax(endInclusive));
@@ -58,8 +59,8 @@ public class ExpenseService {
     }
 
     public List<Expense> getByCategoryBetween(int categoryId, int userId,
-                                              LocalDate startInclusive,
-                                              LocalDate endExclusive) {
+                                              @Nullable LocalDate startInclusive,
+                                              @Nullable LocalDate endExclusive) {
         return repository.getByCategoryBetween(
                 categoryId, userId,
                 atStartOfDayOrMin(startInclusive),
