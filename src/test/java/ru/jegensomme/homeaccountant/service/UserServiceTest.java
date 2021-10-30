@@ -1,7 +1,6 @@
 package ru.jegensomme.homeaccountant.service;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import ru.jegensomme.homeaccountant.model.Role;
@@ -10,7 +9,7 @@ import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.*;
 
 public class UserServiceTest extends ServiceTestBase {
@@ -29,7 +28,7 @@ public class UserServiceTest extends ServiceTestBase {
 
     @Test
     public void duplicateMailCreate() {
-        Assert.assertThrows(DataAccessException.class, () -> service.create(getDuplicateEmail()));
+        assertThrows(DataAccessException.class, () -> service.create(getDuplicateEmail()));
     }
 
     @Test

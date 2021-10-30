@@ -1,6 +1,6 @@
 package ru.jegensomme.homeaccountant.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.jegensomme.homeaccountant.model.*;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
@@ -8,8 +8,8 @@ import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.*;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;

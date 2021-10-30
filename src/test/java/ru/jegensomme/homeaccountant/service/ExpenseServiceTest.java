@@ -1,6 +1,6 @@
 package ru.jegensomme.homeaccountant.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ru.jegensomme.homeaccountant.model.Expense;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.jegensomme.homeaccountant.testdata.ExpenseTestData.*;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
