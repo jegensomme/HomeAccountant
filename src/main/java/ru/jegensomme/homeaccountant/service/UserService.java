@@ -1,8 +1,6 @@
 package ru.jegensomme.homeaccountant.service;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -23,7 +21,7 @@ public class UserService {
     private final UserRepository repository;
 
     @CacheEvict(value = "users", allEntries = true)
-    public @NotNull User create(@Nullable User user) {
+    public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return Objects.requireNonNull(repository.save(user));
     }
@@ -40,16 +38,16 @@ public class UserService {
             @CacheEvict(value = "users", allEntries = true),
             @CacheEvict(value = "categories", key = "#user.id")
     })
-    public void update(@Nullable User user) {
+    public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.id());
     }
 
-    public @NotNull User get(int id) {
+    public User get(int id) {
         return checkNotFoundWithId(repository.get(id), id);
     }
 
-    public @NotNull User getByEmail(@Nullable String email) {
+    public User getByEmail(String email) {
         Assert.notNull(email, "email must not be null");
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }

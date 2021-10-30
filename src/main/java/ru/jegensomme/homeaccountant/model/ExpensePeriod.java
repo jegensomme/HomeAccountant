@@ -1,8 +1,6 @@
 package ru.jegensomme.homeaccountant.model;
 
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
-
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
@@ -16,9 +14,9 @@ public class ExpensePeriod {
     private int number;
 
     @Enumerated(EnumType.STRING)
-    private @NotNull ChronoUnit unit;
+    private ChronoUnit unit;
 
-    public ExpensePeriod(int number, @NotNull ChronoUnit unit) {
+    public ExpensePeriod(int number, ChronoUnit unit) {
         if (number <= 0) {
             throw new IllegalArgumentException("number must be > 0");
         }

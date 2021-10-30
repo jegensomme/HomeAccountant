@@ -1,8 +1,6 @@
 package ru.jegensomme.homeaccountant.service;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,7 @@ public class CategoryService {
     private final CategoryRepository repository;
 
     @CacheEvict(value = "categories", key = "#userId")
-    public @NotNull Category create(@Nullable Category category, int userId) {
+    public Category create(Category category, int userId) {
         Assert.notNull(category, "category must not be null");
         return Objects.requireNonNull(repository.save(category, userId));
     }
@@ -32,12 +30,12 @@ public class CategoryService {
     }
 
     @CacheEvict(value = "categories", key = "#userId")
-    public void update(@Nullable Category category, int userId) {
+    public void update(Category category, int userId) {
         Assert.notNull(category, "category must not be null");
         checkNotFoundWithId(repository.save(category, userId), category.id());
     }
 
-    public @NotNull Category get(int id, int userId) {
+    public Category get(int id, int userId) {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 

@@ -4,8 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.springframework.lang.Nullable;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -30,17 +30,17 @@ public class User extends NamedEntity {
     @Email
     @NotBlank
     @Size(max = 100)
-    private @NotNull String email;
+    private String email;
 
     @Column(name = "password")
     @NotBlank
     @Size(min = 5, max = 100)
     @ToString.Exclude
-    private @NotNull String password;
+    private String password;
 
     @Column(name = "registered")
     @javax.validation.constraints.NotNull
-    private @NotNull Date registered = new Date();
+    private Date registered = new Date();
 
     @Column(name = "monthly_limit")
     @Min(0)
@@ -53,30 +53,30 @@ public class User extends NamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     @BatchSize(size = 200)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private @NotNull Set<Role> roles;
+    private Set<Role> roles;
 
-    public User(@NotNull User user) {
+    public User(User user) {
         this(user.id, user.name, user.email, user.password, user.registered, user.monthlyLimit, user.roles);
     }
 
-    public User(@Nullable Integer id,
-                @NotNull String name, @NotNull String email, @NotNull String password,
-                @NotNull Role role, @NotNull Role... roles) {
+    public User(Integer id, String name,
+                String email, String password,
+                Role role, Role... roles) {
         this(id, name, email, password, null, null, EnumSet.of(role, roles));
     }
 
-    public User(@Nullable Integer id,
-                @NotNull String name, @NotNull String email, @NotNull String password,
+    public User(Integer id, String name,
+                String email, String password,
                 @Nullable Integer monthlyLimit,
-                @NotNull Role role, @NotNull Role... roles) {
+                Role role, Role... roles) {
         this(id, name, email, password, null, monthlyLimit, EnumSet.of(role, roles));
     }
 
-    public User(@Nullable Integer id,
-                @NotNull String name, @NotNull String email, @NotNull String password,
+    public User(@Nullable Integer id, String name,
+                String email, String password,
                 @Nullable Date registered,
                 @Nullable Integer monthlyLimit,
-                @NotNull Set<Role> roles) {
+                Set<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
@@ -85,7 +85,7 @@ public class User extends NamedEntity {
         this.roles = roles;
     }
 
-    public void setRoles(@NotNull Collection<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles.isEmpty() ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 }

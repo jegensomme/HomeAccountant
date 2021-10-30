@@ -1,9 +1,9 @@
 package ru.jegensomme.homeaccountant.repository.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.User;
@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Transactional
     @Override
-    public @Nullable User save(@NotNull User user) {
+    public @Nullable User save(@NonNull User user) {
         return crudRepository.save(user);
     }
 
@@ -36,7 +36,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public @Nullable User getByEmail(@NotNull String email) {
+    public @Nullable User getByEmail(@NonNull String email) {
         return crudRepository.getByEmail(email);
     }
 

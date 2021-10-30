@@ -1,8 +1,7 @@
 package ru.jegensomme.homeaccountant.model;
 
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -18,9 +17,9 @@ public abstract class NamedEntity extends BaseEntity {
     @NotBlank
     @Size(min = 2, max = 100)
     @Column(name = "name")
-    protected @NotNull String name;
+    protected String name;
 
-    public NamedEntity(@Nullable Integer id, @NotNull String name) {
+    public NamedEntity(@Nullable Integer id, String name) {
         super(id);
         this.name = name;
     }

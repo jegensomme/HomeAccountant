@@ -1,6 +1,6 @@
 package ru.jegensomme.homeaccountant;
 
-import org.jetbrains.annotations.NotNull;
+import org.springframework.lang.NonNull;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -20,7 +20,7 @@ public class ApplicationInitializer extends AbstractDispatcherServletInitializer
     }
 
     @Override
-    protected @NotNull WebApplicationContext createServletApplicationContext() {
+    protected @NonNull WebApplicationContext createServletApplicationContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(WebConfig.class);
         return context;
@@ -32,7 +32,7 @@ public class ApplicationInitializer extends AbstractDispatcherServletInitializer
     }
 
     @Override
-    protected String @NotNull [] getServletMappings() {
+    protected @NonNull String [] getServletMappings() {
         return new String[] { "/" };
     }
 }

@@ -1,13 +1,14 @@
 package ru.jegensomme.homeaccountant.util;
 
 import lombok.experimental.UtilityClass;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.lang.NonNull;
 import ru.jegensomme.homeaccountant.model.BaseEntity;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 @UtilityClass
 public class ValidationUtil {
-    public static <T> @NotNull T checkNotFoundWithId(T object, int id) {
+    @NonNull
+    public static <T> T checkNotFoundWithId(T object, int id) {
         checkNotFoundWithId(object != null, id);
         return object;
     }
@@ -16,7 +17,8 @@ public class ValidationUtil {
         checkNotFound(found, "id=" + id);
     }
 
-    public static <T> @NotNull T checkNotFound(T object, String msg) {
+    @NonNull
+    public static <T> T checkNotFound(T object, String msg) {
         checkNotFound(object != null, msg);
         return object;
     }

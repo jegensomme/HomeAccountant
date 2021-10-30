@@ -5,11 +5,11 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -25,7 +25,7 @@ public class Category extends NamedEntity {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @javax.validation.constraints.NotNull
+    @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private @Nullable User user;
 
@@ -40,12 +40,12 @@ public class Category extends NamedEntity {
     })
     private @Nullable ExpensePeriod period;
 
-    public Category(@Nullable Integer id, @NotNull String name) {
+    public Category(@Nullable Integer id, String name) {
         this(id, name, null, null);
     }
 
     public Category(@Nullable Integer id,
-                    @NotNull String name,
+                    String name,
                     @Nullable Integer limit,
                     @Nullable ExpensePeriod period) {
         super(id, name);

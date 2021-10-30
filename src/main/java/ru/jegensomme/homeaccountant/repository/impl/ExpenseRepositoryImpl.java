@@ -1,8 +1,8 @@
 package ru.jegensomme.homeaccountant.repository.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.Expense;
@@ -20,7 +20,8 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 
     @Transactional
     @Override
-    public @Nullable Expense save(@NotNull Expense expense, int userId) {
+    public @Nullable
+    Expense save(@NonNull Expense expense, int userId) {
         if (!expense.isNew() && get(expense.id(), userId) == null) {
             return null;
         }
@@ -37,7 +38,10 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     @Override
     public @Nullable Expense get(int id, int userId) {
         return crudRepository.findById(id)
-                .filter(e -> Objects.equals(e.getUser().getId(), userId))
+                .filter(e -> {
+                    assert e.getUser() != null;
+                    return Objects.equals(e.getUser().getId(), userId);
+                })
                 .orElse(null);
     }
 
@@ -52,7 +56,9 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public List<Expense> getBetween(int userId, @NotNull LocalDateTime startInclusive, @NotNull LocalDateTime endExclusive) {
+    public List<Expense> getBetween(int userId,
+                                    @NonNull LocalDateTime startInclusive,
+                                    @NonNull LocalDateTime endExclusive) {
         return crudRepository.getBetween(userId, startInclusive, endExclusive);
     }
 
@@ -63,7 +69,8 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 
     @Override
     public List<Expense> getByCategoryBetween(int categoryId, int userId,
-                                              @NotNull LocalDateTime startInclusive, @NotNull LocalDateTime endExclusive) {
+                                              @NonNull LocalDateTime startInclusive,
+                                              @NonNull LocalDateTime endExclusive) {
         return crudRepository.getByCategoryBetween(categoryId, userId, startInclusive, endExclusive);
     }
 }

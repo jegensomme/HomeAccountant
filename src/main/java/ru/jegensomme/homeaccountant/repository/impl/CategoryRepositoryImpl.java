@@ -1,8 +1,8 @@
 package ru.jegensomme.homeaccountant.repository.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.Category;
@@ -19,7 +19,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Transactional
     @Override
-    public @Nullable Category save(@NotNull Category category, int userId) {
+    public @Nullable Category save(@NonNull Category category, int userId) {
         if (!category.isNew() && get(category.id(), userId) == null) {
             return null;
         }
@@ -36,7 +36,10 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     @Override
     public @Nullable Category get(int id, int userId) {
         return crudRepository.findById(id)
-                .filter(c -> Objects.equals(c.getUser().getId(), userId))
+                .filter(c -> {
+                    assert c.getUser() != null;
+                    return Objects.equals(c.getUser().getId(), userId);
+                })
                 .orElse(null);
     }
 
