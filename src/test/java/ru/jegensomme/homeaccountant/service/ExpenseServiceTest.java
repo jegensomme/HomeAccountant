@@ -81,8 +81,10 @@ public class ExpenseServiceTest extends ServiceTestBase {
     @Test
     public void getBetween() {
         EXPENSE_MATCHER.assertMatch(
-                service.getBetween(USER_ID, LocalDate.of(2021, Month.JANUARY, 30), LocalDate.of(2021, Month.FEBRUARY, 25)),
-                EXPENSE3, EXPENSE2, EXPENSE1
+                service.getBetween(USER_ID,
+                        LocalDate.of(2021, Month.JANUARY, 30),
+                        LocalDate.of(2021, Month.FEBRUARY, 26)),
+                EXPENSE4, EXPENSE3, EXPENSE2, EXPENSE1
         );
     }
 
@@ -92,10 +94,26 @@ public class ExpenseServiceTest extends ServiceTestBase {
     }
 
     @Test
+    public void getWithoutCategory() {
+        EXPENSE_MATCHER.assertMatch(service.getWithoutCategory(USER_ID), EXPENSE5);
+    }
+
+    @Test
     public void getByCategoryBetween() {
         EXPENSE_MATCHER.assertMatch(
-                service.getByCategoryBetween(USER_FOOD_ID, USER_ID, LocalDate.of(2021, Month.JANUARY, 30), LocalDate.of(2021, Month.FEBRUARY, 10)),
-                EXPENSE2, EXPENSE1
+                service.getByCategoryBetween(USER_FOOD_ID, USER_ID,
+                        LocalDate.of(2021, Month.FEBRUARY, 1),
+                        LocalDate.of(2021, Month.FEBRUARY, 26)),
+                EXPENSE3, EXPENSE2
+        );
+    }
+
+    @Test
+    public void getWithoutCategoryBetween() {
+        EXPENSE_MATCHER.assertMatch(
+                service.getWithoutCategoryBetween(USER_ID,
+                        LocalDate.of(2021, Month.FEBRUARY, 1),
+                        LocalDate.of(2021, Month.FEBRUARY, 27)), EXPENSE5
         );
     }
 

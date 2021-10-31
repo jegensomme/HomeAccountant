@@ -90,4 +90,15 @@ public class AbstractExpenseController {
         log.info("get by category {} between dates({} - {}) time({} - {}) for user {}", categoryId, startDate, endDate, startTime, endTime, userId);
         return getFilteredTos(service.getByCategoryBetween(categoryId, userId, startDate, endDate), startTime, endTime);
     }
+
+    /**
+     * @see #getBetween(LocalDate, LocalTime, LocalDate, LocalTime)
+     */
+    public List<ExpenseTo> getWithoutCategoryBetween(
+            @Nullable LocalDate startDate, @Nullable LocalTime startTime,
+            @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
+        int userId = SecurityUtil.authUserId();
+        log.info("get without category between dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
+        return getFilteredTos(service.getWithoutCategoryBetween(userId, startDate, endDate), startTime, endTime);
+    }
 }

@@ -56,4 +56,14 @@ public interface CrudExpenseRepository extends JpaRepository<Expense, Integer> {
     List<Expense> getByCategoryBetween(@Param("categoryId") int categoryId, @Param("userId") int userId,
                                        @Param("start") @NonNull LocalDateTime startInclusive,
                                        @Param("end") @NonNull LocalDateTime endExclusive);
+
+    @Query("""
+        SELECT e FROM Expense e LEFT JOIN FETCH e.category
+        WHERE e.user.id=:userId AND e.category.id IS NULL
+              AND e.dateTime>=:start AND e.dateTime<:end
+        ORDER BY e.dateTime DESC
+        """)
+    List<Expense> getWithoutCategoryBetween(@Param("userId") int userId,
+                                            @Param("start") @NonNull LocalDateTime startInclusive,
+                                            @Param("end") @NonNull LocalDateTime endExclusive);
 }

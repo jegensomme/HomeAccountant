@@ -66,4 +66,12 @@ public class ExpenseService {
                 atStartOfDayOrMin(startInclusive),
                 atStartOfNextDayOrMax(endExclusive));
     }
+
+    public List<Expense> getWithoutCategoryBetween(int userId,
+                                                   @Nullable LocalDate startInclusive,
+                                                   @Nullable LocalDate endExclusive) {
+        return repository.getWithoutCategoryBetween(userId,
+                atStartOfDayOrMin(startInclusive),
+                atStartOfNextDayOrMax(endExclusive));
+    }
 }

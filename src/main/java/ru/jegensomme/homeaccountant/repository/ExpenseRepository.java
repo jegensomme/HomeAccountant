@@ -27,4 +27,8 @@ public interface ExpenseRepository {
     List<Expense> getByCategoryBetween(int categoryId, int userId,
                                        @NonNull LocalDateTime startInclusive,
                                        @NonNull LocalDateTime endExclusive);
+
+    List<Expense> getWithoutCategoryBetween(int userId,
+                                            @NonNull LocalDateTime startInclusive,
+                                            @NonNull LocalDateTime endExclusive);
 }
