@@ -1,16 +1,38 @@
 package ru.jegensomme.homeaccountant.util;
 
+import org.springframework.test.web.servlet.ResultMatcher;
+
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.jegensomme.homeaccountant.util.TestUtil.readListFromJsonMvcResult;
 
-public record TestMatcher<T>(String... fieldsToIgnore) {
-    public static <T> TestMatcher<T> usingIgnoringFieldsComparator(String... fieldsToIgnore) {
-        return new TestMatcher<>(fieldsToIgnore);
+public class TestMatcher<T> {
+    private final Class<T> clazz;
+    private final BiConsumer<T, T> assertion;
+    private final BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion;
+
+    public TestMatcher(Class<T> clazz, BiConsumer<T, T> assertion, BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion) {
+        this.clazz = clazz;
+        this.assertion = assertion;
+        this.iterableAssertion = iterableAssertion;
+    }
+
+    public static <T> TestMatcher<T> usingEqualsComparator(Class<T> clazz) {
+        return new TestMatcher<>(clazz,
+                (a, e) -> assertThat(a).isEqualTo(e),
+                (a, e) -> assertThat(a).isEqualTo(e));
+    }
+
+    public static <T> TestMatcher<T> usingIgnoringFieldsComparator(Class<T> clazz, String... fieldsToIgnore) {
+        return new TestMatcher<>(clazz,
+                (a, e) -> assertThat(a).usingRecursiveComparison().ignoringFields(fieldsToIgnore).isEqualTo(e),
+                (a, e) -> assertThat(a).usingRecursiveFieldByFieldElementComparatorIgnoringFields(fieldsToIgnore).isEqualTo(e));
     }
 
     public void assertMatch(T actual, T expected) {
-        assertThat(actual).usingRecursiveComparison().ignoringFields(fieldsToIgnore).isEqualTo(expected);
+        assertion.accept(actual, expected);
     }
 
     @SafeVarargs
@@ -19,6 +41,19 @@ public record TestMatcher<T>(String... fieldsToIgnore) {
     }
 
     public void assertMatch(Iterable<T> actual, Iterable<T> expected) {
-        assertThat(actual).usingRecursiveFieldByFieldElementComparatorIgnoringFields(fieldsToIgnore).isEqualTo(expected);
+        iterableAssertion.accept(actual, expected);
+    }
+
+    public ResultMatcher contentJson(T expected) {
+        return result -> assertMatch(TestUtil.readFromJsonMvcResult(result, clazz), expected);
+    }
+
+    @SafeVarargs
+    public final ResultMatcher contentJson(T... expected) {
+        return contentJson(List.of(expected));
+    }
+
+    public ResultMatcher contentJson(Iterable<T> expected) {
+        return result -> assertMatch(readListFromJsonMvcResult(result, clazz), expected);
     }
 }

@@ -1,8 +1,9 @@
 package ru.jegensomme.homeaccountant.testdata;
 
 import lombok.experimental.UtilityClass;
-import ru.jegensomme.homeaccountant.util.TestMatcher;
 import ru.jegensomme.homeaccountant.model.Expense;
+import ru.jegensomme.homeaccountant.to.ExpenseTo;
+import ru.jegensomme.homeaccountant.util.TestMatcher;
 
 import java.time.Month;
 
@@ -13,7 +14,8 @@ import static ru.jegensomme.homeaccountant.model.BaseEntity.START_SEQ;
 
 @UtilityClass
 public class ExpenseTestData {
-    public static final TestMatcher<Expense> EXPENSE_MATCHER = usingIgnoringFieldsComparator("user", "category");
+    public static final TestMatcher<Expense> EXPENSE_MATCHER = usingIgnoringFieldsComparator(Expense.class, "user", "category");
+    public static final TestMatcher<ExpenseTo> EXPENSE_TO_MATCHER = usingIgnoringFieldsComparator(ExpenseTo.class);
 
     public static final int NOT_FOUND = 10;
 

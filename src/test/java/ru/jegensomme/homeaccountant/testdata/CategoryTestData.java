@@ -1,16 +1,16 @@
 package ru.jegensomme.homeaccountant.testdata;
 
 import lombok.experimental.UtilityClass;
-import ru.jegensomme.homeaccountant.util.TestMatcher;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.model.ExpensePeriod;
+import ru.jegensomme.homeaccountant.util.TestMatcher;
 
 import static ru.jegensomme.homeaccountant.util.TestMatcher.usingIgnoringFieldsComparator;
 import static ru.jegensomme.homeaccountant.model.BaseEntity.START_SEQ;
 
 @UtilityClass
 public class CategoryTestData {
-    public static final TestMatcher<Category> CATEGORY_MATCHER = usingIgnoringFieldsComparator("user");
+    public static final TestMatcher<Category> CATEGORY_MATCHER = usingIgnoringFieldsComparator(Category.class, "user");
 
     public static final int NOT_FOUND = 10;
 
