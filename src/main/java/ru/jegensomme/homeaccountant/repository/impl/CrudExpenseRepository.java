@@ -1,10 +1,10 @@
 package ru.jegensomme.homeaccountant.repository.impl;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.Expense;
 
@@ -54,6 +54,6 @@ public interface CrudExpenseRepository extends JpaRepository<Expense, Integer> {
         ORDER BY e.dateTime DESC
         """)
     List<Expense> getByCategoryBetween(@Param("categoryId") int categoryId, @Param("userId") int userId,
-                                       @Param("start") @NotNull LocalDateTime startInclusive,
-                                       @Param("end") @NotNull LocalDateTime endExclusive);
+                                       @Param("start") @NonNull LocalDateTime startInclusive,
+                                       @Param("end") @NonNull LocalDateTime endExclusive);
 }

@@ -45,6 +45,7 @@ public class UserServiceTest extends ServiceTestBase {
     @Test
     public void get() {
         USER_MATCHER.assertMatch(USER, service.get(USER_ID));
+        USER_MATCHER.assertMatch(ADMIN, service.get(ADMIN_ID));
     }
 
     @Test

@@ -59,14 +59,14 @@ public class User extends NamedEntity {
         this(user.id, user.name, user.email, user.password, user.registered, user.monthlyLimit, user.roles);
     }
 
-    public User(Integer id, String name,
+    public User(@Nullable Integer id, String name,
                 String email, String password,
                 Role role, Role... roles) {
         this(id, name, email, password, null, null, EnumSet.of(role, roles));
     }
 
-    public User(Integer id, String name,
-                String email, String password,
+    public User(@Nullable Integer id, String name, String email,
+                String password,
                 @Nullable Integer monthlyLimit,
                 Role role, Role... roles) {
         this(id, name, email, password, null, monthlyLimit, EnumSet.of(role, roles));
