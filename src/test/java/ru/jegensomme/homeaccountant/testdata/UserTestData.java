@@ -19,11 +19,11 @@ public class UserTestData {
     public static final int USER_ID = START_SEQ;
     public static final int ADMIN_ID = START_SEQ + 1;
 
-    public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", 30000, Role.USER);
-    public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", 30000, Role.USER, Role.ADMIN);
+    public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", true, 30000, Role.USER);
+    public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", true, 30000, Role.USER, Role.ADMIN);
 
     public static User getNew() {
-        return new User(null, "New", "new@mail.ru", "newPassword", 3000, Role.USER);
+        return new User(null, "New", "new@mail.ru", "newPassword", true, 3000, Role.USER);
     }
 
     public static User getUpdated() {
@@ -37,6 +37,6 @@ public class UserTestData {
     }
 
     public static User getDuplicateEmail() {
-        return new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.USER);
+        return new User(null, "Duplicate", "user@yandex.ru", "newPass", true, Role.USER);
     }
 }

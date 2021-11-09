@@ -42,6 +42,8 @@ public class User extends NamedEntity {
     @javax.validation.constraints.NotNull
     private Date registered = new Date();
 
+    private boolean enabled = true;
+
     @Column(name = "monthly_limit")
     @Min(0)
     private @Nullable Integer monthlyLimit;
@@ -56,30 +58,34 @@ public class User extends NamedEntity {
     private Set<Role> roles;
 
     public User(User user) {
-        this(user.id, user.name, user.email, user.password, user.registered, user.monthlyLimit, user.roles);
+        this(user.id, user.name, user.email, user.password, user.enabled, user.registered, user.monthlyLimit, user.roles);
     }
 
-    public User(@Nullable Integer id, String name,
-                String email, String password,
+    public User(@Nullable Integer id,
+                String name, String email,
+                String password, boolean enabled,
                 Role role, Role... roles) {
-        this(id, name, email, password, null, null, EnumSet.of(role, roles));
+        this(id, name, email, password, enabled, null, role, roles);
     }
 
-    public User(@Nullable Integer id, String name, String email,
-                String password,
+    public User(@Nullable Integer id,
+                String name, String email,
+                String password, boolean enabled,
                 @Nullable Integer monthlyLimit,
                 Role role, Role... roles) {
-        this(id, name, email, password, null, monthlyLimit, EnumSet.of(role, roles));
+        this(id, name, email, password, enabled, null, monthlyLimit, EnumSet.of(role, roles));
     }
 
-    public User(@Nullable Integer id, String name,
-                String email, String password,
+    public User(@Nullable Integer id,
+                String name, String email,
+                String password, boolean enabled,
                 @Nullable Date registered,
                 @Nullable Integer monthlyLimit,
                 Set<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
+        this.enabled = enabled;
         this.registered = Objects.requireNonNullElse(registered, new Date());
         this.monthlyLimit = monthlyLimit;
         this.roles = roles;
