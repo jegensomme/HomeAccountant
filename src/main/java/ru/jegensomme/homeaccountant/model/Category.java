@@ -10,6 +10,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Currency;
 
 @Getter
 @Setter
@@ -40,19 +41,26 @@ public class Category extends NamedEntity {
     })
     private @Nullable ExpensePeriod period;
 
-    public Category(@Nullable Integer id, String name) {
-        this(id, name, null, null);
+    @Column(name = "currency")
+    @NotNull
+    @Convert(converter = CurrencyConvertor.class)
+    private Currency currency;
+
+    public Category(@Nullable Integer id, String name, Currency currency) {
+        this(id, name, null, null, currency);
     }
 
     public Category(@Nullable Integer id,
                     String name,
                     @Nullable Integer limit,
-                    @Nullable ExpensePeriod period) {
+                    @Nullable ExpensePeriod period,
+                    Currency currency) {
         super(id, name);
         if (limit == null && period != null || limit != null && period == null) {
             throw new IllegalArgumentException("Limit and period must be both null or not null");
         }
         this.limit = limit;
         this.period = period;
+        this.currency = currency;
     }
 }

@@ -8,13 +8,14 @@ CREATE SEQUENCE global_seq START WITH 100000;
 
 CREATE TABLE users
 (
-    id           INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name         VARCHAR                           NOT NULL,
-    email        VARCHAR                           NOT NULL,
-    password     VARCHAR                           NOT NULL,
-    enabled      BOOLEAN                           NOT NULL,
-    registered   TIMESTAMP           DEFAULT now() NOT NULL,
-    monthly_limit INTEGER
+    id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name             VARCHAR                           NOT NULL,
+    email            VARCHAR                           NOT NULL,
+    password         VARCHAR                           NOT NULL,
+    enabled          BOOLEAN                           NOT NULL,
+    registered       TIMESTAMP           DEFAULT now() NOT NULL,
+    monthly_limit    INTEGER,
+    default_currency VARCHAR                           NOT NULL
 );
 
 CREATE TABLE user_roles
@@ -33,7 +34,8 @@ CREATE TABLE categories
     name          VARCHAR NOT NULL,
     "limit"       INTEGER CHECK ( "limit" > 0 ),
     period_number INTEGER CHECK ( period_number > 0 ),
-    period_unit   VARCHAR
+    period_unit   VARCHAR,
+    currency      VARCHAR NOT NULL
 );
 
 CREATE UNIQUE INDEX expense_category_unique_idx on categories(user_id, name);
@@ -45,6 +47,7 @@ CREATE TABLE expenses
     category_id INTEGER            REFERENCES categories(id) ON DELETE SET NULL,
     date_time   TIMESTAMP NOT NULL,
     amount      INTEGER   NOT NULL CHECK ( expenses.amount >= 0 ),
+    currency    VARCHAR   NOT NULL,
     description VARCHAR
 );
 

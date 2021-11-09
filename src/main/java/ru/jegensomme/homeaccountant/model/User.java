@@ -6,10 +6,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 import javax.persistence.*;
 
@@ -48,6 +45,11 @@ public class User extends NamedEntity {
     @Min(0)
     private @Nullable Integer monthlyLimit;
 
+    @Column(name = "default_currency")
+    @NotNull
+    @Convert(converter = CurrencyConvertor.class)
+    private Currency defaultCurrency;
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique_idx")})
@@ -58,29 +60,38 @@ public class User extends NamedEntity {
     private Set<Role> roles;
 
     public User(User user) {
-        this(user.id, user.name, user.email, user.password, user.enabled, user.registered, user.monthlyLimit, user.roles);
+        this(user.id, user.name, user.email, user.password, user.enabled, user.registered, user.monthlyLimit, user.defaultCurrency, user.roles);
     }
 
     public User(@Nullable Integer id,
-                String name, String email,
-                String password, boolean enabled,
+                String name,
+                String email,
+                String password,
+                boolean enabled,
+                Currency defaultCurrency,
                 Role role, Role... roles) {
-        this(id, name, email, password, enabled, null, role, roles);
+        this(id, name, email, password, enabled, null, defaultCurrency, role, roles);
     }
 
     public User(@Nullable Integer id,
-                String name, String email,
-                String password, boolean enabled,
+                String name,
+                String email,
+                String password,
+                boolean enabled,
                 @Nullable Integer monthlyLimit,
+                Currency defaultCurrency,
                 Role role, Role... roles) {
-        this(id, name, email, password, enabled, null, monthlyLimit, EnumSet.of(role, roles));
+        this(id, name, email, password, enabled, null, monthlyLimit, defaultCurrency, EnumSet.of(role, roles));
     }
 
     public User(@Nullable Integer id,
-                String name, String email,
-                String password, boolean enabled,
+                String name,
+                String email,
+                String password,
+                boolean enabled,
                 @Nullable Date registered,
                 @Nullable Integer monthlyLimit,
+                Currency defaultCurrency,
                 Set<Role> roles) {
         super(id, name);
         this.email = email;
@@ -88,6 +99,7 @@ public class User extends NamedEntity {
         this.enabled = enabled;
         this.registered = Objects.requireNonNullElse(registered, new Date());
         this.monthlyLimit = monthlyLimit;
+        this.defaultCurrency = defaultCurrency;
         this.roles = roles;
     }
 

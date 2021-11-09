@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Currency;
 
 @Getter
 @Setter
@@ -44,37 +45,49 @@ public class Expense extends BaseEntity {
     @Min(0)
     private int amount;
 
+    @Column(name = "currency")
+    @NotNull
+    @Convert(converter = CurrencyConvertor.class)
+    private Currency currency;
+
     @Column(name = "description")
     @Size(min = 2, max = 120)
     private @Nullable String description;
 
-    public Expense(@Nullable Integer id, LocalDateTime dateTime, int amount) {
-        this(id, null, dateTime, amount, null);
+    public Expense(@Nullable Integer id,
+                   LocalDateTime dateTime,
+                   int amount,
+                   Currency currency) {
+        this(id, null, dateTime, amount, currency, null);
     }
 
     public Expense(@Nullable Integer id,
                    LocalDateTime dateTime,
                    int amount,
+                   Currency currency,
                    @Nullable String description) {
-        this(id, null, dateTime, amount, description);
+        this(id, null, dateTime, amount, currency, description);
     }
 
     public Expense(@Nullable Integer id,
                    @Nullable Category category,
                    LocalDateTime dateTime,
+                   Currency currency,
                    int amount) {
-        this(id, category, dateTime, amount, null);
+        this(id, category, dateTime, amount, currency, null);
     }
 
     public Expense(@Nullable Integer id,
                    @Nullable Category category,
                    LocalDateTime dateTime,
                    int amount,
+                   Currency currency,
                    @Nullable String description) {
         super(id);
         this.category = category;
         this.dateTime = dateTime;
         this.amount = amount;
+        this.currency = currency;
         this.description = description;
     }
 

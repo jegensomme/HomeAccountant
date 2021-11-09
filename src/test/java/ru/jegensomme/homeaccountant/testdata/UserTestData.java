@@ -6,6 +6,7 @@ import ru.jegensomme.homeaccountant.model.Role;
 import ru.jegensomme.homeaccountant.model.User;
 
 import java.util.Collections;
+import java.util.Currency;
 
 import static ru.jegensomme.homeaccountant.util.TestMatcher.usingIgnoringFieldsComparator;
 import static ru.jegensomme.homeaccountant.model.BaseEntity.START_SEQ;
@@ -19,11 +20,14 @@ public class UserTestData {
     public static final int USER_ID = START_SEQ;
     public static final int ADMIN_ID = START_SEQ + 1;
 
-    public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", true, 30000, Role.USER);
-    public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", true, 30000, Role.USER, Role.ADMIN);
+    public static final Currency RUB = Currency.getInstance("RUB");
+    public static final Currency USD = Currency.getInstance("USD");
+
+    public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", true, 30000, RUB, Role.USER);
+    public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", true, 30000, USD, Role.USER, Role.ADMIN);
 
     public static User getNew() {
-        return new User(null, "New", "new@mail.ru", "newPassword", true, 3000, Role.USER);
+        return new User(null, "New", "new@mail.ru", "newPassword", true, 3000, RUB, Role.USER);
     }
 
     public static User getUpdated() {
@@ -32,11 +36,12 @@ public class UserTestData {
         updated.setEmail("updated@yandex.ru");
         updated.setPassword("updatedPassword");
         updated.setMonthlyLimit(50000);
+        updated.setDefaultCurrency(USD);
         updated.setRoles(Collections.singleton(Role.ADMIN));
         return updated;
     }
 
     public static User getDuplicateEmail() {
-        return new User(null, "Duplicate", "user@yandex.ru", "newPass", true, Role.USER);
+        return new User(null, "Duplicate", "user@yandex.ru", "newPass", true, RUB, Role.USER);
     }
 }
