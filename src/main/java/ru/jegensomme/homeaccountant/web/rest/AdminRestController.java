@@ -62,4 +62,11 @@ public class AdminRestController extends AbstractUserController {
     public List<User> getAll() {
         return super.getAll();
     }
+
+    @Override
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void enable(@PathVariable int id, @RequestParam boolean enabled) {
+        super.enable(id, enabled);
+    }
 }

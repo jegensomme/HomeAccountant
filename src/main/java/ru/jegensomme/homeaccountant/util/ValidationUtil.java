@@ -1,9 +1,13 @@
 package ru.jegensomme.homeaccountant.util;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import ru.jegensomme.homeaccountant.model.BaseEntity;
+import org.springframework.validation.BindingResult;
+import ru.jegensomme.homeaccountant.Identified;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
+
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class ValidationUtil {
@@ -29,13 +33,13 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkNew(BaseEntity entity) {
+    public static void checkNew(Identified entity) {
         if (!entity.isNew()) {
             throw new IllegalArgumentException(entity + " must be new (id=null)");
         }
     }
 
-    public static void assureIdConsistent(BaseEntity entity, int id) {
+    public static void assureIdConsistent(Identified entity, int id) {
 //      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
         if (entity.isNew()) {
             entity.setId(id);
@@ -53,5 +57,13 @@ public class ValidationUtil {
             result = cause;
         }
         return result;
+    }
+
+    public static ResponseEntity<String> getErrorResponse(BindingResult result) {
+        return ResponseEntity.unprocessableEntity().body(
+                result.getFieldErrors().stream()
+                        .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
+                        .collect(Collectors.joining("<br>"))
+        );
     }
 }

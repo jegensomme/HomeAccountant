@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-import org.springframework.data.domain.Persistable;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import ru.jegensomme.homeaccountant.Identified;
 
 import javax.persistence.*;
 
@@ -17,7 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class BaseEntity implements Persistable<Integer> {
+public abstract class BaseEntity implements Identified {
     public static final int  START_SEQ = 100000;
 
     @Id

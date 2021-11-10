@@ -30,6 +30,10 @@ public class ExpenseUtil {
     }
 
     public static List<ExpenseTo> filter(@NonNull Collection<Expense> expenses, @NonNull Predicate<Expense> predicate) {
-        return expenses.stream().filter(predicate).map(ExpenseTo::of).collect(Collectors.toList());
+        return expenses.stream().filter(predicate).map(ExpenseUtil::asTo).collect(Collectors.toList());
+    }
+
+    public static ExpenseTo asTo(Expense expense) {
+        return new ExpenseTo(expense.getId(), expense.getDateTime(), expense.getAmount(), expense.getCurrency(), expense.getDescription());
     }
 }

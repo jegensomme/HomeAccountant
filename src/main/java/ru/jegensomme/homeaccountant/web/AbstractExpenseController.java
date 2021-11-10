@@ -32,32 +32,32 @@ public class AbstractExpenseController {
 
     public void delete(int id) {
         int userId = authUserId();
-        log.info("delete expense {} for user {}", id, userId);
+        log.info("delete {} for user {}", id, userId);
         service.delete(id, userId);
     }
 
     public void update(Expense expense, int id) {
         int userId = authUserId();
         assureIdConsistent(expense, id);
-        log.info("update expense {} for user {}", expense, userId);
+        log.info("update {} for user {}", expense, userId);
         service.update(expense, userId);
     }
 
     public @NonNull Expense get(int id) {
         int userId = authUserId();
-        log.info("get expense {} for user {}", id, userId);
+        log.info("get {} for user {}", id, userId);
         return service.get(id, userId);
     }
 
     public List<ExpenseTo> getAll() {
         int userId = authUserId();
-        log.info("get all expenses for user {}", userId);
+        log.info("getAll for user {}", userId);
         return getTos(service.getAll(userId));
     }
 
     public List<ExpenseTo> getWithoutCategory() {
         int userId = authUserId();
-        log.info("get without category expenses for user {}", userId);
+        log.info("getWithoutCategory for user {}", userId);
         return getTos(service.getWithoutCategory(userId));
     }
 
@@ -70,13 +70,13 @@ public class AbstractExpenseController {
     public List<ExpenseTo> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
                                       @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
         int userId = SecurityUtil.authUserId();
-        log.info("get between dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
+        log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
         return getFilteredTos(service.getBetween(userId, startDate, endDate), startTime, endTime);
     }
 
     public List<ExpenseTo> getByCategory(int categoryId) {
         int userId = authUserId();
-        log.info("get by category {} for user {}", categoryId, userId);
+        log.info("getByCategory {} for user {}", categoryId, userId);
         return getTos(service.getByCategory(categoryId, userId));
     }
 
@@ -87,7 +87,7 @@ public class AbstractExpenseController {
                                                 @Nullable LocalDate startDate, @Nullable LocalTime startTime,
                                                 @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
         int userId = SecurityUtil.authUserId();
-        log.info("get by category {} between dates({} - {}) time({} - {}) for user {}", categoryId, startDate, endDate, startTime, endTime, userId);
+        log.info("getByCategory {} between dates({} - {}) time({} - {}) for user {}", categoryId, startDate, endDate, startTime, endTime, userId);
         return getFilteredTos(service.getByCategoryBetween(categoryId, userId, startDate, endDate), startTime, endTime);
     }
 
@@ -98,7 +98,7 @@ public class AbstractExpenseController {
             @Nullable LocalDate startDate, @Nullable LocalTime startTime,
             @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
         int userId = SecurityUtil.authUserId();
-        log.info("get without category between dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
+        log.info("getWithoutCategoryBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
         return getFilteredTos(service.getWithoutCategoryBetween(userId, startDate, endDate), startTime, endTime);
     }
 }

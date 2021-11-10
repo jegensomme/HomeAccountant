@@ -5,9 +5,12 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.repository.UserRepository;
+import ru.jegensomme.homeaccountant.to.UserTo;
+import ru.jegensomme.homeaccountant.util.UserUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,13 +37,18 @@ public class UserService {
         checkNotFoundWithId(repository.delete(id), id);
     }
 
-    @Caching(evict = {
-            @CacheEvict(value = "users", allEntries = true),
-            @CacheEvict(value = "categories", key = "#user.id")
-    })
+    @Transactional
+    @CacheEvict(value = "users", allEntries = true)
+    public void update(UserTo userTo) {
+        Assert.notNull(userTo, "user must not be null");
+        User user = get(userTo.id());
+        UserUtil.updateFromTo(user, userTo);
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        checkNotFoundWithId(repository.save(user), user.id());
+        repository.save(user);
     }
 
     public User get(int id) {
@@ -55,5 +63,12 @@ public class UserService {
     @Cacheable("users")
     public List<User> getAll() {
         return repository.getAll();
+    }
+
+    @Transactional
+    @CacheEvict(value = "users", allEntries = true)
+    public void enable(int id, boolean enabled) {
+        User user = get(id);
+        user.setEnabled(enabled);
     }
 }
