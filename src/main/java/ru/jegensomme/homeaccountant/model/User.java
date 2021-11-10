@@ -5,6 +5,7 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
+import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertor;
 
 import javax.validation.constraints.*;
 
@@ -67,21 +68,19 @@ public class User extends NamedEntity {
                 String name,
                 String email,
                 String password,
-                boolean enabled,
                 Currency defaultCurrency,
                 Role role, Role... roles) {
-        this(id, name, email, password, enabled, null, defaultCurrency, role, roles);
+        this(id, name, email, password, null, defaultCurrency, role, roles);
     }
 
     public User(@Nullable Integer id,
                 String name,
                 String email,
                 String password,
-                boolean enabled,
                 @Nullable Integer monthlyLimit,
                 Currency defaultCurrency,
                 Role role, Role... roles) {
-        this(id, name, email, password, enabled, null, monthlyLimit, defaultCurrency, EnumSet.of(role, roles));
+        this(id, name, email, password, true, null, monthlyLimit, defaultCurrency, EnumSet.of(role, roles));
     }
 
     public User(@Nullable Integer id,

@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.service.UserService;
+import ru.jegensomme.homeaccountant.to.UserTo;
+import ru.jegensomme.homeaccountant.util.UserUtil;
 
 import java.util.List;
 
@@ -18,6 +20,11 @@ public abstract class AbstractUserController {
 
     private final UserService service;
 
+    public @NonNull User create(UserTo userTo) {
+        log.info("create from to {}", userTo);
+        return service.create(UserUtil.createNewFromTo(userTo));
+    }
+
     public @NonNull User create(User user) {
         log.info("create {}", user);
         checkNew(user);
@@ -27,6 +34,12 @@ public abstract class AbstractUserController {
     public void delete(int id) {
         log.info("delete {}", id);
         service.delete(id);
+    }
+
+    public void update(UserTo userTo, int id) {
+        log.info("update from to {} with id={}", userTo, id);
+        assureIdConsistent(userTo, id);
+        service.update(userTo);
     }
 
     public void update(User user, int id) {
@@ -48,5 +61,10 @@ public abstract class AbstractUserController {
     public List<User> getAll() {
         log.info("getAll");
         return service.getAll();
+    }
+
+    public void enable(int id, boolean enabled) {
+        log.info(enabled ? "enable {}" : "disable {}", id);
+        service.enable(id, enabled);
     }
 }

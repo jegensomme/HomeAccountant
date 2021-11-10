@@ -1,7 +1,6 @@
 package ru.jegensomme.homeaccountant.web;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -12,13 +11,12 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertor;
 import ru.jegensomme.homeaccountant.util.converter.DateTimeFormatters;
 import ru.jegensomme.homeaccountant.web.json.JacksonObjectMapper;
 
 import java.util.List;
-import java.util.Locale;
 
 @EnableWebMvc
 @ComponentScan("ru.jegensomme.homeaccountant.web")
@@ -46,6 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new DateTimeFormatters.LocalDateFormatter());
         registry.addFormatter(new DateTimeFormatters.LocalTimeFormatter());
+        registry.addFormatter(new CurrencyConvertor());
     }
 
     @Override

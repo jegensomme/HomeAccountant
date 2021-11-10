@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;

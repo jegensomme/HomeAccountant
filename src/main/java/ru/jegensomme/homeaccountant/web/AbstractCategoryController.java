@@ -26,7 +26,7 @@ public class AbstractCategoryController {
 
     public void delete(int id) {
         int userId = authUserId();
-        log.info("delete category {} for user {}", id, userId);
+        log.info("delete {} for user {}", id, userId);
         service.delete(id, userId);
     }
 
@@ -39,13 +39,13 @@ public class AbstractCategoryController {
 
     public @NonNull Category get(int id) {
         int userId = authUserId();
-        log.info("get category {} for user {}", id, userId);
+        log.info("get {} for user {}", id, userId);
         return service.get(id, userId);
     }
 
     public List<Category> getAll() {
         int userId = authUserId();
-        log.info("get all categories for user {}", userId);
+        log.info("getAll categories for user {}", userId);
         return service.getAll(userId);
     }
 }
