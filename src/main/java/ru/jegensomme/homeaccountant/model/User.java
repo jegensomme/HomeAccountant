@@ -15,7 +15,6 @@ import java.util.*;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -33,7 +32,6 @@ public class User extends NamedEntity {
     @Column(name = "password")
     @NotBlank
     @Size(min = 5, max = 100)
-    @ToString.Exclude
     private String password;
 
     @Column(name = "registered")
@@ -104,5 +102,19 @@ public class User extends NamedEntity {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles.isEmpty() ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", registered=" + registered +
+                ", enabled=" + enabled +
+                ", monthlyLimit=" + monthlyLimit +
+                ", currency=" + currency +
+                ", roles=" + roles +
+                '}';
     }
 }

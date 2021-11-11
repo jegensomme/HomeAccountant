@@ -9,13 +9,14 @@ import java.time.Month;
 
 import static java.time.LocalDateTime.of;
 import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.*;
+import static ru.jegensomme.homeaccountant.util.TestMatcher.usingEqualsComparator;
 import static ru.jegensomme.homeaccountant.util.TestMatcher.usingIgnoringFieldsComparator;
 import static ru.jegensomme.homeaccountant.model.BaseEntity.START_SEQ;
 
 @UtilityClass
 public class ExpenseTestData {
     public static final TestMatcher<Expense> EXPENSE_MATCHER = usingIgnoringFieldsComparator(Expense.class, "user", "category");
-    public static final TestMatcher<ExpenseTo> EXPENSE_TO_MATCHER = usingIgnoringFieldsComparator(ExpenseTo.class);
+    public static final TestMatcher<ExpenseTo> EXPENSE_TO_MATCHER = usingEqualsComparator(ExpenseTo.class);
 
     public static final int NOT_FOUND = 10;
 

@@ -4,9 +4,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.Identified;
 
+import java.util.Objects;
+
 @NoArgsConstructor
 public abstract class BaseTo implements Identified {
-    private @Nullable Integer id;
+    protected @Nullable Integer id;
 
     public BaseTo(@Nullable Integer id) {
         this.id = id;
@@ -20,5 +22,18 @@ public abstract class BaseTo implements Identified {
     @Override
     public void setId(@Nullable Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseTo baseTo = (BaseTo) o;
+        return Objects.equals(id, baseTo.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

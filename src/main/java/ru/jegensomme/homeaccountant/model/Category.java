@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "categories", uniqueConstraints = {
@@ -22,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Category extends NamedEntity {
-    @ToString.Exclude
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull
@@ -54,5 +53,15 @@ public class Category extends NamedEntity {
         }
         this.limit = limit;
         this.period = period;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", limit=" + limit +
+                ", period=" + period +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

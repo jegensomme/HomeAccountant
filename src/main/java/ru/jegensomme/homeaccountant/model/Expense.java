@@ -17,7 +17,6 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "expenses", indexes = {
@@ -29,12 +28,10 @@ public class Expense extends BaseEntity {
     @JoinColumn(name = "user_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ToString.Exclude
     private @Nullable User user;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @ToString.Exclude
     private @Nullable Category category;
 
     @Column(name = "date_time")
@@ -75,5 +72,16 @@ public class Expense extends BaseEntity {
 
     public @NonNull LocalTime getTime() {
         return dateTime.toLocalTime();
+    }
+
+    @Override
+    public String toString() {
+        return "Expense{" +
+                "id=" + id +
+                ", category=" + (category == null ? "" : category.getName()) +
+                ", dateTime=" + dateTime +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

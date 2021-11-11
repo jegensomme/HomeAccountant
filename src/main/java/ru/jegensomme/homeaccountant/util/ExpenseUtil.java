@@ -35,6 +35,6 @@ public class ExpenseUtil {
     }
 
     public static ExpenseTo asTo(Expense expense, Currency currency) {
-        return new ExpenseTo(expense.getId(), expense.getDateTime(), expense.getAmount(), currency, expense.getDescription());
+        return new ExpenseTo(expense.getId(), expense.getCategory(), expense.getDateTime(), expense.getAmount(), currency, expense.getDescription());
     }
 }

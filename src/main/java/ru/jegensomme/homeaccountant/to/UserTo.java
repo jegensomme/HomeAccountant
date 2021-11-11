@@ -1,9 +1,6 @@
 package ru.jegensomme.homeaccountant.to;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.*;
@@ -12,7 +9,8 @@ import java.util.Currency;
 
 import static ru.jegensomme.homeaccountant.util.UserUtil.DEFAULT_CURRENCY;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public final class UserTo extends BaseTo implements Serializable {
@@ -47,5 +45,16 @@ public final class UserTo extends BaseTo implements Serializable {
         this.password = password;
         this.monthlyLimit = monthlyLimit;
         this.currency = currency;
+    }
+
+    @Override
+    public String toString() {
+        return "UserTo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", monthlyLimit=" + monthlyLimit +
+                ", currency=" + currency +
+                '}';
     }
 }
