@@ -4,9 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import ru.jegensomme.homeaccountant.AuthorizedUser;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.repository.UserRepository;
 import ru.jegensomme.homeaccountant.to.UserTo;
@@ -19,8 +25,9 @@ import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFound;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository repository;
 
     @CacheEvict(value = "users", allEntries = true)
@@ -70,5 +77,14 @@ public class UserService {
     public void enable(int id, boolean enabled) {
         User user = get(id);
         user.setEnabled(enabled);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.getByEmail(email.toLowerCase());
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
     }
 }

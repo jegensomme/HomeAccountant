@@ -1,17 +1,28 @@
 package ru.jegensomme.homeaccountant.web;
 
 import lombok.experimental.UtilityClass;
-import ru.jegensomme.homeaccountant.model.BaseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import ru.jegensomme.homeaccountant.AuthorizedUser;
+
+import static java.util.Objects.requireNonNull;
 
 @UtilityClass
 public class SecurityUtil {
-    private static int id = BaseEntity.START_SEQ;
-
-    public static int authUserId() {
-        return id;
+    public static AuthorizedUser safeGet() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            return null;
+        }
+        Object principal = auth.getPrincipal();
+        return (principal instanceof AuthorizedUser) ? (AuthorizedUser) principal : null;
     }
 
-    public static void setAuthUserId(int id) {
-        SecurityUtil.id = id;
+    public static AuthorizedUser get() {
+        return requireNonNull(safeGet(), "No authorized user found");
+    }
+
+    public static int authUserId() {
+        return get().getUserTo().id();
     }
 }

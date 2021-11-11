@@ -24,4 +24,9 @@ public class RootController {
     public String getCategories() {
         return "categories";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }

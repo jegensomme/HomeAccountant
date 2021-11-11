@@ -14,6 +14,8 @@ import ru.jegensomme.homeaccountant.config.ApplicationConfig;
 
 import javax.annotation.PostConstruct;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
 @SpringJUnitWebConfig({
         ApplicationConfig.class,
         WebConfig.class
@@ -37,6 +39,7 @@ public class AbstractControllerTest {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(ENCODING_FILTER)
+                .apply(springSecurity())
                 .build();
     }
 

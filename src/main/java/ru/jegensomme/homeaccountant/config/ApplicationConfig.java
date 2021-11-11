@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({PersistenceConfig.class, CacheConfig.class})
+@Import({PersistenceConfig.class, CacheConfig.class, SecurityConfig.class})
 @ComponentScan({
         "ru.jegensomme.homeaccountant.service",
         "ru.jegensomme.homeaccountant.repository.impl"
