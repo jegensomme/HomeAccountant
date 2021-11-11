@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.*;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
-import static ru.jegensomme.homeaccountant.testdata.UserTestData.RUB;
 
 public class CategoryServiceTest extends ServiceTestBase {
     @Autowired
@@ -83,7 +82,7 @@ public class CategoryServiceTest extends ServiceTestBase {
 
     @Test
     public void createWithException() {
-        validateRootCause(() -> service.create(new Category(null, "   ", RUB), USER_ID), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Category(null, "Category", -10, ExpensePeriod.MONTH, RUB), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Category(null, "   "), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Category(null, "Category", -10, ExpensePeriod.MONTH), USER_ID), ConstraintViolationException.class);
     }
 }

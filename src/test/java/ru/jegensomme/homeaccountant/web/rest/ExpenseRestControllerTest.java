@@ -20,6 +20,7 @@ import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.USER_FOOD_I
 import static ru.jegensomme.homeaccountant.testdata.ExpenseTestData.*;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
+import static ru.jegensomme.homeaccountant.testdata.UserTestData.RUB;
 import static ru.jegensomme.homeaccountant.util.TestUtil.*;
 
 class ExpenseRestControllerTest extends AbstractControllerTest {
@@ -91,7 +92,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(EXPENSE5, EXPENSE4, EXPENSE3, EXPENSE2, EXPENSE1)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(RUB, EXPENSE5, EXPENSE4, EXPENSE3, EXPENSE2, EXPENSE1)));
     }
 
     @Test
@@ -101,7 +102,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(EXPENSE3, EXPENSE2, EXPENSE1)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(RUB, EXPENSE3, EXPENSE2, EXPENSE1)));
     }
 
     @Test
@@ -112,7 +113,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(EXPENSE5)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(RUB, EXPENSE5)));
     }
 
     @Test
@@ -124,7 +125,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(EXPENSE4, EXPENSE3, EXPENSE2, EXPENSE1)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(RUB, EXPENSE4, EXPENSE3, EXPENSE2, EXPENSE1)));
     }
 
     @Test
@@ -137,7 +138,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(EXPENSE3, EXPENSE2)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(RUB, EXPENSE3, EXPENSE2)));
     }
 
     @Test
@@ -150,6 +151,6 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(EXPENSE5)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(ExpenseUtil.getTos(RUB, EXPENSE5)));
     }
 }

@@ -46,10 +46,10 @@ public class User extends NamedEntity {
     @Min(0)
     private @Nullable Integer monthlyLimit;
 
-    @Column(name = "default_currency")
+    @Column(name = "currency")
     @NotNull
     @Convert(converter = CurrencyConvertor.class)
-    private Currency defaultCurrency;
+    private Currency currency;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
@@ -61,16 +61,16 @@ public class User extends NamedEntity {
     private Set<Role> roles;
 
     public User(User user) {
-        this(user.id, user.name, user.email, user.password, user.enabled, user.registered, user.monthlyLimit, user.defaultCurrency, user.roles);
+        this(user.id, user.name, user.email, user.password, user.enabled, user.registered, user.monthlyLimit, user.currency, user.roles);
     }
 
     public User(@Nullable Integer id,
                 String name,
                 String email,
                 String password,
-                Currency defaultCurrency,
+                Currency currency,
                 Role role, Role... roles) {
-        this(id, name, email, password, null, defaultCurrency, role, roles);
+        this(id, name, email, password, null, currency, role, roles);
     }
 
     public User(@Nullable Integer id,
@@ -78,9 +78,9 @@ public class User extends NamedEntity {
                 String email,
                 String password,
                 @Nullable Integer monthlyLimit,
-                Currency defaultCurrency,
+                Currency currency,
                 Role role, Role... roles) {
-        this(id, name, email, password, true, null, monthlyLimit, defaultCurrency, EnumSet.of(role, roles));
+        this(id, name, email, password, true, null, monthlyLimit, currency, EnumSet.of(role, roles));
     }
 
     public User(@Nullable Integer id,
@@ -90,7 +90,7 @@ public class User extends NamedEntity {
                 boolean enabled,
                 @Nullable Date registered,
                 @Nullable Integer monthlyLimit,
-                Currency defaultCurrency,
+                Currency currency,
                 Set<Role> roles) {
         super(id, name);
         this.email = email;
@@ -98,7 +98,7 @@ public class User extends NamedEntity {
         this.enabled = enabled;
         this.registered = Objects.requireNonNullElse(registered, new Date());
         this.monthlyLimit = monthlyLimit;
-        this.defaultCurrency = defaultCurrency;
+        this.currency = currency;
         this.roles = roles;
     }
 

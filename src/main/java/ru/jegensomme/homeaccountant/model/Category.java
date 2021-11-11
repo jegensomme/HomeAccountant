@@ -6,12 +6,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
-import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Currency;
 
 @Getter
 @Setter
@@ -42,26 +40,19 @@ public class Category extends NamedEntity {
     })
     private @Nullable ExpensePeriod period;
 
-    @Column(name = "currency")
-    @NotNull
-    @Convert(converter = CurrencyConvertor.class)
-    private Currency currency;
-
-    public Category(@Nullable Integer id, String name, Currency currency) {
-        this(id, name, null, null, currency);
+    public Category(@Nullable Integer id, String name) {
+        this(id, name, null, null);
     }
 
     public Category(@Nullable Integer id,
                     String name,
                     @Nullable Integer limit,
-                    @Nullable ExpensePeriod period,
-                    Currency currency) {
+                    @Nullable ExpensePeriod period) {
         super(id, name);
         if (limit == null && period != null || limit != null && period == null) {
             throw new IllegalArgumentException("Limit and period must be both null or not null");
         }
         this.limit = limit;
         this.period = period;
-        this.currency = currency;
     }
 }

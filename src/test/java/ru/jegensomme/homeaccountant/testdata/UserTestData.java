@@ -36,7 +36,7 @@ public class UserTestData {
         updated.setEmail("updated@yandex.ru");
         updated.setPassword("updatedPassword");
         updated.setMonthlyLimit(50000);
-        updated.setDefaultCurrency(USD);
+        updated.setCurrency(USD);
         updated.setRoles(Collections.singleton(Role.ADMIN));
         return updated;
     }

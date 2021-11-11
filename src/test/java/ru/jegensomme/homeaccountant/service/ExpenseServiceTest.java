@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.jegensomme.homeaccountant.testdata.ExpenseTestData.*;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
-import static ru.jegensomme.homeaccountant.testdata.UserTestData.RUB;
 import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.USER_FOOD_ID;
 
 public class ExpenseServiceTest extends ServiceTestBase {
@@ -120,6 +119,7 @@ public class ExpenseServiceTest extends ServiceTestBase {
 
     @Test
     public void createWithException() {
-        validateRootCause(() -> service.create(new Expense(null, LocalDateTime.now(), -10, RUB), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Expense(null, LocalDateTime.now(), -10, "New"), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Expense(null, LocalDateTime.now(), 10000, ""), USER_ID), ConstraintViolationException.class);
     }
 }

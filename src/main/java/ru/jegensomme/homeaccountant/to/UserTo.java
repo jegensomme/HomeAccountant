@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.util.Currency;
 
 import static ru.jegensomme.homeaccountant.util.UserUtil.DEFAULT_CURRENCY;
-import static ru.jegensomme.homeaccountant.util.UserUtil.DEFAULT_MONTHLY_LIMIT;
 
 @Data
 @NoArgsConstructor
@@ -32,17 +31,21 @@ public final class UserTo extends BaseTo implements Serializable {
     private String password;
 
     @Min(0)
-    private @Nullable Integer monthlyLimit = DEFAULT_MONTHLY_LIMIT;
+    private @Nullable Integer monthlyLimit;
 
     @NotNull
-    private Currency defaultCurrency = DEFAULT_CURRENCY;
+    private Currency currency;
 
-    public UserTo(@Nullable Integer id, String name, String email, String password, @Nullable Integer monthlyLimit, Currency defaultCurrency) {
+    public UserTo(@Nullable Integer id, String name, String email, String password) {
+        this(id, name, email, password, null, DEFAULT_CURRENCY);
+    }
+
+    public UserTo(@Nullable Integer id, String name, String email, String password, @Nullable Integer monthlyLimit, Currency currency) {
         super(id);
         this.name = name;
         this.email = email;
         this.password = password;
         this.monthlyLimit = monthlyLimit;
-        this.defaultCurrency = defaultCurrency;
+        this.currency = currency;
     }
 }

@@ -15,7 +15,7 @@ CREATE TABLE users
     enabled          BOOLEAN                           NOT NULL,
     registered       TIMESTAMP           DEFAULT now() NOT NULL,
     monthly_limit    INTEGER,
-    default_currency VARCHAR                           NOT NULL
+    currency         VARCHAR                           NOT NULL
 );
 
 CREATE TABLE user_roles
@@ -34,8 +34,7 @@ CREATE TABLE categories
     name          VARCHAR NOT NULL,
     "limit"       INTEGER CHECK ( "limit" > 0 ),
     period_number INTEGER CHECK ( period_number > 0 ),
-    period_unit   VARCHAR,
-    currency      VARCHAR NOT NULL
+    period_unit   VARCHAR
 );
 
 CREATE UNIQUE INDEX expense_category_unique_idx on categories(user_id, name);
@@ -47,8 +46,7 @@ CREATE TABLE expenses
     category_id INTEGER            REFERENCES categories(id) ON DELETE SET NULL,
     date_time   TIMESTAMP NOT NULL,
     amount      INTEGER   NOT NULL CHECK ( expenses.amount >= 0 ),
-    currency    VARCHAR   NOT NULL,
-    description VARCHAR
+    description VARCHAR   NOT NULL
 );
 
 CREATE INDEX expenses_user_id_date_time_idx on expenses(user_id, date_time);

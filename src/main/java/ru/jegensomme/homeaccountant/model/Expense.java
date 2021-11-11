@@ -5,16 +5,15 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Currency;
 
 @Getter
 @Setter
@@ -46,49 +45,27 @@ public class Expense extends BaseEntity {
     @Min(0)
     private int amount;
 
-    @Column(name = "currency")
-    @NotNull
-    @Convert(converter = CurrencyConvertor.class)
-    private Currency currency;
-
     @Column(name = "description")
+    @NotBlank
     @Size(min = 2, max = 120)
-    private @Nullable String description;
+    private String description;
 
     public Expense(@Nullable Integer id,
                    LocalDateTime dateTime,
                    int amount,
-                   Currency currency) {
-        this(id, null, dateTime, amount, currency, null);
-    }
-
-    public Expense(@Nullable Integer id,
-                   LocalDateTime dateTime,
-                   int amount,
-                   Currency currency,
-                   @Nullable String description) {
-        this(id, null, dateTime, amount, currency, description);
-    }
-
-    public Expense(@Nullable Integer id,
-                   @Nullable Category category,
-                   LocalDateTime dateTime,
-                   Currency currency,
-                   int amount) {
-        this(id, category, dateTime, amount, currency, null);
+                   String description) {
+        this(id, null, dateTime, amount, description);
     }
 
     public Expense(@Nullable Integer id,
                    @Nullable Category category,
                    LocalDateTime dateTime,
                    int amount,
-                   Currency currency,
-                   @Nullable String description) {
+                   String description) {
         super(id);
         this.category = category;
         this.dateTime = dateTime;
         this.amount = amount;
-        this.currency = currency;
         this.description = description;
     }
 

@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.*;
-import static ru.jegensomme.homeaccountant.util.TestUtil.userAuth;
 import static ru.jegensomme.homeaccountant.util.TestUtil.userHttpBasic;
 import static ru.jegensomme.homeaccountant.web.rest.ProfileRestController.REST_URL;
 
