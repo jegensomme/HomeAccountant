@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import ru.jegensomme.homeaccountant.Identified;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
@@ -61,9 +62,10 @@ public class ValidationUtil {
 
     public static ResponseEntity<String> getErrorResponse(BindingResult result) {
         return ResponseEntity.unprocessableEntity().body(
-                result.getFieldErrors().stream()
-                        .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                        .collect(Collectors.joining("<br>"))
-        );
+                result.getAllErrors().stream()
+                        .map(e -> e instanceof FieldError fe
+                                ? String.format("[%s] %s", fe.getField(), fe.getDefaultMessage())
+                                : e.getDefaultMessage()
+                        ).collect(Collectors.joining("<br>")));
     }
 }

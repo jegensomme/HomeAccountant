@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.model.Category;
-import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertor;
+import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertors;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
@@ -22,8 +22,8 @@ public final class ExpenseTo extends BaseTo {
 
     private final Integer amount;
 
-    @JsonSerialize(converter = CurrencyConvertor.JsonSerialiseConverter.class)
-    @JsonDeserialize(converter = CurrencyConvertor.JsonDeserializeConverter.class)
+    @JsonSerialize(converter = CurrencyConvertors.JsonSerialiseConverter.class)
+    @JsonDeserialize(converter = CurrencyConvertors.JsonDeserializeConverter.class)
     private final Currency currency;
 
     private final String description;

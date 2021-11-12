@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.service.CategoryService;
+import ru.jegensomme.homeaccountant.to.CategoryEditTo;
 import ru.jegensomme.homeaccountant.web.AbstractCategoryController;
 
 import javax.validation.Valid;
@@ -23,14 +24,14 @@ public class CategoryUIController extends AbstractCategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid Category category, BindingResult bindingResult) {
+    public ResponseEntity<String> createOrUpdate(@Valid CategoryEditTo categoryTo, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return getErrorResponse(bindingResult);
         }
-        if (category.isNew()) {
-            super.create(category);
+        if (categoryTo.isNew()) {
+            super.create(categoryTo);
         } else {
-            super.update(category, category.id());
+            super.update(categoryTo, categoryTo.id());
         }
         return ResponseEntity.ok().build();
     }

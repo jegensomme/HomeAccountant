@@ -12,8 +12,9 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertor;
+import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertors;
 import ru.jegensomme.homeaccountant.util.converter.DateTimeFormatters;
+import ru.jegensomme.homeaccountant.util.converter.PeriodConvertors;
 import ru.jegensomme.homeaccountant.web.json.JacksonObjectMapper;
 
 import java.util.List;
@@ -44,7 +45,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new DateTimeFormatters.LocalDateFormatter());
         registry.addFormatter(new DateTimeFormatters.LocalTimeFormatter());
-        registry.addFormatter(new CurrencyConvertor());
+        registry.addFormatter(new CurrencyConvertors.Formatter());
+        registry.addFormatter(new PeriodConvertors.Formatter());
     }
 
     @Override

@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.repository.CategoryRepository;
+import ru.jegensomme.homeaccountant.to.CategoryEditTo;
+import ru.jegensomme.homeaccountant.util.CategoryUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +36,14 @@ public class CategoryService {
     public void update(Category category, int userId) {
         Assert.notNull(category, "category must not be null");
         checkNotFoundWithId(repository.save(category, userId), category.id());
+    }
+
+    @Transactional
+    @CacheEvict(value = "categories", key = "#userId")
+    public void update(CategoryEditTo categoryTo, int userId) {
+        Assert.notNull(categoryTo, "category must not be null");
+        Category category = get(categoryTo.id(), userId);
+        CategoryUtil.updateFromTo(category, categoryTo);
     }
 
     public Category get(int id, int userId) {

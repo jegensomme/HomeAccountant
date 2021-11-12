@@ -5,7 +5,7 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
-import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertor;
+import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertors;
 
 import javax.validation.constraints.*;
 
@@ -46,7 +46,7 @@ public class User extends NamedEntity {
 
     @Column(name = "currency")
     @NotNull
-    @Convert(converter = CurrencyConvertor.class)
+    @Convert(converter = CurrencyConvertors.AttributeConverter.class)
     private Currency currency;
 
     @Enumerated(EnumType.STRING)

@@ -148,3 +148,7 @@ function fillCategories() {
         $("#categoryFilter").html("<option value=''>" + i18n["all.categories"] + "</option>\n" + options);
     });
 }
+
+function jsonValue2SelectValue(key, value) {
+    return key === "category" ? (value == null ? "0" : value.id) : value
+}

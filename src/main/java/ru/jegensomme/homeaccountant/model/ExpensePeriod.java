@@ -33,5 +33,7 @@ public class ExpensePeriod {
     @Embedded
     public static ExpensePeriod MONTH = new ExpensePeriod(1, ChronoUnit.MONTHS);
     @Embedded
+    public static ExpensePeriod HALF_YEAR = new ExpensePeriod(6, ChronoUnit.MONTHS);
+    @Embedded
     public static ExpensePeriod YEAR = new ExpensePeriod(1, ChronoUnit.YEARS);
 }

@@ -67,7 +67,6 @@
                 </select>
             </form>
         </div>
-        <br/>
         <table class="table table-striped" id="datatable">
             <thead>
             <tr>
