@@ -1,5 +1,6 @@
 package ru.jegensomme.homeaccountant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -28,6 +29,7 @@ public class Expense extends BaseEntity {
     @JoinColumn(name = "user_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private @Nullable User user;
 
     @ManyToOne
@@ -39,8 +41,9 @@ public class Expense extends BaseEntity {
     private LocalDateTime dateTime;
 
     @Column(name = "amount")
+    @NotNull
     @Min(0)
-    private int amount;
+    private Integer amount;
 
     @Column(name = "description")
     @NotBlank
@@ -49,7 +52,7 @@ public class Expense extends BaseEntity {
 
     public Expense(@Nullable Integer id,
                    LocalDateTime dateTime,
-                   int amount,
+                   Integer amount,
                    String description) {
         this(id, null, dateTime, amount, description);
     }
@@ -57,7 +60,7 @@ public class Expense extends BaseEntity {
     public Expense(@Nullable Integer id,
                    @Nullable Category category,
                    LocalDateTime dateTime,
-                   int amount,
+                   Integer amount,
                    String description) {
         super(id);
         this.category = category;

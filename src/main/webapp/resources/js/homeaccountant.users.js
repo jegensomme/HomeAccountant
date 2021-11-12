@@ -83,3 +83,7 @@ $(function () {
         }
     });
 });
+
+function doUpdateRow(id) {
+    updateRow(id)
+}

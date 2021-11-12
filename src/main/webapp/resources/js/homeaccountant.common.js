@@ -9,6 +9,7 @@ function makeEditable(datatableOpts) {
                     "url": ctx.ajaxUrl,
                     "dataSrc": ""
                 },
+                "scrollCollapse": true,
                 "paging": false,
                 "info": true
             }
@@ -34,6 +35,8 @@ function updateRow(id) {
     $("#modalTitle").html(i18n["editTitle"]);
     $.get(ctx.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
+            form.find("select[name='" + key + "'] option[value='" + (value == null ? "0" : value.id) + "']")
+                .prop('selected', true);
             form.find("input[name='" + key + "']").val(
                 key === "dateTime" ? formatDate(value) : value
             );

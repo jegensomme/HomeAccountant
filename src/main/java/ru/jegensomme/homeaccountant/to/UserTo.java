@@ -29,22 +29,16 @@ public final class UserTo extends BaseTo implements Serializable {
     private String password;
 
     @Min(0)
-    private @Nullable Integer monthlyLimit;
+    private @Nullable Integer monthlyLimit = null;
 
     @NotNull
-    private Currency currency;
+    private Currency currency = DEFAULT_CURRENCY;
 
     public UserTo(@Nullable Integer id, String name, String email, String password) {
-        this(id, name, email, password, null, DEFAULT_CURRENCY);
-    }
-
-    public UserTo(@Nullable Integer id, String name, String email, String password, @Nullable Integer monthlyLimit, Currency currency) {
         super(id);
         this.name = name;
         this.email = email;
         this.password = password;
-        this.monthlyLimit = monthlyLimit;
-        this.currency = currency;
     }
 
     @Override

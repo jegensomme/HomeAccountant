@@ -7,6 +7,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
+import ru.jegensomme.homeaccountant.to.ExpenseEditTo;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
 
 import java.time.LocalDate;
@@ -25,6 +26,12 @@ public class AbstractExpenseController {
 
     private final ExpenseService service;
 
+    public @NonNull Expense create(ExpenseEditTo expenseTo) {
+        int userId = authUserId();
+        log.info("create from to {} for user {}", expenseTo, userId);
+        return service.create(expenseTo, userId);
+    }
+
     public @NonNull Expense create(Expense expense) {
         int userId = authUserId();
         log.info("create {} for user {}", expense, userId);
@@ -35,6 +42,13 @@ public class AbstractExpenseController {
         int userId = authUserId();
         log.info("delete {} for user {}", id, userId);
         service.delete(id, userId);
+    }
+
+    public void update(ExpenseEditTo expenseTo, int id) {
+        int userId = authUserId();
+        assureIdConsistent(expenseTo, id);
+        log.info("update from to {} for user {}", expenseTo, userId);
+        service.update(expenseTo, userId);
     }
 
     public void update(Expense expense, int id) {

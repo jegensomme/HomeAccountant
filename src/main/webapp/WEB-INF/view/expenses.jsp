@@ -37,11 +37,11 @@
                 </form>
             </div>
             <div class="card-footer text-right">
-                <button class="btn btn-danger" onclick="add()">
+                <button class="btn btn-danger" onclick="clearFilter()">
                     <span class="fa fa-remove"></span>
                     <spring:message code="common.cancel"/>
                 </button>
-                <button class="btn btn-primary" onclick="">
+                <button class="btn btn-primary" onclick="ctx.updateTable()">
                     <span class="fa fa-filter"></span>
                     <spring:message code="expense.filter"/>
                 </button>
@@ -50,21 +50,24 @@
         <br/>
         <div class="row">
             <div class="col-2">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" onclick="add()">
                     <span class="fa fa-plus"></span>
                     <spring:message code="common.add"/>
                 </button>
             </div>
-            <div class="offset-5 col-2 text-end">
-                <button class="btn btn-primary">
+            <div class="offset-5 col-2 text-right">
+                <button class="btn btn-primary" onclick="ctx.updateTable()">
                     <span class="fa fa-check"></span>
-                    Select
+                    <spring:message code="common.select"/>
                 </button>
             </div>
-            <form class="col-3">
-                <input type="text" id="category" class="col-1 form-control">
+            <form id="categoryFilterForm" class="col-3">
+                <label for="categoryFilter" class="sr-only"><spring:message code="expense.category"/></label>
+                <select type="text" id="categoryFilter" name="categoryFilter" class="custom-select mr-sm-2">
+                </select>
             </form>
         </div>
+        <br/>
         <table class="table table-striped" id="datatable">
             <thead>
             <tr>
@@ -80,9 +83,64 @@
         </table>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" id="editRow">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalTitle"></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="closeNoty()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="detailsForm">
+                    <input type="hidden" id="id" name="id">
+
+                    <div class="form-group">
+                        <label for="category" class="col-form-label"><spring:message code="expense.category"/></label>
+                        <select type="text" class="form-control" id="category" name="category" autocomplete="off">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateTime" class="col-form-label"><spring:message code="expense.dateTime"/></label>
+                        <input class="form-control" id="dateTime" name="dateTime" autocomplete="off"
+                               placeholder="<spring:message code="expense.dateTime"/>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount" class="col-form-label"><spring:message code="expense.amount"/></label>
+                        <input type="number" class="form-control" id="amount" name="amount">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description" class="col-form-label"><spring:message
+                                code="expense.description"/></label>
+                        <input type="text" class="form-control" id="description" name="description"
+                               placeholder="<spring:message code="expense.description"/>">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeNoty()">
+                    <span class="fa fa-close"></span>
+                    <spring:message code="common.cancel"/>
+                </button>
+                <button type="button" class="btn btn-primary" onclick="save()">
+                    <span class="fa fa-check"></span>
+                    <spring:message code="common.save"/>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 <jsp:include page="fragments/i18n.jsp">
     <jsp:param name="page" value="expense"/>
 </jsp:include>
+<script type="text/javascript">
+    i18n['without.category'] = '<spring:message code="without.category"/>';
+    i18n['all.categories'] = '<spring:message code="all.categories"/>';
+</script>
 </html>

@@ -1,5 +1,6 @@
 package ru.jegensomme.homeaccountant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -26,6 +27,7 @@ public class Category extends NamedEntity {
     @JoinColumn(name = "user_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private @Nullable User user;
 
     @Column(name = "\"limit\"")

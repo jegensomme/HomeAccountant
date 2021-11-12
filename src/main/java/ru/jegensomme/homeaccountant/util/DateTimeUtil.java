@@ -13,6 +13,9 @@ import java.util.Locale;
 import static java.time.format.DateTimeFormatter.*;
 
 public class DateTimeUtil {
+    public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm";
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+
     // DB doesn't support LocalDate.MIN/MAX
     public static final LocalDateTime MIN_DATE = LocalDateTime.of(1, 1, 1, 0, 0);
     public static final LocalDateTime MAX_DATE = LocalDateTime.of(3000, 1, 1, 0, 0);
@@ -29,15 +32,7 @@ public class DateTimeUtil {
     }
 
     public static String toString(LocalDateTime ldt) {
-        return ldt == null ? "" : ldt.format(ISO_LOCAL_DATE_TIME);
-    }
-
-    public static @Nullable LocalDate parseLocalDate(@Nullable String str) {
-        return parseLocalDate(str, ISO_LOCAL_DATE);
-    }
-
-    public static @Nullable LocalTime parseLocalTime(@Nullable String str) {
-        return parseLocalTime(str, ISO_LOCAL_TIME);
+        return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }
 
     public static @Nullable LocalDate parseLocalDate(@Nullable String str, Locale locale) {

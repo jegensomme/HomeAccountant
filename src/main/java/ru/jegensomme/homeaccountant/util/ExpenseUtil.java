@@ -2,7 +2,9 @@ package ru.jegensomme.homeaccountant.util;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
+import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.model.Expense;
+import ru.jegensomme.homeaccountant.to.ExpenseEditTo;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
 
 import java.time.LocalTime;
@@ -31,10 +33,21 @@ public class ExpenseUtil {
     }
 
     public static List<ExpenseTo> filter(Collection<Expense> expenses, Predicate<Expense> predicate, Currency currency) {
-        return expenses.stream().filter(predicate).map(e -> asTo(e, currency)).collect(Collectors.toList());
+        return expenses.stream().filter(predicate).map(e -> createTo(e, currency)).collect(Collectors.toList());
     }
 
-    public static ExpenseTo asTo(Expense expense, Currency currency) {
+    private static ExpenseTo createTo(Expense expense, Currency currency) {
         return new ExpenseTo(expense.getId(), expense.getCategory(), expense.getDateTime(), expense.getAmount(), currency, expense.getDescription());
+    }
+
+    public static Expense createNewFromTo(ExpenseEditTo expenseTo, @Nullable Category category) {
+        return new Expense(null, category, expenseTo.getDateTime(), expenseTo.getAmount(), expenseTo.getDescription());
+    }
+
+    public static void updateFromTo(Expense expense, ExpenseEditTo expenseTo, @Nullable Category category) {
+        expense.setCategory(category);
+        expense.setDateTime(expenseTo.getDateTime());
+        expense.setAmount(expenseTo.getAmount());
+        expense.setDescription(expenseTo.getDescription());
     }
 }

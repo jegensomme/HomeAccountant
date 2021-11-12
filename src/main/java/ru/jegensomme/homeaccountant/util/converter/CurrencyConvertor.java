@@ -1,5 +1,6 @@
 package ru.jegensomme.homeaccountant.util.converter;
 
+import com.fasterxml.jackson.databind.util.StdConverter;
 import org.springframework.format.Formatter;
 import org.springframework.lang.NonNull;
 
@@ -28,5 +29,19 @@ public class CurrencyConvertor implements Formatter<Currency>, AttributeConverte
     @Override
     public @NonNull String print(@NonNull Currency currency, @NonNull Locale locale) {
         return currency.getCurrencyCode();
+    }
+
+    public static class JsonSerialiseConverter extends StdConverter<Currency, String> {
+        @Override
+        public String convert(Currency currency) {
+            return currency.getCurrencyCode();
+        }
+    }
+
+    public static class JsonDeserializeConverter extends StdConverter<String, Currency> {
+        @Override
+        public Currency convert(String code) {
+            return Currency.getInstance(code);
+        }
     }
 }

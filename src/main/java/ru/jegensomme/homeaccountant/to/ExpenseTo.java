@@ -20,26 +20,26 @@ public final class ExpenseTo extends BaseTo {
 
     private final LocalDateTime dateTime;
 
-    private final int amount;
+    private final Integer amount;
 
     @JsonSerialize(converter = CurrencyConvertor.JsonSerialiseConverter.class)
     @JsonDeserialize(converter = CurrencyConvertor.JsonDeserializeConverter.class)
-    private final Currency currencyCode;
+    private final Currency currency;
 
-    private final @Nullable String description;
+    private final String description;
 
     @ConstructorProperties({"id", "category", "dateTime", "amount", "currency", "description"})
     public ExpenseTo(@Nullable Integer id,
                      @Nullable Category category,
                      LocalDateTime dateTime,
                      int amount,
-                     Currency currencyCode,
-                     @Nullable String description) {
+                     Currency currency,
+                     String description) {
         super(id);
         this.category = category;
         this.dateTime = dateTime;
         this.amount = amount;
-        this.currencyCode = currencyCode;
+        this.currency = currency;
         this.description = description;
     }
 
@@ -50,7 +50,7 @@ public final class ExpenseTo extends BaseTo {
                 "category=" + (category == null ? "" : category.getName()) +
                 ", dateTime=" + dateTime +
                 ", amount=" + amount +
-                ", currencyCode=" + currencyCode +
+                ", currency=" + currency +
                 ", description='" + description + '\'' +
                 '}';
     }
