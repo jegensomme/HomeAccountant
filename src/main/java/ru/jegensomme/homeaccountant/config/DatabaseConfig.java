@@ -52,7 +52,9 @@ public abstract class DatabaseConfig {
 
         @Bean
         public DatabasePopulator populator() {
-            return new ResourceDatabasePopulator(initDBScript, populateDBScript);
+            ResourceDatabasePopulator populator = new ResourceDatabasePopulator(initDBScript, populateDBScript);
+            populator.setSqlScriptEncoding("UTF-8");
+            return populator;
         }
 
         @Bean
