@@ -1,25 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
-<nav class="navbar navbar-dark bg-dark py-0">
-    <div class="container">
-        <div class="navbar-brand"><img src="resources/images/ruble.png"> <spring:message code="app.title"/></div>
-        <div class="my-2">
-            <button class="btn bnt-lg btn-success mr-1 " onclick="login('user@yandex.ru', 'password')">
-                <spring:message code="app.login"/> User
-                <span class="fa fa-sign-in"></span>
-            </button>
-            <button class="btn bnt-lg btn-success mr-1" onclick="login('admin@gmail.com', 'admin')">
-                <spring:message code="app.login"/> Admin
-                <span class="fa fa-sign-in"></span>
-            </button>
-        </div>
-    </div>
-</nav>
+<jsp:include page="fragments/bodyHeader.jsp"/>
 
 <div class="jumbotron py-0">
     <div class="container">
@@ -29,6 +16,19 @@
         <c:if test="${not empty param.message}">
             <div class="message"><spring:message code="${param.message}"/></div>
         </c:if>
+        <sec:authorize access="isAnonymous()">
+            <div class="pt-2">
+                <a class="btn btn-lg btn-info mt-2" href="profile/register"><spring:message code="app.register"/> &raquo;</a>
+                <button type="submit" class="btn-lg btn btn-success mt-2" onclick="login('user@yandex.ru', 'password')">
+                    <spring:message code="app.login"/> User
+                    <span class="fa fa-sign-in"></span>
+                </button>
+                <button type="submit" class="btn-lg btn btn-success mt-2" onclick="login('admin@gmail.com', 'admin')">
+                    <spring:message code="app.login"/> Admin
+                    <span class="fa fa-sign-in"></span>
+                </button>
+            </div>
+        </sec:authorize>
         <div class="lead py-4"><spring:message code="app.stackTitle"/> <br>
             <a href="http://projects.spring.io/spring-security/">Spring Security</a>,
             <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html">Spring MVC</a>,
@@ -55,28 +55,20 @@
     </div>
 </div>
 <br/>
-<div class="col-3 offset-4 text-center">
-    <form id="login_form" class="row offset-1 col-9 form-signin justify-content-center" action="spring_security_check" method="post">
-        <div>
-            <img class="mb-4" src="resources/images/login-icon.png" alt="" width="72" height="72">
-            <h1 class="h3 mb-3 font-weight-normal"><spring:message code="login.title"/></h1>
-        </div>
-        <label for="username" class="sr-only">Email address</label>
-        <input type="email" name="username" id="username" class="form-control mb-2" placeholder="Email address" required autofocus>
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" name="password" id="password" class="form-control mb-3" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">
-            <spring:message code="login.signin"/>
-        </button>
-    </form>
-</div>
 
 <jsp:include page="fragments/footer.jsp"/>
 <script type="text/javascript">
+    <c:if test="${not empty param.username}">
+    setCredentials("${param.username}", "");
+    </c:if>
+
     function login(username, password) {
+        setCredentials(username, password);
+        $("#login_form").submit();
+    }
+    function setCredentials(username, password) {
         $('input[name="username"]').val(username);
         $('input[name="password"]').val(password);
-        $("#login_form").submit();
     }
 </script>
 </body>

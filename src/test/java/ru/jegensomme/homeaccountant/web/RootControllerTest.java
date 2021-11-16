@@ -22,6 +22,14 @@ public class RootControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void unAuth() throws Exception {
+        perform(get("/users"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("http://localhost/login"));
+    }
+
+    @Test
     public void getExpenses() throws Exception {
         perform(get("/expenses")
                 .with(userAuth(USER)))

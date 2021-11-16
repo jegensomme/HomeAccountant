@@ -49,9 +49,9 @@ public class SecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
+                    .antMatchers("/rest//profile/register").anonymous()
                     .antMatchers("/rest/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-            ;
+                    .anyRequest().authenticated();
         }
     }
 
@@ -67,6 +67,7 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
                     .authorizeRequests()
+                        .antMatchers("/profile/register").anonymous()
                         .antMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                     .and()

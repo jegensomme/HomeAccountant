@@ -2,10 +2,15 @@ package ru.jegensomme.homeaccountant.web.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.service.UserService;
+import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.web.AbstractUserController;
+
+import java.net.URI;
 
 import static ru.jegensomme.homeaccountant.web.SecurityUtil.authUserId;
 
@@ -18,6 +23,15 @@ public class ProfileRestController extends AbstractUserController {
         super(service);
     }
 
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<User> register(@RequestBody UserTo userTo) {
+        User created = super.create(userTo);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL).build().toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
+    }
+
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete() {
@@ -26,8 +40,8 @@ public class ProfileRestController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user) {
-        super.update(user, authUserId());
+    public void update(@RequestBody UserTo userTo) {
+        super.update(userTo, authUserId());
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

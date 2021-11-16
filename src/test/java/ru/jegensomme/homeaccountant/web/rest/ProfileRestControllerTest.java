@@ -3,16 +3,22 @@ package ru.jegensomme.homeaccountant.web.rest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.service.UserService;
+import ru.jegensomme.homeaccountant.to.UserTo;
+import ru.jegensomme.homeaccountant.util.UserUtil;
 import ru.jegensomme.homeaccountant.web.AbstractControllerTest;
 import ru.jegensomme.homeaccountant.web.json.JsonUtil;
+
+import java.util.Objects;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.*;
+import static ru.jegensomme.homeaccountant.util.TestUtil.readFromJson;
 import static ru.jegensomme.homeaccountant.util.TestUtil.userHttpBasic;
 import static ru.jegensomme.homeaccountant.web.rest.ProfileRestController.REST_URL;
 
@@ -34,6 +40,23 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
         USER_MATCHER.assertMatch(service.getAll(), ADMIN);
+    }
+
+    @Test
+    void register() throws Exception {
+        UserTo newTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
+        User newUser = UserUtil.createNewFromTo(newTo);
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + "/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newTo)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        User created = readFromJson(action, User.class);
+        int newId = Objects.requireNonNull(created.getId());
+        newUser.setId(newId);
+        USER_MATCHER.assertMatch(created, newUser);
+        USER_MATCHER.assertMatch(service.get(newId), newUser);
     }
 
     @Test
