@@ -35,18 +35,11 @@ function updateRow(id) {
     $("#modalTitle").html(i18n["editTitle"]);
     $.get(ctx.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            form.find("select[name='" + key + "'] option[value='" + jsonValue2SelectValue(key, value) + "']")
-                .prop('selected', true);
-            form.find("input[name='" + key + "']").val(
-                key === "dateTime" ? formatDate(value) : value
-            );
+            form.find("select[name='" + key + "'] option[value='" + jsonValue2SelectValue(key, value) + "']").prop('selected', true);
+            form.find("input[name='" + key + "']").val(value);
         });
         $('#editRow').modal();
     });
-}
-
-function formatDate(date) {
-    return date.replace('T', ' ').substr(0, 16);
 }
 
 function deleteRow(id) {
