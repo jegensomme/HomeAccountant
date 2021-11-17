@@ -1,5 +1,6 @@
 package ru.jegensomme.homeaccountant.web;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -10,6 +11,7 @@ public class RootController {
         return "redirect:expenses";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/users")
     public String getUsers() {
         return "users";
