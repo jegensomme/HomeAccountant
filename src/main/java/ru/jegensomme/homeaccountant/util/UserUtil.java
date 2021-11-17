@@ -17,11 +17,12 @@ public class UserUtil {
         return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
     }
 
-    public static void updateFromTo(User user, UserTo userTo) {
+    public static User updateFromTo(User user, UserTo userTo) {
         user.setName(userTo.getName());
         user.setEmail(userTo.getEmail().toLowerCase());
         user.setPassword(userTo.getPassword());
         user.setMonthlyLimit(userTo.getMonthlyLimit());
         user.setCurrency(userTo.getCurrency());
+        return user;
     }
 }

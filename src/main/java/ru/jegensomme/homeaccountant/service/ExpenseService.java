@@ -9,7 +9,7 @@ import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.repository.CategoryRepository;
 import ru.jegensomme.homeaccountant.repository.ExpenseRepository;
-import ru.jegensomme.homeaccountant.to.ExpenseEditTo;
+import ru.jegensomme.homeaccountant.to.ExpenseTo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,7 +33,7 @@ public class ExpenseService {
     }
 
     @Transactional
-    public Expense create(ExpenseEditTo expenseTo, int userId) {
+    public Expense create(ExpenseTo expenseTo, int userId) {
         Assert.notNull(expenseTo, "expense must not be null");
         Category category = expenseTo.getCategory() > 0 ? categoryRepository.get(expenseTo.getCategory(), userId) : null;
         return create(createNewFromTo(expenseTo, category), userId);
@@ -49,7 +49,7 @@ public class ExpenseService {
     }
 
     @Transactional
-    public void update(ExpenseEditTo expenseTo, int userId) {
+    public void update(ExpenseTo expenseTo, int userId) {
         Assert.notNull(expenseTo, "expense must not be null");
         Category category = expenseTo.getCategory() > 0 ? categoryRepository.get(expenseTo.getCategory(), userId) : null;
         Expense expense = get(expenseTo.id(), userId);

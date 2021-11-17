@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
@@ -139,6 +140,7 @@
     <jsp:param name="page" value="expense"/>
 </jsp:include>
 <script type="text/javascript">
+    const currency = '<sec:authentication property="principal.userTo.currency"/>';
     i18n['without.category'] = '<spring:message code="without.category"/>';
     i18n['all.categories'] = '<spring:message code="all.categories"/>';
 </script>

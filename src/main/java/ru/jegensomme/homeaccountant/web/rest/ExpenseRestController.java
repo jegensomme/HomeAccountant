@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
-import ru.jegensomme.homeaccountant.to.ExpenseTo;
 import ru.jegensomme.homeaccountant.web.AbstractExpenseController;
 
 import java.net.URI;
@@ -58,17 +57,17 @@ public class ExpenseRestController extends AbstractExpenseController {
     }
 
     @GetMapping("/expenses")
-    public List<ExpenseTo> getAll() {
+    public List<Expense> getAll() {
         return super.getAll();
     }
 
     @GetMapping("/categories/{categoryId}/expenses")
-    public List<ExpenseTo> getByCategory(@PathVariable int categoryId) {
+    public List<Expense> getByCategory(@PathVariable int categoryId) {
         return categoryId > 0 ? super.getByCategory(categoryId) : super.getWithoutCategory();
     }
 
     @GetMapping("/expenses/between")
-    public List<ExpenseTo> getBetween(
+    public List<Expense> getBetween(
             @RequestParam @Nullable LocalDate startDate,
             @RequestParam @Nullable LocalTime startTime,
             @RequestParam @Nullable LocalDate endDate,
@@ -77,7 +76,7 @@ public class ExpenseRestController extends AbstractExpenseController {
     }
 
     @GetMapping("/categories/{categoryId}/expenses/between")
-    public List<ExpenseTo> getByCategoryBetween(
+    public List<Expense> getByCategoryBetween(
             @PathVariable int categoryId,
             @RequestParam @Nullable LocalDate startDate,
             @RequestParam @Nullable LocalTime startTime,

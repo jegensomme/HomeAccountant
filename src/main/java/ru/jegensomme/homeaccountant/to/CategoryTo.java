@@ -13,7 +13,7 @@ import ru.jegensomme.homeaccountant.util.validators.PeriodLimit;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @PeriodLimit
-public class CategoryEditTo extends BaseTo {
+public class CategoryTo extends BaseTo {
 
     private String name;
 
@@ -21,7 +21,7 @@ public class CategoryEditTo extends BaseTo {
 
     private @Nullable ExpensePeriod period;
 
-    public CategoryEditTo(@Nullable Integer id, String name, @Nullable Integer limit, @Nullable ExpensePeriod period) {
+    public CategoryTo(@Nullable Integer id, String name, @Nullable Integer limit, @Nullable ExpensePeriod period) {
         super(id);
         this.name = name;
         this.limit = limit;

@@ -1,5 +1,6 @@
 package ru.jegensomme.homeaccountant.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
@@ -35,7 +36,8 @@ public class User extends NamedEntity {
     private String password;
 
     @Column(name = "registered")
-    @javax.validation.constraints.NotNull
+    @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
 
     private boolean enabled = true;

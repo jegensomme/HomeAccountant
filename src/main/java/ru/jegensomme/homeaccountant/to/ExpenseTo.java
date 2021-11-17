@@ -1,56 +1,55 @@
 package ru.jegensomme.homeaccountant.to;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
-import ru.jegensomme.homeaccountant.model.Category;
-import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertors;
+import ru.jegensomme.homeaccountant.util.DateTimeUtil;
 
-import java.beans.ConstructorProperties;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Currency;
 
 @Getter
+@Setter
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public final class ExpenseTo extends BaseTo {
+public class ExpenseTo extends BaseTo {
 
-    private final @Nullable Category category;
+    @NotNull
+    private Integer category;
 
-    private final LocalDateTime dateTime;
+    @NotNull
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+    private LocalDateTime dateTime;
 
-    private final Integer amount;
+    @NotNull
+    @Min(0)
+    private Integer amount;
 
-    @JsonSerialize(converter = CurrencyConvertors.JsonSerialiseConverter.class)
-    @JsonDeserialize(converter = CurrencyConvertors.JsonDeserializeConverter.class)
-    private final Currency currency;
+    @NotBlank
+    @Size(min = 2, max = 120)
+    private String description;
 
-    private final String description;
-
-    @ConstructorProperties({"id", "category", "dateTime", "amount", "currency", "description"})
-    public ExpenseTo(@Nullable Integer id,
-                     @Nullable Category category,
-                     LocalDateTime dateTime,
-                     int amount,
-                     Currency currency,
-                     String description) {
+    public ExpenseTo(@Nullable Integer id, Integer category, LocalDateTime dateTime, Integer amount, String description) {
         super(id);
         this.category = category;
         this.dateTime = dateTime;
         this.amount = amount;
-        this.currency = currency;
         this.description = description;
     }
 
     @Override
     public String toString() {
-        return "ExpenseTo{" +
+        return "ExpenseEditTo{" +
                 "id=" + id +
-                "category=" + (category == null ? "" : category.getName()) +
+                ", category=" + category +
                 ", dateTime=" + dateTime +
                 ", amount=" + amount +
-                ", currency=" + currency +
                 ", description='" + description + '\'' +
                 '}';
     }

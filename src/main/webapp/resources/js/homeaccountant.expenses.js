@@ -61,7 +61,13 @@ $(function () {
                 "data": "amount"
             },
             {
-                "data": "currency"
+                "orderable": false,
+                "defaultContent": "",
+                "render": function (date, type, row) {
+                    if (type === 'display') {
+                        return currency
+                    }
+                }
             },
             {
                 "data": "description"

@@ -6,8 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.service.CategoryService;
-import ru.jegensomme.homeaccountant.to.CategoryEditTo;
-import ru.jegensomme.homeaccountant.util.CategoryUtil;
+import ru.jegensomme.homeaccountant.to.CategoryTo;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class AbstractCategoryController {
 
     private final CategoryService service;
 
-    public @NonNull Category create(CategoryEditTo categoryTo) {
+    public @NonNull Category create(CategoryTo categoryTo) {
         int userId = authUserId();
         log.info("create from to {} for user {}", categoryTo, userId);
         return service.create(createNewFromTo(categoryTo), userId);
@@ -39,7 +38,7 @@ public class AbstractCategoryController {
         service.delete(id, userId);
     }
 
-    public void update(CategoryEditTo categoryTo, int id) {
+    public void update(CategoryTo categoryTo, int id) {
         int userId = authUserId();
         assureIdConsistent(categoryTo, id);
         log.info("update from to {} for user {}", categoryTo, userId);
