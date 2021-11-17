@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark py-0">
     <div class="container">
@@ -16,6 +17,15 @@
                 <li class="nav-item">
                     <sec:authorize access="isAuthenticated()">
                         <form:form class="form-inline my-2" action="logout" method="post">
+
+                           <%
+                               String servletPath=request.getServletPath();
+                               String pageName = servletPath.substring(servletPath.lastIndexOf("/")+1, servletPath.length() - 4);
+                               request.setAttribute("pageName", pageName);
+                           %>
+                            <c:if test="${pageName.equals('expenses')}">
+                                <a class="btn btn-info mr-1" href="categories"><spring:message code="category.title"/></a>
+                            </c:if>
                             <sec:authorize access="hasRole('ADMIN')">
                                 <a class="btn btn-info mr-1" href="users"><spring:message code="user.title"/></a>
                             </sec:authorize>
