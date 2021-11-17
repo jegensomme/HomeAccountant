@@ -12,6 +12,7 @@ import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
 import ru.jegensomme.homeaccountant.web.AbstractExpenseController;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -29,7 +30,7 @@ public class ExpenseRestController extends AbstractExpenseController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Expense> createWithLocation(@RequestBody ExpenseTo expenseTo) {
+    public ResponseEntity<Expense> createWithLocation(@Valid @RequestBody ExpenseTo expenseTo) {
         Expense created = super.create(expenseTo);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/expenses/{id}")
@@ -46,7 +47,7 @@ public class ExpenseRestController extends AbstractExpenseController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody ExpenseTo expenseTo, @PathVariable int id) {
+    public void update(@Valid @RequestBody ExpenseTo expenseTo, @PathVariable int id) {
         super.update(expenseTo, id);
     }
 

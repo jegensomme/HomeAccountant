@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
@@ -24,8 +26,13 @@ import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.USER_HOUSEH
 import static ru.jegensomme.homeaccountant.testdata.ExpenseTestData.*;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
+import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN;
+import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
+import static ru.jegensomme.homeaccountant.util.ExpenseUtil.createNewFromTo;
 import static ru.jegensomme.homeaccountant.util.ExpenseUtil.getTos;
 import static ru.jegensomme.homeaccountant.util.TestUtil.*;
+import static ru.jegensomme.homeaccountant.util.exception.ErrorType.VALIDATION_ERROR;
+import static ru.jegensomme.homeaccountant.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_DATETIME;
 
 class ExpenseRestControllerTest extends AbstractControllerTest {
 
@@ -35,22 +42,17 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
     private ExpenseService service;
 
     @Test
-    void getUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
     void createWithLocation() throws Exception {
-        Expense newExpense = getNew();
+        ExpenseTo newExpenseTo = new ExpenseTo(null, USER_FOOD.getName(), of(2021, Month.JANUARY, 25, 10, 0), 10000, "New");
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .with(userHttpBasic(USER))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newExpense)))
+                .content(JsonUtil.writeValue(newExpenseTo)))
                 .andDo(print())
                 .andExpect(status().isCreated());
         Expense created = readFromJson(action, Expense.class);
         int newId = created.id();
+        Expense newExpense = createNewFromTo(newExpenseTo, USER_FOOD);
         newExpense.setId(newId);
         EXPENSE_MATCHER.assertMatch(created, newExpense);
         EXPENSE_MATCHER.assertMatch(service.get(newId, USER_ID), newExpense);
@@ -78,6 +80,30 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void createInvalid() throws Exception {
+        Expense invalid = new Expense(null, null, null, "");
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(USER)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
+    }
+
+    @Test
+    void updateInvalid() throws Exception {
+        Expense invalid = new Expense(ADMIN_EXPENSE1_ID, null, -10, "");
+        perform(MockMvcRequestBuilders.put(REST_URL + ADMIN_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
+    }
+
+    @Test
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + EXPENSE1_ID)
                 .with(userHttpBasic(USER)))
@@ -85,6 +111,19 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(EXPENSE_MATCHER.contentJson(EXPENSE1));
+    }
+
+    @Test
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_EXPENSE1_ID)
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -155,5 +194,19 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE5)));
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void updateDuplicate() throws Exception {
+        ExpenseTo updatedTo = new ExpenseTo(EXPENSE1_ID, USER_FOOD.getName(), EXPENSE3.getDateTime(), 1000, "new");
+        perform(MockMvcRequestBuilders.put(REST_URL + EXPENSE1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR))
+                .andExpect(detailMessage(EXCEPTION_DUPLICATE_DATETIME));
     }
 }

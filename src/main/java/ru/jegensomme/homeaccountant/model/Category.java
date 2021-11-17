@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
+import ru.jegensomme.homeaccountant.web.View;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -24,7 +25,7 @@ public class Category extends NamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @NotNull
+    @NotNull(groups = View.Persist.class)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private @Nullable User user;
 

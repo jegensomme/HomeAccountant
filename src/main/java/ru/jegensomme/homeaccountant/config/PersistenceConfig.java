@@ -11,6 +11,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.jegensomme.homeaccountant.web.View;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -65,7 +66,9 @@ public class PersistenceConfig {
                 DIALECT, "org.hibernate.dialect.PostgreSQLDialect",
                 USE_SECOND_LEVEL_CACHE, true,
                 CACHE_REGION_FACTORY, "org.hibernate.cache.jcache.JCacheRegionFactory",
-                CACHE_PROVIDER_CONFIG, "cache/ehcache.xml"
+                CACHE_PROVIDER_CONFIG, "cache/ehcache.xml",
+                JPA_UPDATE_VALIDATION_GROUP, View.Persist.class.getName(),
+                JPA_PERSIST_VALIDATION_GROUP, View.Persist.class.getName()
         ));
         return properties;
     }

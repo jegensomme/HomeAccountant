@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class ExpenseTo extends BaseTo {
 
+    @NotNull
     private String category;
 
     @NotNull
