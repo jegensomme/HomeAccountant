@@ -20,8 +20,8 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "expenses", indexes = {
-        @Index(name = "expenses_user_id_date_time_idx", columnList = "user_id, date_time")
+@Table(name = "expenses", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "expenses_unique_idx")
 })
 public class Expense extends BaseEntity {
 

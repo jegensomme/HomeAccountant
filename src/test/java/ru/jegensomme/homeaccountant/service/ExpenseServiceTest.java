@@ -3,6 +3,7 @@ package ru.jegensomme.homeaccountant.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.dao.DataAccessException;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
@@ -13,9 +14,9 @@ import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.jegensomme.homeaccountant.testdata.ExpenseTestData.*;
+import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.USER_FOOD_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
-import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.USER_FOOD_ID;
 
 public class ExpenseServiceTest extends ServiceTestBase {
     @Autowired
@@ -29,6 +30,12 @@ public class ExpenseServiceTest extends ServiceTestBase {
         newExpense.setId(newId);
         EXPENSE_MATCHER.assertMatch(created, newExpense);
         EXPENSE_MATCHER.assertMatch(service.get(newId, USER_ID), newExpense);
+    }
+
+    @Test
+    public void duplicateDateTimeCreate() {
+        Expense newExpense = new Expense(null, EXPENSE1.getDateTime(), 1000, "new");
+        assertThrows(DataAccessException.class, () -> service.create(newExpense, USER_ID));
     }
 
     @Test

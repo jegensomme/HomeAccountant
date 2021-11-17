@@ -37,7 +37,7 @@ CREATE TABLE categories
     period_unit   VARCHAR
 );
 
-CREATE UNIQUE INDEX expense_category_unique_idx on categories(user_id, name);
+CREATE UNIQUE INDEX categories_unique_idx on categories(user_id, name);
 
 CREATE TABLE expenses
 (
@@ -49,4 +49,4 @@ CREATE TABLE expenses
     description VARCHAR   NOT NULL
 );
 
-CREATE INDEX expenses_user_id_date_time_idx on expenses(user_id, date_time);
+CREATE UNIQUE INDEX expenses_unique_idx on expenses(user_id, date_time);

@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Entity
 @Table(name = "categories", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "name"}, name = "expense_category_unique_idx")
+        @UniqueConstraint(columnNames = {"user_id", "name"}, name = "categories_unique_idx")
 })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

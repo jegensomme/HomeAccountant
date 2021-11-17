@@ -2,6 +2,7 @@ package ru.jegensomme.homeaccountant.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import ru.jegensomme.homeaccountant.model.*;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
@@ -29,6 +30,12 @@ public class CategoryServiceTest extends ServiceTestBase {
         newCategory.setId(newId);
         CATEGORY_MATCHER.assertMatch(created, newCategory);
         CATEGORY_MATCHER.assertMatch(service.get(newId, USER_ID), newCategory);
+    }
+
+    @Test
+    public void duplicateNameCreate() {
+        Category newCategory = new Category(null, USER_FOOD.getName());
+        assertThrows(DataAccessException.class, () -> service.create(newCategory, USER_ID));
     }
 
     @Test
