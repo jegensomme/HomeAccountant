@@ -3,6 +3,8 @@ package ru.jegensomme.homeaccountant.web;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
@@ -23,16 +25,12 @@ import java.util.List;
 import java.util.Locale;
 
 @EnableWebMvc
+@Configuration
 @ComponentScan("ru.jegensomme.homeaccountant.web")
 public class WebConfig implements WebMvcConfigurer {
 
     @Value("file:///#{systemEnvironment[HOME_ACCOUNTANT_ROOT]}/config/messages/app")
     private String resourceBundlePath;
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("index");
-    }
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -83,12 +81,14 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
+    public MessageSourceAccessor messageSourceAccessor() {
+        return new MessageSourceAccessor(messageSource());
+    }
+
+    @Bean
     public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setDefaultLocale(new Locale("en"));
         return localeResolver;
     }
-
-
-
 }
