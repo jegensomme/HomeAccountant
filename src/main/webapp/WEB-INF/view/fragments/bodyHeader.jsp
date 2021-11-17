@@ -4,6 +4,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%
+    String servletPath=request.getServletPath();
+    String pageName = servletPath.substring(servletPath.lastIndexOf("/")+1, servletPath.length() - 4);
+    request.setAttribute("pageName", pageName);
+%>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark py-0">
     <div class="container">
         <a href="expenses" class="navbar-brand"><img src="resources/images/ruble.png"> <spring:message code="app.title"/></a>
@@ -17,17 +22,13 @@
                 <li class="nav-item">
                     <sec:authorize access="isAuthenticated()">
                         <form:form class="form-inline my-2" action="logout" method="post">
-
-                           <%
-                               String servletPath=request.getServletPath();
-                               String pageName = servletPath.substring(servletPath.lastIndexOf("/")+1, servletPath.length() - 4);
-                               request.setAttribute("pageName", pageName);
-                           %>
-                            <c:if test="${pageName.equals('expenses')}">
+                            <c:if test="${!pageName.equals('categories')}">
                                 <a class="btn btn-info mr-1" href="categories"><spring:message code="category.title"/></a>
                             </c:if>
                             <sec:authorize access="hasRole('ADMIN')">
-                                <a class="btn btn-info mr-1" href="users"><spring:message code="user.title"/></a>
+                                <c:if test="${!pageName.equals('users')}">
+                                    <a class="btn btn-info mr-1" href="users"><spring:message code="user.title"/></a>
+                                </c:if>
                             </sec:authorize>
                             <a class="btn btn-info mr-1" href="profile"><sec:authentication property="principal.userTo.name"/> <spring:message code="app.profile"/></a>
                             <button class="btn btn-primary my-1" type="submit">
