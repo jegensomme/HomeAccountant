@@ -11,6 +11,8 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertors;
 import ru.jegensomme.homeaccountant.util.converter.DateTimeFormatters;
@@ -18,10 +20,15 @@ import ru.jegensomme.homeaccountant.util.converter.PeriodConvertors;
 import ru.jegensomme.homeaccountant.web.json.JacksonObjectMapper;
 
 import java.util.List;
+import java.util.Locale;
 
 @EnableWebMvc
 @ComponentScan("ru.jegensomme.homeaccountant.web")
 public class WebConfig implements WebMvcConfigurer {
+
+    @Value("file:///#{systemEnvironment[HOME_ACCOUNTANT_ROOT]}/config/messages/app")
+    private String resourceBundlePath;
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
@@ -59,8 +66,12 @@ public class WebConfig implements WebMvcConfigurer {
         converters.add(stringHttpMessageConverter);
     }
 
-    @Value("file:///#{systemEnvironment[HOME_ACCOUNTANT_ROOT]}/config/messages/app")
-    private String resourceBundlePath;
+    @Override
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        registry.addInterceptor(localeChangeInterceptor);
+    }
 
     @Bean
     public ReloadableResourceBundleMessageSource messageSource() {
@@ -70,4 +81,14 @@ public class WebConfig implements WebMvcConfigurer {
         messageSource.setBasename(resourceBundlePath);
         return messageSource;
     }
+
+    @Bean
+    public CookieLocaleResolver localeResolver() {
+        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+        localeResolver.setDefaultLocale(new Locale("en"));
+        return localeResolver;
+    }
+
+
+
 }

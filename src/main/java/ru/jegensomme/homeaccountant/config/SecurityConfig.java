@@ -49,7 +49,7 @@ public class SecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/rest//profile/register").anonymous()
+                    .antMatchers("/rest/profile/register").anonymous()
                     .antMatchers("/rest/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated();
         }
@@ -68,6 +68,7 @@ public class SecurityConfig {
             http.csrf().disable()
                     .authorizeRequests()
                         .antMatchers("/profile/register").anonymous()
+                        .antMatchers("/login").permitAll()
                         .antMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                     .and()
@@ -76,7 +77,6 @@ public class SecurityConfig {
                         .failureUrl("/login?error=true")
                         .defaultSuccessUrl("/expenses")
                         .loginProcessingUrl("/spring_security_check")
-                        .permitAll()
                     .and()
                         .logout()
                         .logoutSuccessUrl("/login")
