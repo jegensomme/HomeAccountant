@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.web.AbstractUserController;
+import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
 
 import java.net.URI;
 import java.util.List;
@@ -18,8 +19,8 @@ import java.util.List;
 public class AdminRestController extends AbstractUserController {
     static final String REST_URL = "/rest/admin/users";
 
-    public AdminRestController(UserService service) {
-        super(service);
+    public AdminRestController(UserService service, UniqueMailValidator emailValidator) {
+        super(service, emailValidator);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

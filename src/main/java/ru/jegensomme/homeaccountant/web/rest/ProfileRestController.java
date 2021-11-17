@@ -9,6 +9,7 @@ import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.web.AbstractUserController;
+import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
 
 import java.net.URI;
 
@@ -19,8 +20,8 @@ import static ru.jegensomme.homeaccountant.web.SecurityUtil.authUserId;
 public class ProfileRestController extends AbstractUserController {
     static final String REST_URL = "/rest/profile";
 
-    public ProfileRestController(UserService service) {
-        super(service);
+    public ProfileRestController(UserService service, UniqueMailValidator emailValidator) {
+        super(service, emailValidator);
     }
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -2,8 +2,10 @@ package ru.jegensomme.homeaccountant.to;
 
 import lombok.*;
 import org.springframework.lang.Nullable;
+import ru.jegensomme.homeaccountant.HasEmail;
 
 import javax.validation.constraints.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Currency;
 
@@ -13,7 +15,10 @@ import static ru.jegensomme.homeaccountant.util.UserUtil.DEFAULT_CURRENCY;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public final class UserTo extends BaseTo implements Serializable {
+public final class UserTo extends BaseTo implements HasEmail, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @NotBlank
     @Size(min = 2, max = 100)
     private String name;

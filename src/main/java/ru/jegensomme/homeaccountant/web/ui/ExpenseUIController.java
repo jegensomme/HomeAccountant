@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
@@ -17,8 +16,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static ru.jegensomme.homeaccountant.util.ValidationUtil.getErrorResponse;
-
 @RestController
 @RequestMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExpenseUIController extends AbstractExpenseController {
@@ -27,10 +24,7 @@ public class ExpenseUIController extends AbstractExpenseController {
     }
 
     @PostMapping("/expenses")
-    public ResponseEntity<String> createOrUpdate(@Valid ExpenseTo expense, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return getErrorResponse(bindingResult);
-        }
+    public ResponseEntity<String> createOrUpdate(@Valid ExpenseTo expense) {
         if (expense.isNew()) {
             super.create(expense);
         } else {

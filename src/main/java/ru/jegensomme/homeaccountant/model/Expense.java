@@ -12,7 +12,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -21,7 +20,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "expenses", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "expenses_unique_idx")
+        @UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "expenses_unique_user_datetime_idx")
 })
 public class Expense extends BaseEntity {
 
@@ -67,10 +66,6 @@ public class Expense extends BaseEntity {
         this.dateTime = dateTime;
         this.amount = amount;
         this.description = description;
-    }
-
-    public @NonNull LocalDate getDate() {
-        return dateTime.toLocalDate();
     }
 
     public @NonNull LocalTime getTime() {

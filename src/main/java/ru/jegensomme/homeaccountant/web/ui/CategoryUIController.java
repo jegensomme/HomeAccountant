@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.service.CategoryService;
@@ -14,8 +13,6 @@ import ru.jegensomme.homeaccountant.web.AbstractCategoryController;
 import javax.validation.Valid;
 import java.util.List;
 
-import static ru.jegensomme.homeaccountant.util.ValidationUtil.getErrorResponse;
-
 @RestController
 @RequestMapping(value = "/profile/categories", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoryUIController extends AbstractCategoryController {
@@ -24,10 +21,7 @@ public class CategoryUIController extends AbstractCategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid CategoryTo categoryTo, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return getErrorResponse(bindingResult);
-        }
+    public ResponseEntity<String> createOrUpdate(@Valid CategoryTo categoryTo) {
         if (categoryTo.isNew()) {
             super.create(categoryTo);
         } else {

@@ -2,16 +2,13 @@ package ru.jegensomme.homeaccountant.util;
 
 import lombok.experimental.UtilityClass;
 import org.slf4j.Logger;
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import ru.jegensomme.homeaccountant.Identified;
 import ru.jegensomme.homeaccountant.util.exception.ErrorType;
+import ru.jegensomme.homeaccountant.util.exception.IllegalRequestDataException;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.stream.Collectors;
 
 @UtilityClass
 public class ValidationUtil {
@@ -39,7 +36,7 @@ public class ValidationUtil {
 
     public static void checkNew(Identified entity) {
         if (!entity.isNew()) {
-            throw new IllegalArgumentException(entity + " must be new (id=null)");
+            throw new IllegalRequestDataException(entity + " must be new (id=null)");
         }
     }
 
@@ -48,7 +45,7 @@ public class ValidationUtil {
         if (entity.isNew()) {
             entity.setId(id);
         } else if (entity.id() != id) {
-            throw new IllegalArgumentException(entity + " must be with id=" + id);
+            throw new IllegalRequestDataException(entity + " must be with id=" + id);
         }
     }
 
@@ -61,15 +58,6 @@ public class ValidationUtil {
             result = cause;
         }
         return result;
-    }
-
-    public static ResponseEntity<String> getErrorResponse(BindingResult result) {
-        return ResponseEntity.unprocessableEntity().body(
-                result.getAllErrors().stream()
-                        .map(e -> e instanceof FieldError fe
-                                ? String.format("[%s] %s", fe.getField(), fe.getDefaultMessage())
-                                : e.getDefaultMessage()
-                        ).collect(Collectors.joining("<br>")));
     }
 
     public static String getMessage(Throwable e) {

@@ -91,12 +91,13 @@ function successNoty(key) {
 
 function failNoty(jqXHR) {
     closeNoty();
+    const errorInfo = jqXHR.responseJSON;
     failedNote = new Noty({
-        text: "<span class='fa fa-lg fa-exclamation-circle'></span> &nbsp;" + i18n["common.errorStatus"] + ": " + jqXHR.status + (jqXHR.responseJSON ? "<br>" + jqXHR.responseJSON : ""),
+        text: "<span class='fa fa-lg fa-exclamation-circle'></span> &nbsp;" + errorInfo.typeMessage + "<br>" + errorInfo.details.join("<br>"),
         type: "error",
         layout: "bottomRight"
     });
-    failedNote.show()
+    failedNote.show();
 }
 
 function renderEditBtn(data, type, row) {

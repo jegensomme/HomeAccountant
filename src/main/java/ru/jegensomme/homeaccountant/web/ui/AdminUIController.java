@@ -4,30 +4,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.web.AbstractUserController;
+import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
 
 import javax.validation.Valid;
 import java.util.List;
 
-import static ru.jegensomme.homeaccountant.util.ValidationUtil.getErrorResponse;
-
 @RestController
 @RequestMapping(value = "/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminUIController extends AbstractUserController {
-    public AdminUIController(UserService service) {
-        super(service);
+    public AdminUIController(UserService service, UniqueMailValidator emailValidator) {
+        super(service, emailValidator);
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return getErrorResponse(bindingResult);
-        }
+    public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo) {
         if (userTo.isNew()) {
             super.create(userTo);
         } else {

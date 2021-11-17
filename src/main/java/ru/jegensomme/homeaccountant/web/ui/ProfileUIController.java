@@ -12,6 +12,7 @@ import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.web.AbstractUserController;
 import ru.jegensomme.homeaccountant.web.SecurityUtil;
+import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
 
 import javax.validation.Valid;
 
@@ -19,8 +20,8 @@ import javax.validation.Valid;
 @RequestMapping("/profile")
 public class ProfileUIController extends AbstractUserController {
 
-    public ProfileUIController(UserService service) {
-        super(service);
+    public ProfileUIController(UserService service, UniqueMailValidator emailValidator) {
+        super(service, emailValidator);
     }
 
     @GetMapping
