@@ -40,7 +40,7 @@ public class CategoryServiceTest extends ServiceTestBase {
 
     @Test
     public void delete() {
-        List<Expense> expenses = expenseService.getByCategory(USER_FOOD_ID, USER_ID);
+        List<Expense> expenses = expenseService.getByCategory(USER_FOOD.getName(), USER_ID);
         service.delete(USER_FOOD_ID, USER_ID);
         assertThrows(NotFoundException.class, () -> service.get(USER_FOOD_ID, USER_ID));
         assertTrue(expenseService.getWithoutCategory(USER_ID).containsAll(expenses));
@@ -59,6 +59,11 @@ public class CategoryServiceTest extends ServiceTestBase {
     @Test
     public void get() {
         CATEGORY_MATCHER.assertMatch(service.get(USER_FOOD_ID, USER_ID), USER_FOOD);
+    }
+
+    @Test
+    public void getByName() {
+        CATEGORY_MATCHER.assertMatch(service.getByName("Food", USER_ID), USER_FOOD);
     }
 
     @Test

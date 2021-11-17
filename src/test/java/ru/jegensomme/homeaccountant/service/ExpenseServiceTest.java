@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.USER_FOOD;
 import static ru.jegensomme.homeaccountant.testdata.ExpenseTestData.*;
-import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.USER_FOOD_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
 
@@ -97,7 +97,7 @@ public class ExpenseServiceTest extends ServiceTestBase {
 
     @Test
     public void getByCategory() {
-        EXPENSE_MATCHER.assertMatch(service.getByCategory(USER_FOOD_ID, USER_ID), EXPENSE3, EXPENSE2, EXPENSE1);
+        EXPENSE_MATCHER.assertMatch(service.getByCategory(USER_FOOD.getName(), USER_ID), EXPENSE3, EXPENSE2, EXPENSE1);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class ExpenseServiceTest extends ServiceTestBase {
     @Test
     public void getByCategoryBetween() {
         EXPENSE_MATCHER.assertMatch(
-                service.getByCategoryBetween(USER_FOOD_ID, USER_ID,
+                service.getByCategoryBetween(USER_FOOD.getName(), USER_ID,
                         LocalDate.of(2021, Month.FEBRUARY, 1),
                         LocalDate.of(2021, Month.FEBRUARY, 26)),
                 EXPENSE3, EXPENSE2

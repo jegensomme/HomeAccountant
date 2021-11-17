@@ -22,9 +22,9 @@ public interface ExpenseRepository {
                              @NonNull LocalDateTime startInclusive,
                              @NonNull LocalDateTime endExclusive);
 
-    List<Expense> getByCategory(int categoryId, int userId);
+    List<Expense> getByCategory(String category, int userId);
 
-    List<Expense> getByCategoryBetween(int categoryId, int userId,
+    List<Expense> getByCategoryBetween(String category, int userId,
                                        @NonNull LocalDateTime startInclusive,
                                        @NonNull LocalDateTime endExclusive);
 

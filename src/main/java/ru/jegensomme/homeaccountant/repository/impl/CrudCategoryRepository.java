@@ -16,6 +16,9 @@ public interface CrudCategoryRepository extends JpaRepository<Category, Integer>
     @Query("DELETE FROM Category c WHERE c.id=:id AND c.user.id=:userId")
     int delete(@Param("id") int id, @Param("userId") int userId);
 
+    @Query("SELECT c FROM Category c WHERE c.user.id=:userId AND c.name=:name ORDER BY c.name ASC")
+    Category getByName(@Param("name") String name, @Param("userId") int userId);
+
     @Query("SELECT c FROM Category c WHERE c.user.id=:userId ORDER BY c.name ASC")
     List<Category> getAll(@Param("userId") int userId);
 }

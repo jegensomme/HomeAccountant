@@ -1,6 +1,6 @@
 const expenseAjaxUrl = "profile/expenses/";
 
-const categoryAjaxUrl = "profile/categories/";
+const categoryAjaxUrl = "profile/categories/"
 
 let categoryFilter;
 
@@ -9,13 +9,11 @@ const ctx = {
     ajaxUrl: expenseAjaxUrl,
     updateTable: function () {
         const selectedCategory = getSelectedCategory();
-        const url = selectedCategory === ""
-            ? expenseAjaxUrl + "between"
-            : categoryAjaxUrl + selectedCategory + "/expenses/between"
         $.ajax({
             type: "GET",
-            url: url,
+            url: expenseAjaxUrl + "between",
             data: $("#filter").serialize()
+                + (selectedCategory === "all" ? "" : "&category=" + selectedCategory)
         }).done(updateTableByData);
     }
 };
@@ -40,7 +38,7 @@ $.ajaxSetup({
 function clearFilter() {
     $("#filter")[0].reset();
     const selectedCategory = getSelectedCategory();
-    const url = selectedCategory === "" ? expenseAjaxUrl : categoryAjaxUrl + selectedCategory + "/expenses"
+    const url = expenseAjaxUrl + (selectedCategory === "all" ? "" : "by?category=" + selectedCategory)
     $.get(url, updateTableByData);
 }
 
@@ -48,22 +46,11 @@ function getSelectedCategory() {
     return categoryFilter.find("option:selected")[0].value;
 }
 
-function clearCategory() {
-    $("#categoryFilterForm")[0].reset();
-    $.get(expenseAjaxUrl, updateTableByData);
-}
-
 $(function () {
     makeEditable({
         "columns": [
             {
                 "data": "category",
-                "render": function (data, type, row) {
-                    if (type === "display") {
-                        return data == null ? "" : data.name;
-                    }
-                    return data;
-                }
             },
             {
                 "data": "dateTime"
@@ -160,13 +147,16 @@ $(function () {
 function fillCategories() {
     $("#category, #categoryFilter").empty()
     $.get(categoryAjaxUrl, function (data) {
-        let options = "<option value='0'>" + i18n["without.category"] + "</option>\n";
-        data.forEach(e => options += `<option value='${e.id}'>${e.name}</option>\n`);
+        let options = "";
+        data.forEach(e => options += `<option value='${e.name}'>${e.name}</option>\n`);
         $("#category").html("<option value=''></option>\n" + options);
-        $("#categoryFilter").html("<option value=''>" + i18n["all.categories"] + "</option>\n" + options);
+        $("#categoryFilter").html(
+            "<option value='all'>" + i18n["all.categories"] + "</option>\n" +
+            "<option value=''>" + i18n["without.category"] + "</option>\n" + options
+        );
     });
 }
 
 function jsonValue2SelectValue(key, value) {
-    return key === "category" ? (value == null ? "0" : value.id) : value
+    return key === "category" ? (value == null ? "" : value.name) : value
 }

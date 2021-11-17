@@ -36,11 +36,13 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     @Override
     public @Nullable Category get(int id, int userId) {
         return crudRepository.findById(id)
-                .filter(c -> {
-                    assert c.getUser() != null;
-                    return Objects.equals(c.getUser().getId(), userId);
-                })
+                .filter(c -> Objects.equals(c.getUser().getId(), userId))
                 .orElse(null);
+    }
+
+    @Override
+    public @Nullable Category getByName(String name, int userId) {
+        return crudRepository.getByName(name, userId);
     }
 
     @Override

@@ -5,9 +5,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.model.Expense;
-import ru.jegensomme.homeaccountant.repository.CategoryRepository;
 import ru.jegensomme.homeaccountant.repository.ExpenseRepository;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
 
@@ -25,7 +25,7 @@ import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWith
 @RequiredArgsConstructor
 public class ExpenseService {
     private final ExpenseRepository repository;
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     public Expense create(Expense expense, int userId) {
         Assert.notNull(expense, "expense must not be null");
@@ -35,7 +35,7 @@ public class ExpenseService {
     @Transactional
     public Expense create(ExpenseTo expenseTo, int userId) {
         Assert.notNull(expenseTo, "expense must not be null");
-        Category category = expenseTo.getCategory() > 0 ? categoryRepository.get(expenseTo.getCategory(), userId) : null;
+        Category category = StringUtils.hasText(expenseTo.getCategory()) ? categoryService.getByName(expenseTo.getCategory(), userId) : null;
         return create(createNewFromTo(expenseTo, category), userId);
     }
 
@@ -51,7 +51,7 @@ public class ExpenseService {
     @Transactional
     public void update(ExpenseTo expenseTo, int userId) {
         Assert.notNull(expenseTo, "expense must not be null");
-        Category category = expenseTo.getCategory() > 0 ? categoryRepository.get(expenseTo.getCategory(), userId) : null;
+        Category category = StringUtils.hasText(expenseTo.getCategory()) ? categoryService.getByName(expenseTo.getCategory(), userId) : null;
         Expense expense = get(expenseTo.id(), userId);
         updateFromTo(expense, expenseTo, category);
     }
@@ -76,15 +76,15 @@ public class ExpenseService {
                 atStartOfNextDayOrMax(endInclusive));
     }
 
-    public List<Expense> getByCategory(int categoryId, int userId) {
-        return repository.getByCategory(categoryId, userId);
+    public List<Expense> getByCategory(String category, int userId) {
+        return repository.getByCategory(category, userId);
     }
 
-    public List<Expense> getByCategoryBetween(int categoryId, int userId,
+    public List<Expense> getByCategoryBetween(String category, int userId,
                                               @Nullable LocalDate startInclusive,
                                               @Nullable LocalDate endExclusive) {
         return repository.getByCategoryBetween(
-                categoryId, userId,
+                category, userId,
                 atStartOfDayOrMin(startInclusive),
                 atStartOfNextDayOrMax(endExclusive));
     }

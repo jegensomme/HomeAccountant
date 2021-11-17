@@ -20,8 +20,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class ExpenseTo extends BaseTo {
 
-    @NotNull
-    private Integer category;
+    private String category;
 
     @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
@@ -35,7 +34,11 @@ public class ExpenseTo extends BaseTo {
     @Size(min = 2, max = 120)
     private String description;
 
-    public ExpenseTo(@Nullable Integer id, Integer category, LocalDateTime dateTime, Integer amount, String description) {
+    public ExpenseTo(@Nullable Integer id,
+                     String category,
+                     LocalDateTime dateTime,
+                     Integer amount,
+                     String description) {
         super(id);
         this.category = category;
         this.dateTime = dateTime;
@@ -45,7 +48,7 @@ public class ExpenseTo extends BaseTo {
 
     @Override
     public String toString() {
-        return "ExpenseEditTo{" +
+        return "ExpenseTo{" +
                 "id=" + id +
                 ", category=" + category +
                 ", dateTime=" + dateTime +

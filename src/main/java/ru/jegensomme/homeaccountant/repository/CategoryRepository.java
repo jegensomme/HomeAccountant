@@ -13,5 +13,7 @@ public interface CategoryRepository {
 
     @Nullable Category get(int id, int userId);
 
+    @Nullable Category getByName(String name, int userId);
+
     List<Category> getAll(int userId);
 }

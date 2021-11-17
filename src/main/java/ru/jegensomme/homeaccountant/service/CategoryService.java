@@ -4,16 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.repository.CategoryRepository;
-import ru.jegensomme.homeaccountant.to.CategoryTo;
-import ru.jegensomme.homeaccountant.util.CategoryUtil;
 
 import java.util.List;
 import java.util.Objects;
 
+import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFound;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -38,16 +36,12 @@ public class CategoryService {
         checkNotFoundWithId(repository.save(category, userId), category.id());
     }
 
-    @Transactional
-    @CacheEvict(value = "categories", key = "#userId")
-    public void update(CategoryTo categoryTo, int userId) {
-        Assert.notNull(categoryTo, "category must not be null");
-        Category category = get(categoryTo.id(), userId);
-        CategoryUtil.updateFromTo(category, categoryTo);
-    }
-
     public Category get(int id, int userId) {
         return checkNotFoundWithId(repository.get(id, userId), id);
+    }
+
+    public Category getByName(String name, int userId) {
+        return checkNotFound(repository.getByName(name, userId), "name=" + name);
     }
 
     @Cacheable(value = "categories", key = "#userId")

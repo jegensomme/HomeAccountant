@@ -63,15 +63,15 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public List<Expense> getByCategory(int categoryId, int userId) {
-        return crudRepository.getByCategory(categoryId, userId);
+    public List<Expense> getByCategory(String category, int userId) {
+        return crudRepository.getByCategory(category, userId);
     }
 
     @Override
-    public List<Expense> getByCategoryBetween(int categoryId, int userId,
+    public List<Expense> getByCategoryBetween(String category, int userId,
                                               @NonNull LocalDateTime startInclusive,
                                               @NonNull LocalDateTime endExclusive) {
-        return crudRepository.getByCategoryBetween(categoryId, userId, startInclusive, endExclusive);
+        return crudRepository.getByCategoryBetween(category, userId, startInclusive, endExclusive);
     }
 
     @Override

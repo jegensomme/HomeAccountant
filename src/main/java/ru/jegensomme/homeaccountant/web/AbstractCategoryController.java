@@ -6,11 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.service.CategoryService;
-import ru.jegensomme.homeaccountant.to.CategoryTo;
 
 import java.util.List;
 
-import static ru.jegensomme.homeaccountant.util.CategoryUtil.createNewFromTo;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.assureIdConsistent;
 import static ru.jegensomme.homeaccountant.web.SecurityUtil.authUserId;
 
@@ -19,12 +17,6 @@ public class AbstractCategoryController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private final CategoryService service;
-
-    public @NonNull Category create(CategoryTo categoryTo) {
-        int userId = authUserId();
-        log.info("create from to {} for user {}", categoryTo, userId);
-        return service.create(createNewFromTo(categoryTo), userId);
-    }
 
     public @NonNull Category create(Category category) {
         int userId = authUserId();
@@ -38,13 +30,6 @@ public class AbstractCategoryController {
         service.delete(id, userId);
     }
 
-    public void update(CategoryTo categoryTo, int id) {
-        int userId = authUserId();
-        assureIdConsistent(categoryTo, id);
-        log.info("update from to {} for user {}", categoryTo, userId);
-        service.update(categoryTo, userId);
-    }
-
     public void update(Category category, int id) {
         int userId = authUserId();
         assureIdConsistent(category, id);
@@ -56,6 +41,12 @@ public class AbstractCategoryController {
         int userId = authUserId();
         log.info("get {} for user {}", id, userId);
         return service.get(id, userId);
+    }
+
+    public @NonNull Category getByName(String name) {
+        int userId = authUserId();
+        log.info("getByName {} for user {}", name, userId);
+        return service.getByName(name, userId);
     }
 
     public List<Category> getAll() {

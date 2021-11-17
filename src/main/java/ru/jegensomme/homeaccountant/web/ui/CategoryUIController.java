@@ -7,7 +7,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.service.CategoryService;
-import ru.jegensomme.homeaccountant.to.CategoryTo;
 import ru.jegensomme.homeaccountant.web.AbstractCategoryController;
 
 import javax.validation.Valid;
@@ -21,11 +20,11 @@ public class CategoryUIController extends AbstractCategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid CategoryTo categoryTo) {
-        if (categoryTo.isNew()) {
-            super.create(categoryTo);
+    public ResponseEntity<String> createOrUpdate(@Valid Category category) {
+        if (category.isNew()) {
+            super.create(category);
         } else {
-            super.update(categoryTo, categoryTo.id());
+            super.update(category, category.id());
         }
         return ResponseEntity.ok().build();
     }
@@ -42,6 +41,13 @@ public class CategoryUIController extends AbstractCategoryController {
     public @NonNull
     Category get(@PathVariable int id) {
         return super.get(id);
+    }
+
+    @Override
+    @GetMapping("/by")
+    public @NonNull
+    Category getByName(@RequestParam String name) {
+        return super.getByName(name);
     }
 
     @GetMapping

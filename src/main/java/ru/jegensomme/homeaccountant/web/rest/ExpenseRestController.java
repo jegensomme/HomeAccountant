@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
+import ru.jegensomme.homeaccountant.to.ExpenseTo;
 import ru.jegensomme.homeaccountant.web.AbstractExpenseController;
 
 import java.net.URI;
@@ -21,69 +22,57 @@ import static ru.jegensomme.homeaccountant.web.rest.ExpenseRestController.REST_U
 @RestController
 @RequestMapping(value = REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExpenseRestController extends AbstractExpenseController {
-    static final String REST_URL = "/rest/profile";
+    static final String REST_URL = "/rest/profile/expenses";
 
     public ExpenseRestController(ExpenseService service) {
         super(service);
     }
 
-    @PostMapping(value = "/expenses", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Expense> createWithLocation(@RequestBody Expense expense) {
-        Expense created = super.create(expense);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Expense> createWithLocation(@RequestBody ExpenseTo expenseTo) {
+        Expense created = super.create(expenseTo);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/expenses/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @DeleteMapping("/expenses/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         super.delete(id);
     }
 
     @Override
-    @PutMapping(value = "/expenses/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Expense expense, @PathVariable int id) {
-        super.update(expense, id);
+    public void update(@RequestBody ExpenseTo expenseTo, @PathVariable int id) {
+        super.update(expenseTo, id);
     }
 
     @Override
-    @GetMapping("/expenses/{id}")
+    @GetMapping("/{id}")
     public @NonNull
     Expense get(@PathVariable int id) {
         return super.get(id);
     }
 
-    @GetMapping("/expenses")
-    public List<Expense> getAll() {
-        return super.getAll();
+    @GetMapping
+    public List<ExpenseTo> getAll(@RequestParam @Nullable String category) {
+        return category == null ? super.getAll()
+                : "".equals(category) ? super.getWithoutCategory()
+                : super.getByCategory(category);
     }
 
-    @GetMapping("/categories/{categoryId}/expenses")
-    public List<Expense> getByCategory(@PathVariable int categoryId) {
-        return categoryId > 0 ? super.getByCategory(categoryId) : super.getWithoutCategory();
-    }
-
-    @GetMapping("/expenses/between")
-    public List<Expense> getBetween(
+    @GetMapping("/between")
+    public List<ExpenseTo> getBetween(
+            @RequestParam @Nullable String category,
             @RequestParam @Nullable LocalDate startDate,
             @RequestParam @Nullable LocalTime startTime,
             @RequestParam @Nullable LocalDate endDate,
             @RequestParam @Nullable LocalTime endTime) {
-        return super.getBetween(startDate, startTime, endDate, endTime);
-    }
-
-    @GetMapping("/categories/{categoryId}/expenses/between")
-    public List<Expense> getByCategoryBetween(
-            @PathVariable int categoryId,
-            @RequestParam @Nullable LocalDate startDate,
-            @RequestParam @Nullable LocalTime startTime,
-            @RequestParam @Nullable LocalDate endDate,
-            @RequestParam @Nullable LocalTime endTime) {
-        return categoryId > 0
-                ? super.getByCategoryBetween(categoryId, startDate, startTime, endDate, endTime)
-                : super.getWithoutCategoryBetween(startDate, startTime, endDate, endTime);
+        return category == null ? super.getBetween(startDate, startTime, endDate, endTime)
+                : "".equals(category) ? super.getWithoutCategoryBetween(startDate, startTime, endDate, endTime)
+                : super.getByCategoryBetween(category, startDate, startTime, endDate, endTime);
     }
 }

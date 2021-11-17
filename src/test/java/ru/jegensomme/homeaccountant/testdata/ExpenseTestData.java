@@ -2,18 +2,21 @@ package ru.jegensomme.homeaccountant.testdata;
 
 import lombok.experimental.UtilityClass;
 import ru.jegensomme.homeaccountant.model.Expense;
+import ru.jegensomme.homeaccountant.to.ExpenseTo;
 import ru.jegensomme.homeaccountant.util.TestMatcher;
 
 import java.time.Month;
 
 import static java.time.LocalDateTime.of;
 import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.*;
+import static ru.jegensomme.homeaccountant.util.TestMatcher.usingEqualsComparator;
 import static ru.jegensomme.homeaccountant.util.TestMatcher.usingIgnoringFieldsComparator;
 import static ru.jegensomme.homeaccountant.model.BaseEntity.START_SEQ;
 
 @UtilityClass
 public class ExpenseTestData {
     public static final TestMatcher<Expense> EXPENSE_MATCHER = usingIgnoringFieldsComparator(Expense.class, "user", "category");
+    public static final TestMatcher<ExpenseTo> EXPENSE_TO_MATCHER = usingEqualsComparator(ExpenseTo.class);
 
     public static final int NOT_FOUND = 10;
 
@@ -31,7 +34,7 @@ public class ExpenseTestData {
     public static final Expense ADMIN_EXPENSE3 = new Expense(ADMIN_EXPENSE1_ID + 2, of(2021, Month.FEBRUARY, 25, 14, 0), 7000, "Потерял");
 
     public static Expense getNew() {
-        return new Expense(null, null, of(2021, Month.JANUARY, 30, 10, 0), 10000, "New");
+        return new Expense(null, null, of(2021, Month.JANUARY, 25, 10, 0), 10000, "New");
     }
 
     public static Expense getUpdated() {

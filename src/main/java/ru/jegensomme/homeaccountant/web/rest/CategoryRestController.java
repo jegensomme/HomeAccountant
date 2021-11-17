@@ -55,6 +55,13 @@ public class CategoryRestController extends AbstractCategoryController {
     }
 
     @Override
+    @GetMapping("/by")
+    public @NonNull
+    Category getByName(@RequestParam String name) {
+        return super.getByName(name);
+    }
+
+    @Override
     @GetMapping
     public List<Category> getAll() {
         return super.getAll();

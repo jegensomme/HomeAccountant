@@ -1,6 +1,5 @@
 package ru.jegensomme.homeaccountant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -28,7 +27,6 @@ public class Expense extends BaseEntity {
     @JoinColumn(name = "user_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private @Nullable User user;
 
     @ManyToOne

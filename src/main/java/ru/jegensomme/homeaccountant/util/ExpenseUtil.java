@@ -17,13 +17,26 @@ import static ru.jegensomme.homeaccountant.util.CommonUtilities.isBetweenHalfOpe
 @UtilityClass
 public class ExpenseUtil {
 
-    public static List<Expense> filter(Collection<Expense> expenses,
+    public static List<ExpenseTo> getTos(Expense... expenses) {
+        return getTos(List.of(expenses));
+    }
+
+    public static List<ExpenseTo> getTos(Collection<Expense> expenses) {
+        return filter(expenses, e -> true);
+    }
+
+    public static List<ExpenseTo> filter(Collection<Expense> expenses,
                                        @Nullable LocalTime startTime, @Nullable LocalTime endTime) {
         return filter(expenses, e -> isBetweenHalfOpen(e.getTime(), startTime, endTime));
     }
 
-    public static List<Expense> filter(Collection<Expense> expenses, Predicate<Expense> predicate) {
-        return expenses.stream().filter(predicate).collect(Collectors.toList());
+    public static List<ExpenseTo> filter(Collection<Expense> expenses, Predicate<Expense> predicate) {
+        return expenses.stream().filter(predicate).map(ExpenseUtil::asTo).collect(Collectors.toList());
+    }
+
+    public static ExpenseTo asTo(Expense expense) {
+        return new ExpenseTo(expense.getId(), expense.getCategory() == null ? "" : expense.getCategory().getName(),
+                expense.getDateTime(), expense.getAmount(), expense.getDescription());
     }
 
     public static Expense createNewFromTo(ExpenseTo expenseTo, @Nullable Category category) {
