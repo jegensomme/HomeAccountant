@@ -4,13 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.service.CategoryService;
 import ru.jegensomme.homeaccountant.web.AbstractCategoryController;
+import ru.jegensomme.homeaccountant.web.View;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class CategoryRestController extends AbstractCategoryController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Category> createWithLocation(@Valid @RequestBody Category category) {
+    public ResponseEntity<Category> createWithLocation(@Validated(View.Web.class) @RequestBody Category category) {
         Category created = super.create(category);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -44,7 +45,7 @@ public class CategoryRestController extends AbstractCategoryController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Category category, @PathVariable int id) {
+    public void update(@Validated(View.Web.class) @RequestBody Category category, @PathVariable int id) {
         super.update(category, id);
     }
 

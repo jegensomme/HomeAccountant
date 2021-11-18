@@ -8,6 +8,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.Authenticatable;
 import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertors;
+import ru.jegensomme.homeaccountant.web.View;
+import ru.jegensomme.homeaccountant.web.validators.SafeHtml;
 
 import javax.validation.constraints.*;
 
@@ -29,6 +31,7 @@ public class User extends NamedEntity implements Authenticatable {
     @Email
     @NotBlank
     @Size(max = 100)
+    @SafeHtml(groups = View.Web.class)
     private String email;
 
     @Column(name = "password")

@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.util.DateTimeUtil;
+import ru.jegensomme.homeaccountant.web.validators.SafeHtml;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -33,6 +34,7 @@ public class ExpenseTo extends BaseTo {
 
     @NotBlank
     @Size(min = 2, max = 120)
+    @SafeHtml
     private String description;
 
     public ExpenseTo(@Nullable Integer id,

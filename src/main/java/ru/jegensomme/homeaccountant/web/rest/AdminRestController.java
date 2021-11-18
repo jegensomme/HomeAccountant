@@ -5,14 +5,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.BindException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.web.AbstractUserController;
+import ru.jegensomme.homeaccountant.web.View;
 import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class AdminRestController extends AbstractUserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
+    public ResponseEntity<User> createWithLocation(@Validated(View.Web.class) @RequestBody User user) {
         User created = super.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
