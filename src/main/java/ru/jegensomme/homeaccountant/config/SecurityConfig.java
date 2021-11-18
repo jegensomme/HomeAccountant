@@ -16,6 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import ru.jegensomme.homeaccountant.service.UserService;
 
 @EnableWebSecurity
@@ -65,21 +67,21 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable()
-                    .authorizeRequests()
-                        .antMatchers("/profile/register").anonymous()
-                        .antMatchers("/login").permitAll()
-                        .antMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+            http.addFilterBefore(new CharacterEncodingFilter("UTF-8", true), CsrfFilter.class);
+            http.authorizeRequests()
+                    .antMatchers("/profile/register").anonymous()
+                    .antMatchers("/login").permitAll()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .anyRequest().authenticated()
                     .and()
-                        .formLogin()
-                        .loginPage("/login")
-                        .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/expenses")
-                        .loginProcessingUrl("/spring_security_check")
+                    .formLogin()
+                    .loginPage("/login")
+                    .failureUrl("/login?error=true")
+                    .defaultSuccessUrl("/expenses")
+                    .loginProcessingUrl("/spring_security_check")
                     .and()
-                        .logout()
-                        .logoutSuccessUrl("/login")
+                    .logout()
+                    .logoutSuccessUrl("/login")
                     .permitAll();
         }
     }
