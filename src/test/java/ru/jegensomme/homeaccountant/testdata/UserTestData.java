@@ -1,9 +1,11 @@
 package ru.jegensomme.homeaccountant.testdata;
 
 import lombok.experimental.UtilityClass;
+import ru.jegensomme.homeaccountant.Authenticatable;
 import ru.jegensomme.homeaccountant.util.TestMatcher;
 import ru.jegensomme.homeaccountant.model.Role;
 import ru.jegensomme.homeaccountant.model.User;
+import ru.jegensomme.homeaccountant.web.json.JsonUtil;
 
 import java.util.Collections;
 import java.util.Currency;
@@ -13,7 +15,7 @@ import static ru.jegensomme.homeaccountant.model.BaseEntity.START_SEQ;
 
 @UtilityClass
 public class UserTestData {
-    public static final TestMatcher<User> USER_MATCHER = usingIgnoringFieldsComparator(User.class, "registered");
+    public static final TestMatcher<User> USER_MATCHER = usingIgnoringFieldsComparator(User.class, "registered", "password");
 
     public static final int NOT_FOUND = 10;
 
@@ -43,5 +45,13 @@ public class UserTestData {
 
     public static User getDuplicateEmail() {
         return new User(null, "Duplicate", "user@yandex.ru", "newPass", RUB, Role.USER);
+    }
+
+    public static String jsonWithPassword(Authenticatable user) {
+        return jsonWithPassword(user, user.getPassword());
+    }
+
+    public static String jsonWithPassword(Authenticatable user, String password) {
+        return JsonUtil.writeAdditionProps(user, "password", password);
     }
 }

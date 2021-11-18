@@ -6,7 +6,7 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.lang.Nullable;
-import ru.jegensomme.homeaccountant.HasEmail;
+import ru.jegensomme.homeaccountant.Authenticatable;
 import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertors;
 
 import javax.validation.constraints.*;
@@ -24,7 +24,7 @@ import java.util.*;
 })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class User extends NamedEntity implements HasEmail {
+public class User extends NamedEntity implements Authenticatable {
     @Column(name = "email")
     @Email
     @NotBlank
@@ -34,6 +34,7 @@ public class User extends NamedEntity implements HasEmail {
     @Column(name = "password")
     @NotBlank
     @Size(min = 5, max = 100)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "registered")

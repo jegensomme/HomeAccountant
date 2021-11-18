@@ -1,8 +1,9 @@
 package ru.jegensomme.homeaccountant.to;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.lang.Nullable;
-import ru.jegensomme.homeaccountant.HasEmail;
+import ru.jegensomme.homeaccountant.Authenticatable;
 
 import javax.validation.constraints.*;
 import java.io.Serial;
@@ -15,7 +16,7 @@ import static ru.jegensomme.homeaccountant.util.UserUtil.DEFAULT_CURRENCY;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public final class UserTo extends BaseTo implements HasEmail, Serializable {
+public final class UserTo extends BaseTo implements Authenticatable, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +31,7 @@ public final class UserTo extends BaseTo implements HasEmail, Serializable {
 
     @NotBlank
     @Size(min = 5, max = 100)
-    @ToString.Exclude
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Min(0)

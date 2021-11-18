@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Transactional
     @Override
-    public @Nullable User save(@NonNull User user) {
+    public User save(@NonNull User user) {
         return crudRepository.save(user);
     }
 

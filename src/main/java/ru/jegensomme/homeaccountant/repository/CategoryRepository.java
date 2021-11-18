@@ -7,7 +7,7 @@ import ru.jegensomme.homeaccountant.model.Category;
 import java.util.List;
 
 public interface CategoryRepository {
-    @Nullable Category save(@NonNull Category category, int userId);
+    Category save(@NonNull Category category, int userId);
 
     boolean delete(int id, int userId);
 

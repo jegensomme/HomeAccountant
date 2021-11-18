@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ExpenseRepository {
-    @Nullable Expense save(@NonNull Expense expense, int userId);
+    Expense save(@NonNull Expense expense, int userId);
 
     boolean delete(int id, int userId);
 

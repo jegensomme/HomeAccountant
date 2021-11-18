@@ -31,13 +31,14 @@ public class ProfileUIController extends AbstractUserController {
     }
 
     @PostMapping
-    public String updateProfile(@Valid UserTo userTo, BindingResult result) {
+    public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status) {
         if (result.hasErrors()) {
             return "profile";
         }
         AuthorizedUser authUser = SecurityUtil.get();
         super.update(userTo, authUser.getId());
         authUser.update(userTo);
+        status.setComplete();
         return "redirect:/expenses";
     }
 

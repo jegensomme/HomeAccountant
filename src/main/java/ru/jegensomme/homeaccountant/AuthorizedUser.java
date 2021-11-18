@@ -14,7 +14,7 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
 
     public AuthorizedUser(User user) {
         super(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, user.getRoles());
-        this.userTo = UserUtil.asTo(user);
+        this.userTo = UserUtil.asToExceptPassword(user);
     }
 
     public int getId() {
@@ -22,7 +22,7 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     }
 
     public void update(UserTo newTo) {
-        userTo = newTo;
+        userTo = UserUtil.exceptPassword(newTo);
     }
 
     public UserTo getUserTo() {

@@ -82,7 +82,6 @@ public class UserServiceTest extends ServiceTestBase {
         validateRootCause(() -> service.create(new User(null, "  ", "mail@yandex.ru", "password", 10000, RUB, Role.USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "   ", "password", 10000, RUB, Role.USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "mail", "password", 10000, RUB, Role.USER)), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new User(null, "User", "mail@yandex.ru", "pswd", 10000, RUB, Role.USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "mail@yandex.ru", "password", -10, RUB, Role.USER)), ConstraintViolationException.class);
     }
 }

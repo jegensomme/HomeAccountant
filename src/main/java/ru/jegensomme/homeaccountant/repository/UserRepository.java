@@ -7,7 +7,7 @@ import ru.jegensomme.homeaccountant.model.User;
 import java.util.List;
 
 public interface UserRepository {
-    @Nullable User save(@NonNull User user);
+    User save(@NonNull User user);
 
     boolean delete(int id);
 

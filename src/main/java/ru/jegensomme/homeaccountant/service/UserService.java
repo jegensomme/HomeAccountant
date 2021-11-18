@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -19,8 +20,8 @@ import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.util.UserUtil;
 
 import java.util.List;
-import java.util.Objects;
 
+import static ru.jegensomme.homeaccountant.util.UserUtil.prepareToSave;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFound;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
 
@@ -30,10 +31,12 @@ import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWith
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
-        return Objects.requireNonNull(repository.save(user));
+        return prepareAndSave(user);
     }
 
     @Caching(evict = {
@@ -49,13 +52,13 @@ public class UserService implements UserDetailsService {
     public void update(UserTo userTo) {
         Assert.notNull(userTo, "user must not be null");
         User user = get(userTo.id());
-        UserUtil.updateFromTo(user, userTo);
+        prepareAndSave(UserUtil.updateFromTo(user, userTo));
     }
 
     @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        repository.save(user);
+        prepareAndSave(user);
     }
 
     public User get(int id) {
@@ -86,5 +89,9 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User " + email + " is not found");
         }
         return new AuthorizedUser(user);
+    }
+
+    private User prepareAndSave(User user) {
+        return repository.save(prepareToSave(user, passwordEncoder));
     }
 }

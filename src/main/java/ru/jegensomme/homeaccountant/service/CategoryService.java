@@ -9,7 +9,6 @@ import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.repository.CategoryRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFound;
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
@@ -22,7 +21,7 @@ public class CategoryService {
     @CacheEvict(value = "categories", key = "#userId")
     public Category create(Category category, int userId) {
         Assert.notNull(category, "category must not be null");
-        return Objects.requireNonNull(repository.save(category, userId));
+        return repository.save(category, userId);
     }
 
     @CacheEvict(value = "categories", key = "#userId")

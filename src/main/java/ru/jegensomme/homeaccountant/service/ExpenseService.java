@@ -13,7 +13,6 @@ import ru.jegensomme.homeaccountant.to.ExpenseTo;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 import static ru.jegensomme.homeaccountant.util.DateTimeUtil.atStartOfDayOrMin;
 import static ru.jegensomme.homeaccountant.util.DateTimeUtil.atStartOfNextDayOrMax;
@@ -29,14 +28,14 @@ public class ExpenseService {
 
     public Expense create(Expense expense, int userId) {
         Assert.notNull(expense, "expense must not be null");
-        return Objects.requireNonNull(repository.save(expense, userId));
+        return repository.save(expense, userId);
     }
 
     @Transactional
     public Expense create(ExpenseTo expenseTo, int userId) {
         Assert.notNull(expenseTo, "expense must not be null");
         Category category = StringUtils.hasText(expenseTo.getCategory()) ? categoryService.getByName(expenseTo.getCategory(), userId) : null;
-        return create(createNewFromTo(expenseTo, category), userId);
+        return repository.save(createNewFromTo(expenseTo, category), userId);
     }
 
     public void delete(int id, int userId) {

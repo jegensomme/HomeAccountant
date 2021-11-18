@@ -20,8 +20,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 
     @Transactional
     @Override
-    public @Nullable
-    Expense save(@NonNull Expense expense, int userId) {
+    public Expense save(@NonNull Expense expense, int userId) {
         if (!expense.isNew() && get(expense.id(), userId) == null) {
             return null;
         }

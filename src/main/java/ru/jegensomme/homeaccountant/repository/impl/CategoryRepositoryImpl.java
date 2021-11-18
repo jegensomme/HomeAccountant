@@ -19,7 +19,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Transactional
     @Override
-    public @Nullable Category save(@NonNull Category category, int userId) {
+    public Category save(@NonNull Category category, int userId) {
         if (!category.isNew() && get(category.id(), userId) == null) {
             return null;
         }

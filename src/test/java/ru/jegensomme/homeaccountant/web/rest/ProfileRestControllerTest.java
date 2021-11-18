@@ -12,7 +12,6 @@ import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.util.UserUtil;
 import ru.jegensomme.homeaccountant.web.AbstractControllerTest;
-import ru.jegensomme.homeaccountant.web.json.JsonUtil;
 
 import java.util.Objects;
 
@@ -46,10 +45,9 @@ class ProfileRestControllerTest extends AbstractControllerTest {
         User newUser = UserUtil.createNewFromTo(newTo);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + "/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newTo)))
+                .content(jsonWithPassword(newTo)))
                 .andDo(print())
                 .andExpect(status().isCreated());
-
         User created = readFromJson(action, User.class);
         int newId = Objects.requireNonNull(created.getId());
         newUser.setId(newId);
@@ -63,7 +61,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER))
-                .content(JsonUtil.writeValue(updated)))
+                .content(jsonWithPassword(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         USER_MATCHER.assertMatch(service.get(USER_ID), UserUtil.updateFromTo(new User(USER), updated));
@@ -90,7 +88,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
         UserTo newTo = new UserTo(null, "", "foo.ru", "", -10, null);
         perform(MockMvcRequestBuilders.post(REST_URL + "/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newTo)))
+                .content(jsonWithPassword(newTo)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(VALIDATION_ERROR));
@@ -98,11 +96,11 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        UserTo updatedTo = new UserTo(null, null, null, null, 1000, null);
+        UserTo updatedTo = new UserTo(null, null, null, "", 1000, null);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER))
-                .content(JsonUtil.writeValue(updatedTo)))
+                .content(jsonWithPassword(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(VALIDATION_ERROR));
@@ -115,7 +113,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER))
-                .content(JsonUtil.writeValue(updatedTo)))
+                .content(jsonWithPassword(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(VALIDATION_ERROR))
