@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.*;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
-import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER;
+import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
 import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN;
 import static ru.jegensomme.homeaccountant.util.TestUtil.*;
 import static ru.jegensomme.homeaccountant.util.exception.ErrorType.VALIDATION_ERROR;
@@ -137,6 +137,18 @@ class CategoryRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(CATEGORY_MATCHER.contentJson(USER_FOOD, USER_HOUSEHOLD));
+    }
+
+    @Test
+    void updateHtmlUnsafe() throws Exception {
+        Category updated = new Category(USER_FOOD_ID, "<script>alert(123)</script>");
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
     }
 
     @Test

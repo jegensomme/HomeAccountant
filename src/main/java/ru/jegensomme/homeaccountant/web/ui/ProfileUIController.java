@@ -15,6 +15,7 @@ import ru.jegensomme.homeaccountant.web.SecurityUtil;
 import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
 
 import javax.validation.Valid;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/profile")
@@ -33,6 +34,7 @@ public class ProfileUIController extends AbstractUserController {
     @PostMapping
     public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status) {
         if (result.hasErrors()) {
+            clearFieldsIfXss(userTo, result);
             return "profile";
         }
         AuthorizedUser authUser = SecurityUtil.get();
@@ -53,10 +55,18 @@ public class ProfileUIController extends AbstractUserController {
     public String saveRegister(@Valid UserTo userTo, BindingResult result, SessionStatus status, ModelMap model) {
         if (result.hasErrors()) {
             model.addAttribute("register", true);
+            clearFieldsIfXss(userTo, result);
             return "profile";
         }
         super.create(userTo);
         status.setComplete();
         return "redirect:/login?message=app.registered&username=" + userTo.getEmail();
+    }
+
+    private void clearFieldsIfXss(UserTo userTo, BindingResult result) {
+        if (result.getFieldErrors().stream().anyMatch(fe -> Objects.equals(fe.getCode(), "SafeHtml"))) {
+            userTo.setName("");
+            userTo.setEmail("");
+        }
     }
 }

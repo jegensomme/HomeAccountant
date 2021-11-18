@@ -87,7 +87,7 @@ public abstract class AbstractUserController {
         assureIdConsistent(user, id);
         DataBinder binder = new DataBinder(user);
         binder.addValidators(emailValidator, validator);
-        binder.validate(Default.class);
+        binder.validate(View.Web.class);
         if (binder.getBindingResult().hasErrors()) {
             throw new BindException(binder.getBindingResult());
         }

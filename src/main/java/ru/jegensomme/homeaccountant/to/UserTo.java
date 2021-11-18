@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.Authenticatable;
+import ru.jegensomme.homeaccountant.web.validators.SafeHtml;
 
 import javax.validation.constraints.*;
 import java.io.Serial;
@@ -22,11 +23,13 @@ public final class UserTo extends BaseTo implements Authenticatable, Serializabl
 
     @NotBlank
     @Size(min = 2, max = 100)
+    @SafeHtml
     private String name;
 
     @Email
     @NotBlank
     @Size(max = 100)
+    @SafeHtml
     private String email;
 
     @NotBlank

@@ -197,6 +197,18 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void updateHtmlUnsafe() throws Exception {
+        ExpenseTo updated = new ExpenseTo(EXPENSE1_ID, USER_FOOD.getName(), EXPENSE1.getDateTime(), 1000, "<script>alert(123)</script>");
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
+                .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
+    }
+
+    @Test
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
         ExpenseTo updatedTo = new ExpenseTo(EXPENSE1_ID, USER_FOOD.getName(), EXPENSE3.getDateTime(), 1000, "new");

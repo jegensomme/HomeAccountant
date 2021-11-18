@@ -107,10 +107,23 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void updateHtmlUnsafe() throws Exception {
+        UserTo updated = UserUtil.asTo(USER);
+        updated.setName("<script>alert(123)</script>");
+        perform(MockMvcRequestBuilders.put(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
+                .content(jsonWithPassword(updated, "password")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
+    }
+
+    @Test
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
-        UserTo updatedTo = new UserTo(null, "newName", "admin@gmail.com", "newPassword", 1500, RUB);
-
+        UserTo updatedTo = UserUtil.asTo(USER);
+        updatedTo.setEmail("admin@gmail.com");
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER))
                 .content(jsonWithPassword(updatedTo)))

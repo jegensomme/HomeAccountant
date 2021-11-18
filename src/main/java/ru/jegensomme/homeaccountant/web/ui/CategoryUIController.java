@@ -4,12 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.service.CategoryService;
 import ru.jegensomme.homeaccountant.web.AbstractCategoryController;
+import ru.jegensomme.homeaccountant.web.View;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class CategoryUIController extends AbstractCategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid Category category) {
+    public ResponseEntity<String> createOrUpdate(@Validated(View.Web.class) Category category) {
         if (category.isNew()) {
             super.create(category);
         } else {
