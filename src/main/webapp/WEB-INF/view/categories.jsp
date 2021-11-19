@@ -89,4 +89,12 @@
 <jsp:include page="fragments/i18n.jsp">
     <jsp:param name="page" value="category"/>
 </jsp:include>
+<script type="text/javascript">
+    i18n['period.day'] = '<spring:message code="period.day"/>';
+    i18n['period.week'] = '<spring:message code="period.week"/>';
+    i18n['period.decade'] = '<spring:message code="period.decade"/>';
+    i18n['period.month'] = '<spring:message code="period.month"/>';
+    i18n['period.half.year'] = '<spring:message code="period.half.year"/>';
+    i18n['period.year'] = '<spring:message code="period.year"/>';
+</script>
 </html>
