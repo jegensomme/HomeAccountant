@@ -51,6 +51,12 @@ $(function () {
         "columns": [
             {
                 "data": "category",
+                "render": function (data, type, row) {
+                    if (type === 'display') {
+                        return data === '' ? i18n["without.category"] : data;
+                    }
+                    return data
+                }
             },
             {
                 "data": "dateTime"
@@ -61,7 +67,7 @@ $(function () {
             {
                 "orderable": false,
                 "defaultContent": "",
-                "render": function (date, type, row) {
+                "render": function (data, type, row) {
                     if (type === 'display') {
                         return currency
                     }
@@ -149,7 +155,7 @@ function fillCategories() {
     $.get(categoryAjaxUrl, function (data) {
         let options = "";
         data.forEach(e => options += `<option value='${e.name}'>${e.name}</option>\n`);
-        $("#category").html("<option value=''></option>\n" + options);
+        $("#category").html("<option value=''>" + i18n["without.category"] + "</option>\n" + options);
         $("#categoryFilter").html(
             "<option value='all'>" + i18n["all.categories"] + "</option>\n" +
             "<option value=''>" + i18n["without.category"] + "</option>\n" + options
