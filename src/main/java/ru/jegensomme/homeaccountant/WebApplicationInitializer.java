@@ -11,7 +11,7 @@ import ru.jegensomme.homeaccountant.web.WebConfig;
 import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
-public class ApplicationInitializer extends AbstractDispatcherServletInitializer {
+public class WebApplicationInitializer extends AbstractDispatcherServletInitializer {
 
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {

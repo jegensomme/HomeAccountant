@@ -17,6 +17,8 @@ import org.springframework.jndi.JndiTemplate;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Configuration
 public abstract class DatabaseConfig {
@@ -28,7 +30,7 @@ public abstract class DatabaseConfig {
     }
 
     @Configuration
-    @Profile({"postgres", "heroku"})
+    @Profile("postgres")
     @PropertySource(value={"classpath:db/postgres.properties"}, ignoreResourceNotFound = true)
     public static class PostgresConfig extends DatabaseConfig {
         @Value("${database.url}")
@@ -46,7 +48,7 @@ public abstract class DatabaseConfig {
         private boolean initializerEnabled;
 
         @Bean
-        public DataSource dataSource() {
+        public org.apache.tomcat.jdbc.pool.DataSource dataSource() {
             return new org.apache.tomcat.jdbc.pool.DataSource(getDataSourceProperties());
         }
 
@@ -72,6 +74,52 @@ public abstract class DatabaseConfig {
             properties.setUrl(url);
             properties.setUsername(username);
             properties.setPassword(password);
+            return properties;
+        }
+    }
+
+    @Configuration
+    @Profile("heroku")
+    @PropertySource(value={"classpath:db/heroku.properties"}, ignoreResourceNotFound = true)
+    public static class HerokuConfig extends DatabaseConfig {
+
+        @Value("${DATABASE_URL}")
+        private String databaseUrl;
+
+        @Bean
+        public URI dbURL() throws URISyntaxException {
+            return new URI(databaseUrl);
+        }
+
+        @Value("#{ 'jdbc:postgresql://' + @dbURL.getHost() + @dbURL.getPath() }")
+        private String url;
+        @Value("#{ @dbURL.getUserInfo().split(':')[0] }")
+        private String username;
+        @Value("#{ @dbURL.getUserInfo().split(':')[1] }")
+        private String password;
+
+        @Bean
+        public org.apache.tomcat.jdbc.pool.DataSource dataSource() {
+            return new org.apache.tomcat.jdbc.pool.DataSource(getDataSourceProperties());
+        }
+
+        private PoolProperties getDataSourceProperties() {
+            PoolProperties properties = new PoolProperties();
+            properties.setDriverClassName(Driver.class.getName());
+            properties.setUrl(url);
+            properties.setUsername(username);
+            properties.setPassword(password);
+            properties.setDriverClassName(Driver.class.getName());
+            properties.setValidationQuery("SELECT 1");
+            properties.setMaxActive(10);
+            properties.setMaxIdle(2);
+            properties.setMaxWait(20000);
+            properties.setInitialSize(2);
+            properties.setMaxIdle(5);
+            properties.setTestOnBorrow(true);
+            properties.setRemoveAbandoned(true);
+            properties.setTestOnConnect(true);
+            properties.setTestWhileIdle(true);
             return properties;
         }
     }

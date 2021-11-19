@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         WebConfig.class
 })
 @Transactional
-@ActiveProfiles("postgres")
+//@ActiveProfiles("postgres")
 public class AbstractControllerTest {
     private static final Locale RU_LOCALE = new Locale("en");
     private static final CharacterEncodingFilter ENCODING_FILTER = new CharacterEncodingFilter() {{
