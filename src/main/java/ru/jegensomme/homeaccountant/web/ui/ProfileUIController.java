@@ -1,5 +1,6 @@
 package ru.jegensomme.homeaccountant.web.ui;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -11,7 +12,6 @@ import ru.jegensomme.homeaccountant.AuthorizedUser;
 import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.web.AbstractUserController;
-import ru.jegensomme.homeaccountant.web.SecurityUtil;
 import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
 
 import javax.validation.Valid;
@@ -26,18 +26,17 @@ public class ProfileUIController extends AbstractUserController {
     }
 
     @GetMapping
-    public String profile(ModelMap model) {
-        model.addAttribute("userTo", SecurityUtil.get().getUserTo());
+    public String profile(ModelMap model, @AuthenticationPrincipal AuthorizedUser authUser) {
+        model.addAttribute("userTo", authUser.getUserTo());
         return "profile";
     }
 
     @PostMapping
-    public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status) {
+    public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status, @AuthenticationPrincipal AuthorizedUser authUser) {
         if (result.hasErrors()) {
             clearFieldsIfXss(userTo, result);
             return "profile";
         }
-        AuthorizedUser authUser = SecurityUtil.get();
         super.update(userTo, authUser.getId());
         authUser.update(userTo);
         status.setComplete();
