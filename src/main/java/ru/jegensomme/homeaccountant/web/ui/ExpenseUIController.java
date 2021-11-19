@@ -10,12 +10,14 @@ import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
 import ru.jegensomme.homeaccountant.web.AbstractExpenseController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+@ApiIgnore
 @RestController
 @RequestMapping(value = "/profile/expenses", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExpenseUIController extends AbstractExpenseController {

@@ -22,11 +22,14 @@ import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertors;
 import ru.jegensomme.homeaccountant.util.converter.DateTimeFormatters;
 import ru.jegensomme.homeaccountant.util.converter.PeriodConvertors;
 import ru.jegensomme.homeaccountant.web.json.JacksonObjectMapper;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 
 import java.util.List;
 import java.util.Locale;
 
 @EnableWebMvc
+@EnableSwagger2
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @ComponentScan("ru.jegensomme.homeaccountant.web")
@@ -45,7 +48,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**", "/webjars/**").addResourceLocations("/resources/", "classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/resources/**", "/webjars/**", "swagger-ui.html").addResourceLocations("/resources/", "classpath:/META-INF/resources/webjars/", "classpath:/META-INF/resources/");
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 
@@ -65,6 +68,11 @@ public class WebConfig implements WebMvcConfigurer {
                 MediaType.valueOf("text/plain;charset=UTF-8"),
                 MediaType.valueOf("text/html;charset=UTF-8")));
         converters.add(stringHttpMessageConverter);
+    }
+
+    @Bean
+    public Swagger2DocumentationConfiguration swagger2DocumentationConfiguration() {
+        return new Swagger2DocumentationConfiguration();
     }
 
     @Override

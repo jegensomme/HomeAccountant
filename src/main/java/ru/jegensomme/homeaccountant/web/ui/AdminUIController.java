@@ -10,10 +10,12 @@ import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.web.AbstractUserController;
 import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@ApiIgnore
 @RestController
 @RequestMapping(value = "/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminUIController extends AbstractUserController {

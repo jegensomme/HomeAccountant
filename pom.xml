@@ -45,11 +45,11 @@
     <jsoup.version>1.14.3</jsoup.version>
     <javax-el.version>3.0.1-b12</javax-el.version>
 
-    <!--Cache-->
+    <!-- Cache -->
     <javax.cache.version>1.1.1</javax.cache.version>
     <ehcache.version>3.9.7</ehcache.version>
 
-    <!--WEB-->
+    <!-- WEB -->
     <tomcat.version>9.0.39</tomcat.version>
 
     <!--webjars-->
@@ -254,6 +254,18 @@
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
       <scope>provided</scope>
+    </dependency>
+
+    <!-- Swagger -->
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>2.9.2</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>2.9.2</version>
     </dependency>
 
     <!-- Webjars (static dependencies distributed as JAR files) -->

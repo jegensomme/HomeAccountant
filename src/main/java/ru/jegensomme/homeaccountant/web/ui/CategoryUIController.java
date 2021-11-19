@@ -10,9 +10,11 @@ import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.service.CategoryService;
 import ru.jegensomme.homeaccountant.web.AbstractCategoryController;
 import ru.jegensomme.homeaccountant.web.View;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
+@ApiIgnore
 @RestController
 @RequestMapping(value = "/profile/categories", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoryUIController extends AbstractCategoryController {

@@ -13,10 +13,12 @@ import ru.jegensomme.homeaccountant.service.UserService;
 import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.web.AbstractUserController;
 import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.Objects;
 
+@ApiIgnore
 @Controller
 @RequestMapping("/profile")
 public class ProfileUIController extends AbstractUserController {
