@@ -28,7 +28,7 @@ public abstract class DatabaseConfig {
     }
 
     @Configuration
-    @Profile("postgres")
+    @Profile({"postgres", "heroku"})
     @PropertySource(value={"classpath:db/postgres.properties"}, ignoreResourceNotFound = true)
     public static class PostgresConfig extends DatabaseConfig {
         @Value("${database.url}")
