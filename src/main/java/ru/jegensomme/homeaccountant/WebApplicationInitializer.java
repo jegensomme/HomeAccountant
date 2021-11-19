@@ -21,7 +21,7 @@ public class WebApplicationInitializer extends AbstractDispatcherServletInitiali
     @Override
     protected WebApplicationContext createRootApplicationContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.getEnvironment().setActiveProfiles("postgres");
+        context.getEnvironment().setDefaultProfiles("postgres");
         context.register(ApplicationConfig.class);
         return context;
     }
