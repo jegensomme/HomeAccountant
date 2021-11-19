@@ -9,8 +9,15 @@ import ru.jegensomme.homeaccountant.config.ApplicationConfig;
 import ru.jegensomme.homeaccountant.web.WebConfig;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletRegistration;
 
 public class ApplicationInitializer extends AbstractDispatcherServletInitializer {
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+    }
+
     @Override
     protected WebApplicationContext createRootApplicationContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
