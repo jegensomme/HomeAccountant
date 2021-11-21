@@ -18,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import ru.jegensomme.homeaccountant.util.converter.CurrencyConvertors;
 import ru.jegensomme.homeaccountant.util.converter.DateTimeFormatters;
 import ru.jegensomme.homeaccountant.util.converter.PeriodConvertors;
 import ru.jegensomme.homeaccountant.web.json.JacksonObjectMapper;
@@ -56,7 +55,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new DateTimeFormatters.LocalDateFormatter());
         registry.addFormatter(new DateTimeFormatters.LocalTimeFormatter());
-        registry.addFormatter(new CurrencyConvertors.Formatter());
         registry.addFormatter(new PeriodConvertors.Formatter());
     }
 
