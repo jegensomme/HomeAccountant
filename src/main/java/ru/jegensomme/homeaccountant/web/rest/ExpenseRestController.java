@@ -13,6 +13,7 @@ import ru.jegensomme.homeaccountant.to.ExpenseTo;
 import ru.jegensomme.homeaccountant.web.AbstractExpenseController;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -75,5 +76,10 @@ public class ExpenseRestController extends AbstractExpenseController {
         return category == null ? super.getBetween(startDate, startTime, endDate, endTime)
                 : "".equals(category) ? super.getWithoutCategoryBetween(startDate, startTime, endDate, endTime)
                 : super.getByCategoryBetween(category, startDate, startTime, endDate, endTime);
+    }
+
+    @GetMapping("/month-total")
+    public BigDecimal getTotalAmountForCurrentMonth() {
+        return super.getTotalAmountForCurrentMonth();
     }
 }

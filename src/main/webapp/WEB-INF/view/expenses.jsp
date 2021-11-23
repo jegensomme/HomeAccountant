@@ -80,7 +80,21 @@
                 <th></th>
             </tr>
             </thead>
+            <tfoot>
+            <tr>
+                <th colspan="2"><spring:message code="expense.total.amount"/></th>
+                <th id="totalAmount"></th>
+                <th><sec:authentication property="principal.userTo.currency"/></th>
+            </tr>
+            </tfoot>
         </table>
+        <br/>
+        <div id="monthTotalPanel" class="alert my-alert">
+            <spring:message code="expense.month.amount.title"/>
+            <label for="monthTotal"></label>
+            <input id="monthTotal" type="text" disabled="disabled">
+            <sec:authentication property="principal.userTo.currency"/>
+        </div>
     </div>
 </div>
 

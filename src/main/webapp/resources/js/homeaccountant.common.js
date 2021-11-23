@@ -10,8 +10,16 @@ function makeEditable(datatableOpts) {
                     "dataSrc": ""
                 },
                 "scrollCollapse": true,
-                "paging": false,
-                "info": true
+                "paging": true,
+                "info": false,
+                "language": {
+                    "search": i18n["common.search"],
+                    "lengthMenu": i18n["common.lengthMenu"],
+                    "paginate": {
+                        "next": i18n["common.next"],
+                        "previous": i18n["common.previous"]
+                    },
+                }
             }
         ));
 

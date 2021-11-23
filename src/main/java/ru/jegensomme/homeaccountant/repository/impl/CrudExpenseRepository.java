@@ -8,6 +8,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.Expense;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -66,4 +67,10 @@ public interface CrudExpenseRepository extends JpaRepository<Expense, Integer> {
     List<Expense> getWithoutCategoryBetween(@Param("userId") int userId,
                                             @Param("start") @NonNull LocalDateTime startInclusive,
                                             @Param("end") @NonNull LocalDateTime endExclusive);
+
+    @Query(value = """
+        SELECT sum(e.amount) FROM EXPENSES e
+        WHERE user_id=:userId AND date_trunc('month', e.date_time) = date_trunc('month', CURRENT_DATE)
+        """, nativeQuery = true)
+    BigDecimal getTotalAmountForCurrentMonth(@Param("userId") int userId);
 }

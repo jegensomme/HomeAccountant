@@ -11,6 +11,7 @@ import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.repository.ExpenseRepository;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -94,5 +95,9 @@ public class ExpenseService {
         return repository.getWithoutCategoryBetween(userId,
                 atStartOfDayOrMin(startInclusive),
                 atStartOfNextDayOrMax(endExclusive));
+    }
+
+    public BigDecimal getTotalAmountForCurrentMonth(int userId) {
+        return repository.getTotalAmountForCurrentMonth(userId);
     }
 }

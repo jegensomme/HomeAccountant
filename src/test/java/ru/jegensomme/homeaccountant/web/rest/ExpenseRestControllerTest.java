@@ -10,13 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
+import ru.jegensomme.homeaccountant.util.TestUtil;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 import ru.jegensomme.homeaccountant.web.AbstractControllerTest;
 import ru.jegensomme.homeaccountant.web.json.JsonUtil;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 
 import static java.time.LocalDateTime.of;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -194,6 +199,21 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE5)));
+    }
+
+    @Test
+    public void testTotalAmountForCurrentMonth() throws Exception {
+        LocalDate now = LocalDate.now();
+        LocalDateTime start = LocalDateTime.of(now.getYear(), now.getMonth(), 1, 0, 0);
+        service.create(new Expense(null, start, 1000, "new"), USER_ID);
+        service.create(new Expense(null, start.plusDays(1), 2000, "new"), USER_ID);
+        service.create(new Expense(null, start.plusDays(2), 3000, "new"), USER_ID);
+        perform(MockMvcRequestBuilders.get(REST_URL + "month-total")
+                .with(userHttpBasic(USER)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertEquals(BigDecimal.valueOf(6000.), TestUtil.readFromJsonMvcResult(result, BigDecimal.class)));
     }
 
     @Test

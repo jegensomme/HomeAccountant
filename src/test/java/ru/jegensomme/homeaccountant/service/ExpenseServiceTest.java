@@ -8,10 +8,12 @@ import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.USER_FOOD;
 import static ru.jegensomme.homeaccountant.testdata.ExpenseTestData.*;
@@ -122,6 +124,16 @@ public class ExpenseServiceTest extends ServiceTestBase {
                         LocalDate.of(2021, Month.FEBRUARY, 1),
                         LocalDate.of(2021, Month.FEBRUARY, 27)), EXPENSE5
         );
+    }
+
+    @Test
+    public void testTotalAmountForCurrentMonth() {
+        LocalDate now = LocalDate.now();
+        LocalDateTime start = LocalDateTime.of(now.getYear(), now.getMonth(), 1, 0, 0);
+        service.create(new Expense(null, start, 1000, "new"), USER_ID);
+        service.create(new Expense(null, start.plusDays(1), 2000, "new"), USER_ID);
+        service.create(new Expense(null, start.plusDays(2), 3000, "new"), USER_ID);
+        assertEquals(BigDecimal.valueOf(6000.), service.getTotalAmountForCurrentMonth(USER_ID));
     }
 
     @Test

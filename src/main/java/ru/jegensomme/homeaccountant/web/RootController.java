@@ -1,8 +1,11 @@
 package ru.jegensomme.homeaccountant.web;
 
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import ru.jegensomme.homeaccountant.AuthorizedUser;
 import springfox.documentation.annotations.ApiIgnore;
 
 @ApiIgnore
@@ -20,7 +23,8 @@ public class RootController {
     }
 
     @GetMapping("/expenses")
-    public String getExpenses() {
+    public String getExpenses(Model model, @AuthenticationPrincipal AuthorizedUser authUser) {
+        model.addAttribute("monthlyLimit", authUser.getUserTo().getMonthlyLimit());
         return "expenses";
     }
 

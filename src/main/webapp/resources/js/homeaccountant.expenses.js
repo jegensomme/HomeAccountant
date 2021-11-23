@@ -15,6 +15,8 @@ const ctx = {
             data: $("#filter").serialize()
                 + (selectedCategory === "all" ? "" : "&category=" + selectedCategory)
         }).done(updateTableByData);
+        $("#totalAmount").html(ctx.datatableApi.column(2).data().sum());
+        updateMonthTotal();
     }
 };
 
@@ -92,7 +94,10 @@ $(function () {
                 0,
                 "asc"
             ]
-        ]
+        ],
+        "initComplete": function(settings, json) {
+            $("#totalAmount").html(ctx.datatableApi.column(2).data().sum());
+        }
     });
 
     $.datetimepicker.setLocale(localeCode);
@@ -147,6 +152,8 @@ $(function () {
 
     fillCategories();
 
+    updateMonthTotal();
+
     categoryFilter = $("#categoryFilter");
 });
 
@@ -160,6 +167,13 @@ function fillCategories() {
             "<option value='all'>" + i18n["all.categories"] + "</option>\n" +
             "<option value=''>" + i18n["without.category"] + "</option>\n" + options
         );
+    });
+}
+
+function updateMonthTotal() {
+    $.get(expenseAjaxUrl + "month-total", function (data) {
+        $("#monthTotal").val(data);
+        $("#monthTotalPanel").attr("data-monthlyLimitExcess", data > monthlyLimit)
     });
 }
 

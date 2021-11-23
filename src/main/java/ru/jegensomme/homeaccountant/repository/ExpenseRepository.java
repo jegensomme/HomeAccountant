@@ -4,6 +4,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.model.Expense;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,4 +32,6 @@ public interface ExpenseRepository {
     List<Expense> getWithoutCategoryBetween(int userId,
                                             @NonNull LocalDateTime startInclusive,
                                             @NonNull LocalDateTime endExclusive);
+
+    BigDecimal getTotalAmountForCurrentMonth(int userId);
 }

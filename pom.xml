@@ -284,6 +284,12 @@
     </dependency>
     <dependency>
       <groupId>org.webjars</groupId>
+      <artifactId>datatables-plugins</artifactId>
+      <version>${webjars-datatables.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
       <artifactId>datetimepicker</artifactId>
       <version>${webjars-datetimepicker.version}</version>
     </dependency>

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.repository.ExpenseRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -78,5 +79,10 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
                                                    @NonNull LocalDateTime startInclusive,
                                                    @NonNull LocalDateTime endExclusive) {
         return crudRepository.getWithoutCategoryBetween(userId, startInclusive, endExclusive);
+    }
+
+    @Override
+    public BigDecimal getTotalAmountForCurrentMonth(int userId) {
+        return crudRepository.getTotalAmountForCurrentMonth(userId);
     }
 }

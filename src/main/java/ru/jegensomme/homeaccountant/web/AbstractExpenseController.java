@@ -9,6 +9,7 @@ import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -113,5 +114,11 @@ public class AbstractExpenseController {
         int userId = SecurityUtil.authUserId();
         log.info("getWithoutCategoryBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
         return filter(service.getWithoutCategoryBetween(userId, startDate, endDate), startTime, endTime);
+    }
+
+    public BigDecimal getTotalAmountForCurrentMonth() {
+        int userId = SecurityUtil.authUserId();
+        log.info("getTotalAmountForCurrentMonth for user {}", userId);
+        return service.getTotalAmountForCurrentMonth(userId);
     }
 }

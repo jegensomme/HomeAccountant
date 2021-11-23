@@ -10,9 +10,11 @@ import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
 import ru.jegensomme.homeaccountant.web.AbstractExpenseController;
+import ru.jegensomme.homeaccountant.web.SecurityUtil;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -66,5 +68,10 @@ public class ExpenseUIController extends AbstractExpenseController {
         return category == null ? super.getBetween(startDate, startTime, endDate, endTime)
                 : "".equals(category) ? super.getWithoutCategoryBetween(startDate, startTime, endDate, endTime)
                 : super.getByCategoryBetween(category, startDate, startTime, endDate, endTime);
+    }
+
+    @GetMapping("/month-total")
+    public BigDecimal getTotalAmountForCurrentMonth() {
+        return super.getTotalAmountForCurrentMonth();
     }
 }

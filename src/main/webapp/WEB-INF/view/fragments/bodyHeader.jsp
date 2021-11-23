@@ -58,5 +58,10 @@
     </div>
 </nav>
 <script type="text/javascript">
-    var localeCode = "${pageContext.response.locale}";
+    const localeCode = "${pageContext.response.locale}";
 </script>
+<sec:authorize access="isAuthenticated()">
+    <script type="text/javascript">
+        const monthlyLimit = "${monthlyLimit}";
+    </script>
+</sec:authorize>
