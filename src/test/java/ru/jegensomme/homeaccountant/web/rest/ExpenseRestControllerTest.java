@@ -81,7 +81,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createInvalid() throws Exception {
-        Expense invalid = new Expense(null, null, null, "");
+        ExpenseTo invalid = new ExpenseTo(null, null, null, null, "");
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid))
@@ -93,7 +93,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        Expense invalid = new Expense(ADMIN_EXPENSE1_ID, null, -10, "");
+        ExpenseTo invalid = new ExpenseTo(ADMIN_EXPENSE1_ID, "", null, -10, "");
         perform(MockMvcRequestBuilders.put(REST_URL + ADMIN_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid))

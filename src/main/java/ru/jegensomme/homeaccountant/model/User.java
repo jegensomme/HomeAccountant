@@ -13,6 +13,7 @@ import javax.validation.constraints.*;
 
 import javax.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Getter
@@ -47,7 +48,7 @@ public class User extends NamedEntity implements Authenticatable {
 
     @Column(name = "monthly_limit")
     @Min(0)
-    private Integer monthlyLimit;
+    private BigDecimal monthlyLimit;
 
     @Column(name = "currency")
     @NotNull
@@ -72,14 +73,24 @@ public class User extends NamedEntity implements Authenticatable {
                 String password,
                 Currency currency,
                 Role role, Role... roles) {
-        this(id, name, email, password, null, currency, role, roles);
+        this(id, name, email, password, true, null, null, currency, EnumSet.of(role, roles));
     }
 
     public User(Integer id,
                 String name,
                 String email,
                 String password,
-                Integer monthlyLimit,
+                double monthlyLimit,
+                Currency currency,
+                Role role, Role... roles) {
+        this(id, name, email, password, true, null, BigDecimal.valueOf(monthlyLimit), currency, EnumSet.of(role, roles));
+    }
+
+    public User(Integer id,
+                String name,
+                String email,
+                String password,
+                BigDecimal monthlyLimit,
                 Currency currency,
                 Role role, Role... roles) {
         this(id, name, email, password, true, null, monthlyLimit, currency, EnumSet.of(role, roles));
@@ -91,7 +102,7 @@ public class User extends NamedEntity implements Authenticatable {
                 String password,
                 boolean enabled,
                 Date registered,
-                Integer monthlyLimit,
+                BigDecimal monthlyLimit,
                 Currency currency,
                 Set<Role> roles) {
         super(id, name);
@@ -106,6 +117,14 @@ public class User extends NamedEntity implements Authenticatable {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles.isEmpty() ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
+
+    public void setMonthlyLimit(BigDecimal monthlyLimit) {
+        this.monthlyLimit = monthlyLimit;
+    }
+
+    public void setMonthlyLimit(double monthlyLimit) {
+        this.monthlyLimit = BigDecimal.valueOf(monthlyLimit);
     }
 
     @Override

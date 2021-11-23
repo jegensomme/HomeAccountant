@@ -2,13 +2,13 @@ package ru.jegensomme.homeaccountant.to;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.Authenticatable;
 import ru.jegensomme.homeaccountant.web.validators.SafeHtml;
 
 import javax.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Currency;
 
 import static ru.jegensomme.homeaccountant.util.UserUtil.DEFAULT_CURRENCY;
@@ -38,20 +38,29 @@ public final class UserTo extends BaseTo implements Authenticatable, Serializabl
     private String password;
 
     @Min(0)
-    private @Nullable Integer monthlyLimit = null;
+    private BigDecimal monthlyLimit = null;
 
     @NotNull
     private Currency currency = DEFAULT_CURRENCY;
 
-    public UserTo(@Nullable Integer id, String name, String email, String password) {
+    public UserTo(Integer id, String name, String email, String password) {
         this(id, name, email, password, null, DEFAULT_CURRENCY);
     }
 
-    public UserTo(@Nullable Integer id,
+    public UserTo(Integer id,
                   String name,
                   String email,
                   String password,
-                  @Nullable Integer monthlyLimit,
+                  double monthlyLimit,
+                  Currency currency) {
+        this(id, name, email, password, BigDecimal.valueOf(monthlyLimit), currency);
+    }
+
+    public UserTo(Integer id,
+                  String name,
+                  String email,
+                  String password,
+                  BigDecimal monthlyLimit,
                   Currency currency) {
         super(id);
         this.name = name;

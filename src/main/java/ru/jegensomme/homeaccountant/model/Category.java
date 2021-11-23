@@ -12,6 +12,7 @@ import ru.jegensomme.homeaccountant.web.View;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -22,7 +23,7 @@ import javax.validation.constraints.NotNull;
 })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@LimitPeriodConsistent(groups = View.Web.class)
+@LimitPeriodConsistent
 public class Category extends NamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,7 +35,7 @@ public class Category extends NamedEntity {
     @Column(name = "\"limit\"")
     @Min(1)
     @JsonInclude
-    private Integer limit;
+    private BigDecimal limit;
 
     @Embedded
     @AttributeOverrides({
@@ -50,7 +51,14 @@ public class Category extends NamedEntity {
 
     public Category(Integer id,
                     String name,
-                    Integer limit,
+                    double limit,
+                    Period period) {
+        this(id, name, BigDecimal.valueOf(limit), period);
+    }
+
+    public Category(Integer id,
+                    String name,
+                    BigDecimal limit,
                     Period period) {
         super(id, name);
         this.limit = limit;

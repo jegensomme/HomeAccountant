@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -37,7 +38,7 @@ public class Expense extends BaseEntity {
     @Column(name = "amount")
     @NotNull
     @Min(0)
-    private Integer amount;
+    private BigDecimal amount;
 
     @Column(name = "description")
     @NotBlank
@@ -46,7 +47,7 @@ public class Expense extends BaseEntity {
 
     public Expense(Integer id,
                    LocalDateTime dateTime,
-                   Integer amount,
+                   double amount,
                    String description) {
         this(id, null, dateTime, amount, description);
     }
@@ -54,7 +55,15 @@ public class Expense extends BaseEntity {
     public Expense(Integer id,
                    Category category,
                    LocalDateTime dateTime,
-                   Integer amount,
+                   double amount,
+                   String description) {
+        this(id, category, dateTime, BigDecimal.valueOf(amount), description);
+    }
+
+    public Expense(Integer id,
+                   Category category,
+                   LocalDateTime dateTime,
+                   BigDecimal amount,
                    String description) {
         super(id);
         this.category = category;

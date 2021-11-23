@@ -1,26 +1,25 @@
 package ru.jegensomme.homeaccountant.to;
 
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.Identified;
 
 import java.util.Objects;
 
 @NoArgsConstructor
 public abstract class BaseTo implements Identified {
-    protected @Nullable Integer id;
+    protected Integer id;
 
-    public BaseTo(@Nullable Integer id) {
+    public BaseTo(Integer id) {
         this.id = id;
     }
 
     @Override
-    public @Nullable Integer getId() {
+    public Integer getId() {
         return id;
     }
 
     @Override
-    public void setId(@Nullable Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

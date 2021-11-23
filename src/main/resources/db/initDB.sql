@@ -14,7 +14,7 @@ CREATE TABLE users
     password         VARCHAR                           NOT NULL,
     enabled          BOOLEAN                           NOT NULL,
     registered       TIMESTAMP           DEFAULT now() NOT NULL,
-    monthly_limit    INTEGER,
+    monthly_limit    DECIMAL             CHECK ( monthly_limit >= 0 ),
     currency         VARCHAR                           NOT NULL
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE categories
     id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     user_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     name          VARCHAR NOT NULL,
-    "limit"       INTEGER CHECK ( "limit" > 0 ),
+    "limit"       DECIMAL CHECK ( "limit" >= 0 ),
     period_number INTEGER CHECK ( period_number > 0 ),
     period_unit   VARCHAR
 );
@@ -45,7 +45,7 @@ CREATE TABLE expenses
     user_id     INTEGER   NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     category_id INTEGER            REFERENCES categories(id) ON DELETE SET NULL,
     date_time   TIMESTAMP NOT NULL,
-    amount      INTEGER   NOT NULL CHECK ( expenses.amount >= 0 ),
+    amount      DECIMAL   NOT NULL CHECK ( amount >= 0 ),
     description VARCHAR   NOT NULL
 );
 
