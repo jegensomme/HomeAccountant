@@ -50,7 +50,7 @@ $(function () {
     makeEditable({
         "columns": [
             {
-                "data": "category",
+                "data": "categoryName",
                 "render": function (data, type, row) {
                     if (type === 'display') {
                         return data === '' ? i18n["without.category"] : data;

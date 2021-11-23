@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.Authenticatable;
 import ru.jegensomme.homeaccountant.web.View;
 import ru.jegensomme.homeaccountant.web.validators.SafeHtml;
@@ -48,7 +47,7 @@ public class User extends NamedEntity implements Authenticatable {
 
     @Column(name = "monthly_limit")
     @Min(0)
-    private @Nullable Integer monthlyLimit;
+    private Integer monthlyLimit;
 
     @Column(name = "currency")
     @NotNull
@@ -67,7 +66,7 @@ public class User extends NamedEntity implements Authenticatable {
         this(user.id, user.name, user.email, user.password, user.enabled, user.registered, user.monthlyLimit, user.currency, user.roles);
     }
 
-    public User(@Nullable Integer id,
+    public User(Integer id,
                 String name,
                 String email,
                 String password,
@@ -76,23 +75,23 @@ public class User extends NamedEntity implements Authenticatable {
         this(id, name, email, password, null, currency, role, roles);
     }
 
-    public User(@Nullable Integer id,
+    public User(Integer id,
                 String name,
                 String email,
                 String password,
-                @Nullable Integer monthlyLimit,
+                Integer monthlyLimit,
                 Currency currency,
                 Role role, Role... roles) {
         this(id, name, email, password, true, null, monthlyLimit, currency, EnumSet.of(role, roles));
     }
 
-    public User(@Nullable Integer id,
+    public User(Integer id,
                 String name,
                 String email,
                 String password,
                 boolean enabled,
-                @Nullable Date registered,
-                @Nullable Integer monthlyLimit,
+                Date registered,
+                Integer monthlyLimit,
                 Currency currency,
                 Set<Role> roles) {
         super(id, name);

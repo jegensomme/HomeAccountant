@@ -5,6 +5,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import ru.jegensomme.homeaccountant.Authenticatable;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.service.UserService;
@@ -15,7 +16,7 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class UniqueMailValidator implements org.springframework.validation.Validator {
+public class UniqueMailValidator implements Validator {
 
     private final UserService service;
 

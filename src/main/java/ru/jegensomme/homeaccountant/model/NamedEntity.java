@@ -1,7 +1,6 @@
 package ru.jegensomme.homeaccountant.model;
 
 import lombok.*;
-import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.web.View;
 import ru.jegensomme.homeaccountant.web.validators.SafeHtml;
 
@@ -22,7 +21,7 @@ public abstract class NamedEntity extends BaseEntity {
     @SafeHtml(groups = View.Web.class)
     protected String name;
 
-    public NamedEntity(@Nullable Integer id, String name) {
+    public NamedEntity(Integer id, String name) {
         super(id);
         this.name = name;
     }

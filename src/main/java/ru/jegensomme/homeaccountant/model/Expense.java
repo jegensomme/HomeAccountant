@@ -3,9 +3,6 @@ package ru.jegensomme.homeaccountant.model;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -27,11 +24,11 @@ public class Expense extends BaseEntity {
     @JoinColumn(name = "user_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private @Nullable User user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private @Nullable Category category;
+    private Category category;
 
     @Column(name = "date_time")
     @NotNull
@@ -47,15 +44,15 @@ public class Expense extends BaseEntity {
     @Size(min = 2, max = 120)
     private String description;
 
-    public Expense(@Nullable Integer id,
+    public Expense(Integer id,
                    LocalDateTime dateTime,
                    Integer amount,
                    String description) {
         this(id, null, dateTime, amount, description);
     }
 
-    public Expense(@Nullable Integer id,
-                   @Nullable Category category,
+    public Expense(Integer id,
+                   Category category,
                    LocalDateTime dateTime,
                    Integer amount,
                    String description) {

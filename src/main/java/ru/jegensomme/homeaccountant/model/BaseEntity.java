@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.Identified;
 
@@ -23,9 +22,9 @@ public abstract class BaseEntity implements Identified {
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    protected @Nullable Integer id;
+    protected Integer id;
 
-    public BaseEntity (@Nullable Integer id) {
+    public BaseEntity (Integer id) {
         this.id = id;
     }
 
