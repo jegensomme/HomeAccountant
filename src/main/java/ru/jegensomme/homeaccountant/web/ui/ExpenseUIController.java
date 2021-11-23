@@ -26,7 +26,7 @@ public class ExpenseUIController extends AbstractExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid ExpenseTo expenseTo) {
+    public ResponseEntity<String> createOrUpdate(@Valid @ModelAttribute("expense") ExpenseTo expenseTo) {
         if (expenseTo.isNew()) {
             super.create(expenseTo);
         } else {

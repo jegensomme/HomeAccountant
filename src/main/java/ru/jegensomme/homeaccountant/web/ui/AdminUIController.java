@@ -24,7 +24,7 @@ public class AdminUIController extends AbstractUserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo) {
+    public ResponseEntity<String> createOrUpdate(@Valid @ModelAttribute("user") UserTo userTo) {
         if (userTo.isNew()) {
             super.create(userTo);
         } else {

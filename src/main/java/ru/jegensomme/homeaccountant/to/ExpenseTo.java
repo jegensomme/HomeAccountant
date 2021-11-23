@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 public class ExpenseTo extends BaseTo {
 
     @NotNull
-    private String categoryName;
+    private String category;
 
     @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
@@ -38,12 +38,12 @@ public class ExpenseTo extends BaseTo {
     private String description;
 
     public ExpenseTo(@Nullable Integer id,
-                     String categoryName,
+                     String category,
                      LocalDateTime dateTime,
                      Integer amount,
                      String description) {
         super(id);
-        this.categoryName = categoryName;
+        this.category = category;
         this.dateTime = dateTime;
         this.amount = amount;
         this.description = description;
@@ -53,7 +53,7 @@ public class ExpenseTo extends BaseTo {
     public String toString() {
         return "ExpenseTo{" +
                 "id=" + id +
-                ", categoryName=" + categoryName +
+                ", category=" + category +
                 ", dateTime=" + dateTime +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +

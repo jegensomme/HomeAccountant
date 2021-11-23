@@ -34,7 +34,7 @@ public class ExpenseService {
     @Transactional
     public Expense create(ExpenseTo expenseTo, int userId) {
         Assert.notNull(expenseTo, "expense must not be null");
-        Category category = StringUtils.hasText(expenseTo.getCategoryName()) ? categoryService.getByName(expenseTo.getCategoryName(), userId) : null;
+        Category category = StringUtils.hasText(expenseTo.getCategory()) ? categoryService.getByName(expenseTo.getCategory(), userId) : null;
         return repository.save(createNewFromTo(expenseTo, category), userId);
     }
 
@@ -50,7 +50,7 @@ public class ExpenseService {
     @Transactional
     public void update(ExpenseTo expenseTo, int userId) {
         Assert.notNull(expenseTo, "expense must not be null");
-        Category category = StringUtils.hasText(expenseTo.getCategoryName()) ? categoryService.getByName(expenseTo.getCategoryName(), userId) : null;
+        Category category = StringUtils.hasText(expenseTo.getCategory()) ? categoryService.getByName(expenseTo.getCategory(), userId) : null;
         Expense expense = get(expenseTo.id(), userId);
         updateFromTo(expense, expenseTo, category);
     }

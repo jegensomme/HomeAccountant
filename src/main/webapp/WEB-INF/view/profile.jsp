@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="topjava" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="ru.jegensomme.homeaccountant.util.CurrencyUtil" %>
 
 <html>
@@ -15,11 +16,16 @@
     <div class="container">
         <div class="row">
             <div class="col-5 offset-3">
-                <h3>${userTo.name} <spring:message code="${register ? 'app.register' : 'app.profile'}"/></h3>
-                <form:form class="form-group" modelAttribute="userTo" method="post" action="${register ? 'profile/register' : 'profile'}"
+                <h3>
+                    <sec:authorize access="isAuthenticated()">
+                        <sec:authentication property="principal.userTo.name"/>
+                    </sec:authorize>
+                    <spring:message code="${register ? 'app.register' : 'app.profile'}"/>
+                </h3>
+                <form:form class="form-group" modelAttribute="user" method="post" action="${register ? 'profile/register' : 'profile'}"
                            charset="utf-8" accept-charset="UTF-8">
 
-                    <input name="id" value="${userTo.id}" type="hidden">
+                    <input name="id" value="${user.id}" type="hidden">
                     <topjava:inputField labelCode="user.name" name="name"/>
                     <topjava:inputField labelCode="user.email" name="email"/>
                     <topjava:inputField labelCode="user.password" name="password" inputType="password"/>
