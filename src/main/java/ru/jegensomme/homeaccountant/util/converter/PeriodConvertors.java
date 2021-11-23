@@ -2,25 +2,25 @@ package ru.jegensomme.homeaccountant.util.converter;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.NonNull;
-import ru.jegensomme.homeaccountant.model.ExpensePeriod;
+import ru.jegensomme.homeaccountant.model.Period;
 
-import java.text.ParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
 @UtilityClass
 public class PeriodConvertors {
 
-    public static class Formatter implements org.springframework.format.Formatter<ExpensePeriod> {
+    public static class Formatter implements org.springframework.format.Formatter<Period> {
         @Override
-        public @NonNull ExpensePeriod parse(String text, @NonNull Locale locale) throws ParseException {
+        public @NonNull
+        Period parse(String text, @NonNull Locale locale) {
             String[] args = text.split("\\$");
-            return new ExpensePeriod(Integer.parseInt(args[0]), ChronoUnit.valueOf(args[1]));
+            return new Period(Integer.parseInt(args[0]), ChronoUnit.valueOf(args[1]));
         }
 
         @Override
-        public @NonNull String print(@NonNull ExpensePeriod expensePeriod, @NonNull Locale locale) {
-            return expensePeriod.getNumber() + "$" + expensePeriod.getUnit();
+        public @NonNull String print(@NonNull Period period, @NonNull Locale locale) {
+            return period.getNumber() + "$" + period.getUnit();
         }
     }
 }

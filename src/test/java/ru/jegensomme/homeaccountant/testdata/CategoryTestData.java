@@ -2,7 +2,7 @@ package ru.jegensomme.homeaccountant.testdata;
 
 import lombok.experimental.UtilityClass;
 import ru.jegensomme.homeaccountant.model.Category;
-import ru.jegensomme.homeaccountant.model.ExpensePeriod;
+import ru.jegensomme.homeaccountant.model.Period;
 import ru.jegensomme.homeaccountant.util.TestMatcher;
 
 import static ru.jegensomme.homeaccountant.util.TestMatcher.usingIgnoringFieldsComparator;
@@ -19,16 +19,16 @@ public class CategoryTestData {
     public static final int ADMIN_FOOD_ID = START_SEQ + 4;
     public static final int ADMIN_HOUSEHOLD_ID = START_SEQ + 5;
 
-    public static final Category USER_FOOD = new Category(USER_FOOD_ID, "Food", 120000, ExpensePeriod.MONTH);
-    public static final Category USER_HOUSEHOLD = new Category(USER_HOUSEHOLD_ID, "Household", 10000, ExpensePeriod.MONTH);
-    public static final Category ADMIN_FOOD = new Category(ADMIN_FOOD_ID, "Food", 10000, ExpensePeriod.MONTH);
-    public static final Category ADMIN_HOUSEHOLD = new Category(ADMIN_HOUSEHOLD_ID, "Household", 8000, ExpensePeriod.MONTH);
+    public static final Category USER_FOOD = new Category(USER_FOOD_ID, "Food", 120000, Period.MONTH);
+    public static final Category USER_HOUSEHOLD = new Category(USER_HOUSEHOLD_ID, "Household", 10000, Period.MONTH);
+    public static final Category ADMIN_FOOD = new Category(ADMIN_FOOD_ID, "Food", 10000, Period.MONTH);
+    public static final Category ADMIN_HOUSEHOLD = new Category(ADMIN_HOUSEHOLD_ID, "Household", 8000, Period.MONTH);
 
     public static Category getNew() {
         return new Category(null, "New");
     }
 
     public static Category getUpdated() {
-        return new Category(USER_FOOD_ID, "Updated", 10000, ExpensePeriod.WEEK);
+        return new Category(USER_FOOD_ID, "Updated", 10000, Period.WEEK);
     }
 }

@@ -15,14 +15,14 @@ $(function () {
                 "data": "name"
             },
             {
-                "data": "limit",
+                "data": "limit"
             },
             {
                 "data": "period",
                 "render": function (data, type, row) {
                     if (type === "display") {
-                        debugger;
-                        return data.number === 1 && data.unit === 'DAYS' ? i18n["period.day"]
+                        return data == null ? ""
+                            : data.number === 1 && data.unit === 'DAYS' ? i18n["period.day"]
                             : data.number === 1 && data.unit === 'WEEKS' ? i18n["period.week"]
                             : data.number === 1 && data.unit === 'DECADES' ? i18n["period.decade"]
                             : data.number === 1 && data.unit === 'MONTHS' ? i18n["period.month"]
@@ -31,7 +31,7 @@ $(function () {
                             : data.number + " " + data.unit;
                     }
                     return data;
-                }
+                },
             },
             {
                 "orderable": false,

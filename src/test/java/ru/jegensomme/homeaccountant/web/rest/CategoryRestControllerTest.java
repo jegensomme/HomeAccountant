@@ -72,7 +72,7 @@ class CategoryRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createInvalid() throws Exception {
-        Category invalid = new Category(null, null);
+        Category invalid = new Category(null, "");
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid))
@@ -84,7 +84,7 @@ class CategoryRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        Category invalid = new Category(ADMIN_FOOD_ID, "");
+        Category invalid = new Category(ADMIN_FOOD_ID, "updated", 1000, null);
         perform(MockMvcRequestBuilders.put(REST_URL + ADMIN_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid))

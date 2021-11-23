@@ -1,4 +1,4 @@
-package ru.jegensomme.homeaccountant.util.validators;
+package ru.jegensomme.homeaccountant.web.validators;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -7,11 +7,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = ExpensePeriodValidator.class)
+@Constraint(validatedBy = LimitPeriodConsistencyValidator.class)
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PeriodLimit {
-    String message() default "{ru.jegensomme.homeaccountant.util.validators.PeriodLimit.message}";
+public @interface LimitPeriodConsistent {
+    String message() default "{ru.jegensomme.homeaccountant.web.validators.LimitPeriodConsistent.message}";
 
     Class<?>[] groups() default { };
 

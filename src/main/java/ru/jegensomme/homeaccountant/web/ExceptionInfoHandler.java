@@ -68,7 +68,7 @@ public class ExceptionInfoHandler {
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ErrorInfo> bindValidationError(HttpServletRequest req, BindException e) {
-        String[] details = e.getBindingResult().getFieldErrors().stream()
+        String[] details = e.getBindingResult().getAllErrors().stream()
                 .map(messageSourceAccessor::getMessage)
                 .toArray(String[]::new);
 
