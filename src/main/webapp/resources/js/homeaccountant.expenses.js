@@ -95,6 +95,11 @@ $(function () {
                 "asc"
             ]
         ],
+        "createdRow": function (row, data, dataIndex) {
+            if (data.hasOwnProperty("excess")) {
+                $(row).attr("data-expenseExcess", data.excess);
+            }
+        },
         "initComplete": function(settings, json) {
             $("#totalAmount").html(ctx.datatableApi.column(2).data().sum());
         }
@@ -172,7 +177,7 @@ function fillCategories() {
 
 function updateMonthTotal() {
     $.get(expenseAjaxUrl + "month-total", function (data) {
-        $("#monthTotal").val(data);
+        $("#monthTotal").val(data === '' ? 0 : data);
         $("#monthTotalPanel").attr("data-monthlyLimitExcess", data > monthlyLimit)
     });
 }

@@ -24,9 +24,7 @@ $(function () {
                         return data == null ? ""
                             : data.number === 1 && data.unit === 'DAYS' ? i18n["period.day"]
                             : data.number === 1 && data.unit === 'WEEKS' ? i18n["period.week"]
-                            : data.number === 1 && data.unit === 'DECADES' ? i18n["period.decade"]
                             : data.number === 1 && data.unit === 'MONTHS' ? i18n["period.month"]
-                            : data.number === 6 && data.unit === 'MONTHS' ? i18n["period.half.year"]
                             : data.number === 1 && data.unit === 'YEARS' ? i18n["period.year"]
                             : data.number + " " + data.unit;
                     }
@@ -49,7 +47,8 @@ $(function () {
                 0,
                 "asc"
             ]
-        ]
+        ],
+        "paging": false
     });
 });
 

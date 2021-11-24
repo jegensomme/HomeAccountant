@@ -38,36 +38,33 @@
                 </form>
             </div>
             <div class="card-footer text-right">
-                <button class="btn btn-danger" onclick="clearFilter()">
-                    <span class="fa fa-remove"></span>
-                    <spring:message code="common.cancel"/>
-                </button>
-                <button class="btn btn-primary" onclick="ctx.updateTable()">
-                    <span class="fa fa-filter"></span>
-                    <spring:message code="expense.filter"/>
-                </button>
+                <div class="row">
+                    <form id="categoryFilterForm" class="col-4">
+                        <label for="categoryFilter" class="sr-only"><spring:message code="expense.category"/></label>
+                        <select type="text" id="categoryFilter" name="categoryFilter" class="custom-select mr-sm-2">
+                        </select>
+                    </form>
+                    <div class="offset-6">
+                        <button class="btn btn-danger" onclick="clearFilter()">
+                            <span class="fa fa-remove"></span>
+                            <spring:message code="common.cancel"/>
+                        </button>
+                        <button class="btn btn-primary" onclick="ctx.updateTable()">
+                            <span class="fa fa-filter"></span>
+                            <spring:message code="expense.filter"/>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <br/>
-        <div class="row">
-            <div class="col-2">
-                <button class="btn btn-primary" onclick="add()">
-                    <span class="fa fa-plus"></span>
-                    <spring:message code="common.add"/>
-                </button>
-            </div>
-            <div class="offset-5 col-2 text-right">
-                <button class="btn btn-primary" onclick="ctx.updateTable()">
-                    <span class="fa fa-check"></span>
-                    <spring:message code="common.select"/>
-                </button>
-            </div>
-            <form id="categoryFilterForm" class="col-3">
-                <label for="categoryFilter" class="sr-only"><spring:message code="expense.category"/></label>
-                <select type="text" id="categoryFilter" name="categoryFilter" class="custom-select mr-sm-2">
-                </select>
-            </form>
+        <div>
+            <button class="btn btn-primary" onclick="add()">
+                <span class="fa fa-plus"></span>
+                <spring:message code="common.add"/>
+            </button>
         </div>
+        <br/>
         <table class="table table-striped" id="datatable">
             <thead>
             <tr>

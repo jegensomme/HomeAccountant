@@ -56,3 +56,10 @@ div[data-monthlyLimitExcess="false"] {
 div[data-monthlyLimitExcess="true"] {
     color: red;
 }
+tr[data-expenseExcess="false"] {
+    color: green;
+}
+
+tr[data-expenseExcess="true"] {
+    color: red;
+}

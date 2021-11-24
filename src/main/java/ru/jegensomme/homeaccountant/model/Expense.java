@@ -72,9 +72,10 @@ public class Expense extends BaseEntity {
         this.description = description;
     }
 
-    public @NonNull LocalTime getTime() {
+    public LocalTime getTime() {
         return dateTime.toLocalTime();
     }
+
 
     @Override
     public String toString() {

@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
 @Data
 @NoArgsConstructor
 @Embeddable
-public class Period {
+public final class Period {
     private int number;
 
     @Enumerated(EnumType.STRING)
@@ -29,11 +29,7 @@ public class Period {
     @Embedded
     public static Period WEEK = new Period(1, ChronoUnit.WEEKS);
     @Embedded
-    public static Period DECADE = new Period(1, ChronoUnit.DECADES);
-    @Embedded
     public static Period MONTH = new Period(1, ChronoUnit.MONTHS);
-    @Embedded
-    public static Period HALF_YEAR = new Period(6, ChronoUnit.MONTHS);
     @Embedded
     public static Period YEAR = new Period(1, ChronoUnit.YEARS);
 }

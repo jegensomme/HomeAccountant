@@ -21,8 +21,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 import static java.time.LocalDateTime.of;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -138,7 +137,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE5, EXPENSE4, EXPENSE3, EXPENSE2, EXPENSE1)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE6, EXPENSE5, EXPENSE4, EXPENSE3, EXPENSE2, EXPENSE1)));
     }
 
     @Test
@@ -160,19 +159,19 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE5)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE6)));
     }
 
     @Test
     void getBetween() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "between")
                 .param("startDate", "2021-01-30").param("startTime", "10:00")
-                .param("endDate", "2021-02-26").param("endTime", "14:00")
+                .param("endDate", "2021-02-26").param("endTime", "17:00")
                 .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE4, EXPENSE3, EXPENSE2, EXPENSE1)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE5, EXPENSE4, EXPENSE3, EXPENSE2, EXPENSE1)));
     }
 
     @Test
@@ -198,7 +197,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE5)));
+                .andExpect(EXPENSE_TO_MATCHER.contentJson(getTos(EXPENSE6)));
     }
 
     @Test

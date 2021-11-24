@@ -1,7 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="topjava" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="homeaccountant" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="ru.jegensomme.homeaccountant.util.CurrencyUtil" %>
@@ -26,10 +26,10 @@
                            charset="utf-8" accept-charset="UTF-8">
 
                     <input name="id" value="${user.id}" type="hidden">
-                    <topjava:inputField labelCode="user.name" name="name"/>
-                    <topjava:inputField labelCode="user.email" name="email"/>
-                    <topjava:inputField labelCode="user.password" name="password" inputType="password"/>
-                    <topjava:inputField labelCode="user.monthlyLimit" name="monthlyLimit" inputType="number"/>
+                    <homeaccountant:inputField labelCode="user.name" name="name"/>
+                    <homeaccountant:inputField labelCode="user.email" name="email"/>
+                    <homeaccountant:inputField labelCode="user.password" name="password" inputType="password"/>
+                    <homeaccountant:inputField labelCode="user.monthlyLimit" name="monthlyLimit" inputType="number"/>
                     <spring:bind path="currency">
                         <div class="form-group ${status.error ? 'error' : '' }">
                             <label class="col-form-label"><spring:message code="common.currency"/></label>

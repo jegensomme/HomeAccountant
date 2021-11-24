@@ -9,8 +9,8 @@ function makeEditable(datatableOpts) {
                     "url": ctx.ajaxUrl,
                     "dataSrc": ""
                 },
-                "scrollCollapse": true,
-                "paging": true,
+                // "scrollCollapse": true,
+                // "paging": true,
                 "info": false,
                 "language": {
                     "search": i18n["common.search"],

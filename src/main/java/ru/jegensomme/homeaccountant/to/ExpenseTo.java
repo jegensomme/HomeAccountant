@@ -37,26 +37,38 @@ public class ExpenseTo extends BaseTo {
     @SafeHtml
     private String description;
 
+    private Boolean excess;
+
     public ExpenseTo(Integer id, String category, LocalDateTime dateTime, double amount, String description) {
         this(id, category, dateTime, BigDecimal.valueOf(amount), description);
     }
 
     public ExpenseTo(Integer id, String category, LocalDateTime dateTime, BigDecimal amount, String description) {
+        this(id, category, dateTime, amount, description, null);
+    }
+
+    public ExpenseTo(Integer id, String category, LocalDateTime dateTime, BigDecimal amount, String description, Boolean excess) {
         super(id);
         this.category = category;
         this.dateTime = dateTime;
         this.amount = amount;
         this.description = description;
+        this.excess = excess;
+    }
+
+    public boolean isExcess() {
+        return excess != null && excess;
     }
 
     @Override
     public String toString() {
         return "ExpenseTo{" +
                 "id=" + id +
-                ", category=" + category +
+                ", category='" + category + '\'' +
                 ", dateTime=" + dateTime +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
+                ", excess=" + excess +
                 '}';
     }
 }

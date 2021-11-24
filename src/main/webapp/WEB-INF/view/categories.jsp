@@ -14,15 +14,12 @@
     <div class="container">
         <h3 class="text-center"><spring:message code="category.title"/></h3>
         <br/>
-        <div class="row">
-            <div class="col-2">
-                <button class="btn btn-primary" onclick="add()">
-                    <span class="fa fa-plus"></span>
-                    <spring:message code="common.add"/>
-                </button>
-            </div>
+        <div>
+            <button class="btn btn-primary" onclick="add()">
+                <span class="fa fa-plus"></span>
+                <spring:message code="common.add"/>
+            </button>
         </div>
-        <br/>
         <table class="table table-striped" id="datatable">
             <thead>
             <tr>
@@ -66,9 +63,7 @@
                             <option value=""></option>
                             <option value="1$DAYS"><spring:message code="period.day"/></option>
                             <option value="1$WEEKS"><spring:message code="period.week"/></option>
-                            <option value="1$DECADES"><spring:message code="period.decade"/></option>
                             <option value="1$MONTHS"><spring:message code="period.month"/></option>
-                            <option value="6$MONTHS"><spring:message code="period.half.year"/></option>
                             <option value="1$YEARS"><spring:message code="period.year"/></option>
                         </select>
                     </div>
@@ -97,9 +92,7 @@
 <script type="text/javascript">
     i18n['period.day'] = '<spring:message code="period.day"/>';
     i18n['period.week'] = '<spring:message code="period.week"/>';
-    i18n['period.decade'] = '<spring:message code="period.decade"/>';
     i18n['period.month'] = '<spring:message code="period.month"/>';
-    i18n['period.half.year'] = '<spring:message code="period.half.year"/>';
     i18n['period.year'] = '<spring:message code="period.year"/>';
 </script>
 </html>

@@ -14,13 +14,11 @@
     <div class="container">
         <h3 class="text-center"><spring:message code="user.title"/></h3>
         <br/>
-        <div class="row">
-            <div class="col-2">
-                <button class="btn btn-primary" onclick="add()">
-                    <span class="fa fa-plus"></span>
-                    <spring:message code="common.add"/>
-                </button>
-            </div>
+        <div>
+            <button class="btn btn-primary" onclick="add()">
+                <span class="fa fa-plus"></span>
+                <spring:message code="common.add"/>
+            </button>
         </div>
         <br/>
         <table class="table table-striped" id="datatable">

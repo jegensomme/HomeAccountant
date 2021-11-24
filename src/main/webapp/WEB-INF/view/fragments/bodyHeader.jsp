@@ -3,6 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="homeaccountant" tagdir="/WEB-INF/tags" %>
 
 <%
     String servletPath=request.getServletPath();
@@ -22,15 +23,23 @@
                 <li class="nav-item">
                     <sec:authorize access="isAuthenticated()">
                         <form:form class="form-inline my-2" action="logout" method="post">
-                            <c:if test="${!pageName.equals('categories')}">
-                                <a class="btn btn-info mr-1" href="categories"><spring:message code="category.title"/></a>
-                            </c:if>
+                            <homeaccountant:pageButton pageName="expenses" currentPage="${pageName}">
+                                <jsp:attribute name="body"><spring:message code="expense.title"/></jsp:attribute>
+                            </homeaccountant:pageButton>
+                            <homeaccountant:pageButton pageName="categories" currentPage="${pageName}">
+                                <jsp:attribute name="body"><spring:message code="category.title"/></jsp:attribute>
+                            </homeaccountant:pageButton>
                             <sec:authorize access="hasRole('ADMIN')">
-                                <c:if test="${!pageName.equals('users')}">
-                                    <a class="btn btn-info mr-1" href="users"><spring:message code="user.title"/></a>
-                                </c:if>
+                                <homeaccountant:pageButton pageName="users" currentPage="${pageName}">
+                                    <jsp:attribute name="body"><spring:message code="user.title"/></jsp:attribute>
+                                </homeaccountant:pageButton>
                             </sec:authorize>
-                            <a class="btn btn-info mr-1" href="profile"><sec:authentication property="principal.userTo.name"/> <spring:message code="app.profile"/></a>
+                            <homeaccountant:pageButton pageName="profile" currentPage="${pageName}">
+                                <jsp:attribute name="body">
+                                    <sec:authentication property="principal.userTo.name"/>
+                                    <spring:message code="app.profile"/>
+                                </jsp:attribute>
+                            </homeaccountant:pageButton>
                             <button class="btn btn-primary my-1" type="submit">
                                 <span class="fa fa-sign-out"></span>
                             </button>
