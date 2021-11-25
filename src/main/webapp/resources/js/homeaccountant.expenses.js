@@ -178,7 +178,9 @@ function fillCategories() {
 function updateMonthTotal() {
     $.get(expenseAjaxUrl + "month-total", function (data) {
         $("#monthTotal").val(data === '' ? 0 : data);
-        $("#monthTotalPanel").attr("data-monthlyLimitExcess", data > monthlyLimit)
+        if (monthlyLimit != null && monthlyLimit.length != 0) {
+            $("#monthTotalPanel").attr("data-monthlyLimitExcess", data > monthlyLimit)
+        }
     });
 }
 

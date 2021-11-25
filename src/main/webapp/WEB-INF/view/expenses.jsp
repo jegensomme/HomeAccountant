@@ -152,6 +152,7 @@
 </jsp:include>
 <script type="text/javascript">
     const currency = '<sec:authentication property="principal.userTo.currency"/>';
+    const monthlyLimit = "${monthlyLimit}";
     i18n['without.category'] = '<spring:message code="without.category"/>';
     i18n['all.categories'] = '<spring:message code="all.categories"/>';
 </script>

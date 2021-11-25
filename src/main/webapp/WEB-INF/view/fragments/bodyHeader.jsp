@@ -69,8 +69,3 @@
 <script type="text/javascript">
     const localeCode = "${pageContext.response.locale}";
 </script>
-<sec:authorize access="isAuthenticated()">
-    <script type="text/javascript">
-        const monthlyLimit = "${monthlyLimit}";
-    </script>
-</sec:authorize>
