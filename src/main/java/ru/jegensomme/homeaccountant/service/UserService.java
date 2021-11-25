@@ -94,6 +94,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     @CacheEvict(value = "users", allEntries = true)
     public void enable(int id, boolean enabled) {
+        checkModificationAllowed(id);
         User user = get(id);
         user.setEnabled(enabled);
     }
