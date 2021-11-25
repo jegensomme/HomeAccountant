@@ -26,38 +26,40 @@ import java.util.*;
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends NamedEntity implements Authenticatable {
-    @Column(name = "email")
+
+    @Column(name = "email", nullable = false)
     @Email
     @NotBlank
     @Size(max = 100)
     @SafeHtml(groups = View.Web.class)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     @NotBlank
     @Size(min = 5, max = 100)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(name = "registered")
+    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
 
+    @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
-    @Column(name = "monthly_limit")
+    @Column(name = "monthly_limit", columnDefinition = "decimal check ( monthly_limit >= 0 )")
     @Min(0)
     private BigDecimal monthlyLimit;
 
-    @Column(name = "currency")
+    @Column(name = "currency", nullable = false)
     @NotNull
     private Currency currency;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique_idx")})
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
     @BatchSize(size = 200)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

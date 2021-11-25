@@ -27,19 +27,19 @@ import java.math.BigDecimal;
 public class Category extends NamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @NotNull(groups = View.Persist.class)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @Column(name = "\"limit\"")
+    @Column(name = "\"limit\"", columnDefinition = "decimal check ( \"limit\" >= 0 )")
     @Min(1)
     @JsonInclude
     private BigDecimal limit;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride( name = "number", column = @Column(name = "period_number")),
+            @AttributeOverride( name = "number", column = @Column(name = "period_number", columnDefinition = "integer check ( period_number > 0 )")),
             @AttributeOverride( name = "unit", column = @Column(name = "period_unit"))
     })
     @JsonInclude

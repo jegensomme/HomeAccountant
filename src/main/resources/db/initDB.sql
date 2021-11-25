@@ -12,7 +12,7 @@ CREATE TABLE users
     name             VARCHAR                           NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
-    enabled          BOOLEAN                           NOT NULL,
+    enabled          BOOLEAN             DEFAULT TRUE  NOT NULL,
     registered       TIMESTAMP           DEFAULT now() NOT NULL,
     monthly_limit    DECIMAL             CHECK ( monthly_limit >= 0 ),
     currency         VARCHAR                           NOT NULL

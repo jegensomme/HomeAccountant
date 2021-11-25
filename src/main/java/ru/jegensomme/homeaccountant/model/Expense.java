@@ -22,7 +22,7 @@ import java.time.LocalTime;
 public class Expense extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
@@ -31,16 +31,16 @@ public class Expense extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "date_time")
+    @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false, columnDefinition = "decimal check ( amount >= 0 )")
     @NotNull
     @Min(0)
     private BigDecimal amount;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     @NotBlank
     @Size(min = 2, max = 120)
     private String description;
