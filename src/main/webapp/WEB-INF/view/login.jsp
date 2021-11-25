@@ -56,7 +56,7 @@
 </div>
 <br/>
 <div class="container">
-<%--    <div class="lead"><spring:message code="app.description"/></div>--%>
+    <div class="lead"><spring:message code="app.description"/></div>
     <a class="btn btn-lg btn-success my-4" href="swagger-ui.html" target="_blank">
         Swagger REST API <spring:message code="app.documentation"/>
     </a>
