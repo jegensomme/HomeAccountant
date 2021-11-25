@@ -5,7 +5,7 @@
 Admin could create/edit/delete users, users - manage your profile and expenses via UI (AJAX) and REST with basic authorization. \
 When registering, the user specifies the currency and monthly spending limit (optional).\
 User can create categories where you can specify an expense limit and its period (day, week, month, etc.) within that category.\
-User can filter expenses by category, date, and time.
+Expenses could be filtered by category, date and time.\
 
 All REST interface covered with JUnit tests by Spring MVC Test and Spring Security Test.
 
