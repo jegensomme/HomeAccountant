@@ -7,6 +7,8 @@ When registering, the user specifies the currency and monthly spending limit (op
 User can create categories where you can specify an expense limit and its period (day, week, month, etc.) within that category.\
 User can filter expenses by category, date, and time.
 
+All REST interface covered with JUnit tests by Spring MVC Test and Spring Security Test.
+
 **<a href="http://my-home-accountant.herokuapp.com/swagger-ui.html">Swagger REST API Documentation</a>**
 
 ***
