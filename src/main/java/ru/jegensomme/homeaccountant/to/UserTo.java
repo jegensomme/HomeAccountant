@@ -47,21 +47,11 @@ public final class UserTo extends BaseTo implements Authenticatable, Serializabl
         this(id, name, email, password, null, DEFAULT_CURRENCY);
     }
 
-    public UserTo(Integer id,
-                  String name,
-                  String email,
-                  String password,
-                  double monthlyLimit,
-                  Currency currency) {
+    public UserTo(Integer id, String name, String email, String password, double monthlyLimit, Currency currency) {
         this(id, name, email, password, BigDecimal.valueOf(monthlyLimit), currency);
     }
 
-    public UserTo(Integer id,
-                  String name,
-                  String email,
-                  String password,
-                  BigDecimal monthlyLimit,
-                  Currency currency) {
+    public UserTo(Integer id, String name, String email, String password, BigDecimal monthlyLimit, Currency currency) {
         super(id);
         this.name = name;
         this.email = email;

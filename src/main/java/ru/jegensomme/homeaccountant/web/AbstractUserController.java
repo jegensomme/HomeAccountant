@@ -17,7 +17,6 @@ import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.util.UserUtil;
 import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
 
-import javax.validation.groups.Default;
 import java.util.List;
 
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.assureIdConsistent;
@@ -42,7 +41,7 @@ public abstract class AbstractUserController {
         binder.addValidators(emailValidator);
     }
 
-    public @NonNull User create(UserTo userTo) {
+    public User create(UserTo userTo) {
         log.info("create from to {}", userTo);
         return service.create(UserUtil.createNewFromTo(userTo));
     }
@@ -83,7 +82,7 @@ public abstract class AbstractUserController {
         service.enable(id, enabled);
     }
 
-    protected void validateBeforeUpdate(Identified user, int id) throws BindException {
+    protected void validateBeforeUpdate(@NonNull Identified user, int id) throws BindException {
         assureIdConsistent(user, id);
         DataBinder binder = new DataBinder(user);
         binder.addValidators(emailValidator, validator);

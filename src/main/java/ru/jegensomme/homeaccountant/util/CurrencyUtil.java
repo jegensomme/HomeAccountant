@@ -1,6 +1,7 @@
 package ru.jegensomme.homeaccountant.util;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.NonNull;
 
 import java.util.Currency;
 import java.util.List;
@@ -17,7 +18,7 @@ public class CurrencyUtil {
             getInstance("XAU"), getInstance("XAG"), getInstance("XPT")
     );
 
-    public static String getDisplayName(Currency currency, Locale locale) {
+    public static String getDisplayName(@NonNull Currency currency, @NonNull Locale locale) {
         return currency.getCurrencyCode() + " " + currency.getDisplayName(locale);
     }
 }

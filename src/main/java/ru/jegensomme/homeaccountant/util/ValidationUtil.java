@@ -34,13 +34,13 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkNew(Identified entity) {
+    public static void checkNew(@NonNull Identified entity) {
         if (!entity.isNew()) {
             throw new IllegalRequestDataException(entity + " must be new (id=null)");
         }
     }
 
-    public static void assureIdConsistent(Identified entity, int id) {
+    public static void assureIdConsistent(@NonNull Identified entity, int id) {
 //      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
         if (entity.isNew()) {
             entity.setId(id);
@@ -50,7 +50,7 @@ public class ValidationUtil {
     }
 
     //  http://stackoverflow.com/a/28565320/548473
-    public static Throwable getRootCause(Throwable t) {
+    public static Throwable getRootCause(@NonNull Throwable t) {
         Throwable result = t;
         Throwable cause;
 
@@ -60,11 +60,15 @@ public class ValidationUtil {
         return result;
     }
 
-    public static String getMessage(Throwable e) {
+    public static String getMessage(@NonNull Throwable e) {
         return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
     }
 
-    public static Throwable logAndGetRootCause(Logger log, HttpServletRequest req, Exception e, boolean logStackTrace, ErrorType errorType) {
+    public static Throwable logAndGetRootCause(@NonNull Logger log,
+                                               @NonNull HttpServletRequest req,
+                                               @NonNull Exception e,
+                                               boolean logStackTrace,
+                                               @NonNull ErrorType errorType) {
         Throwable rootCause = ValidationUtil.getRootCause(e);
         if (logStackTrace) {
             log.error(errorType + " at request " + req.getRequestURL(), rootCause);

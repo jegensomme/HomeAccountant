@@ -1,20 +1,12 @@
 package ru.jegensomme.homeaccountant.util.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.springframework.lang.NonNull;
+
+@Getter
+@AllArgsConstructor
 public class ApplicationException extends RuntimeException {
-
-    private final ErrorType type;
-    private final String msgCode;
-
-    public ApplicationException(String msgCode, ErrorType type) {
-        this.msgCode = msgCode;
-        this.type = type;
-    }
-
-    public String getMsgCode() {
-        return msgCode;
-    }
-
-    public ErrorType getType() {
-        return type;
-    }
+    private final @NonNull ErrorType type;
+    private final @NonNull String msgCode;
 }

@@ -1,6 +1,7 @@
 package ru.jegensomme.homeaccountant.util;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import ru.jegensomme.homeaccountant.model.Category;
 import ru.jegensomme.homeaccountant.model.Expense;
@@ -23,16 +24,16 @@ public class ExpenseUtil {
         return getTos(List.of(expenses));
     }
 
-    public static List<ExpenseTo> getTos(Collection<Expense> expenses) {
+    public static List<ExpenseTo> getTos(@NonNull Collection<Expense> expenses) {
         return filter(expenses, e -> true);
     }
 
-    public static List<ExpenseTo> filter(Collection<Expense> expenses,
+    public static List<ExpenseTo> filter(@NonNull Collection<Expense> expenses,
                                          @Nullable LocalTime startTime, @Nullable LocalTime endTime) {
         return filter(expenses, e -> isBetweenHalfOpen(e.getTime(), startTime, endTime));
     }
 
-    public static List<ExpenseTo> filter(Collection<Expense> expenses, Predicate<Expense> predicate) {
+    public static List<ExpenseTo> filter(@NonNull Collection<Expense> expenses, @NonNull Predicate<Expense> predicate) {
         List<ExpenseTo> result = new ArrayList<>(expenses.size());
         result.addAll(expenses.stream().filter(e -> e.getCategory() == null).map(ExpenseUtil::asTo).collect(toList()));
         Map<Category, List<Expense>> groupedByCategories = expenses.stream()
@@ -66,20 +67,20 @@ public class ExpenseUtil {
         return result;
     }
 
-    public static ExpenseTo asTo(Expense expense) {
+    private static ExpenseTo asTo(Expense expense) {
         return asTo(expense, null);
     }
 
-    public static ExpenseTo asTo(Expense expense, Boolean excess) {
+    private static ExpenseTo asTo(Expense expense, Boolean excess) {
         return new ExpenseTo(expense.getId(), expense.getCategory() == null ? "" : expense.getCategory().getName(),
                 expense.getDateTime(), expense.getAmount(), expense.getDescription(), excess);
     }
 
-    public static Expense createNewFromTo(ExpenseTo expenseTo, @Nullable Category category) {
+    public static Expense createNewFromTo(@NonNull ExpenseTo expenseTo, @Nullable Category category) {
         return new Expense(null, category, expenseTo.getDateTime(), expenseTo.getAmount(), expenseTo.getDescription());
     }
 
-    public static void updateFromTo(Expense expense, ExpenseTo expenseTo, @Nullable Category category) {
+    public static void updateFromTo(@NonNull Expense expense, @NonNull ExpenseTo expenseTo, @Nullable Category category) {
         expense.setCategory(category);
         expense.setDateTime(expenseTo.getDateTime());
         expense.setAmount(expenseTo.getAmount());

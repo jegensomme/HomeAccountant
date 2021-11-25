@@ -1,5 +1,6 @@
 package ru.jegensomme.homeaccountant;
 
+import org.springframework.lang.NonNull;
 import ru.jegensomme.homeaccountant.model.User;
 import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.util.UserUtil;
@@ -10,9 +11,9 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private UserTo userTo;
+    private @NonNull UserTo userTo;
 
-    public AuthorizedUser(User user) {
+    public AuthorizedUser(@NonNull User user) {
         super(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, user.getRoles());
         this.userTo = UserUtil.asToExceptPassword(user);
     }
@@ -21,11 +22,11 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
         return userTo.id();
     }
 
-    public void update(UserTo newTo) {
+    public void update(@NonNull UserTo newTo) {
         userTo = UserUtil.exceptPassword(newTo);
     }
 
-    public UserTo getUserTo() {
+    public @NonNull UserTo getUserTo() {
         return userTo;
     }
 

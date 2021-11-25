@@ -44,7 +44,8 @@ public class GlobalExceptionHandler {
         Throwable rootCause = ValidationUtil.logAndGetRootCause(log, req, e, logException, errorType);
 
         ModelAndView mav = new ModelAndView("exception",
-                Map.of("exception", rootCause, "message", code != null ? messageSourceAccessor.getMessage(code) : ValidationUtil.getMessage(rootCause),
+                Map.of("exception", rootCause,
+                        "message", code != null ? messageSourceAccessor.getMessage(code) : ValidationUtil.getMessage(rootCause),
                         "typeMessage", messageSourceAccessor.getMessage(errorType.getErrorCode()),
                         "status", errorType.getStatus()));
         mav.setStatus(errorType.getStatus());

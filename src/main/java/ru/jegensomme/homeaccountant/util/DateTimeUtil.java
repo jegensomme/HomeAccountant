@@ -1,5 +1,6 @@
 package ru.jegensomme.homeaccountant.util;
 
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
@@ -35,19 +36,19 @@ public class DateTimeUtil {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }
 
-    public static @Nullable LocalDate parseLocalDate(@Nullable String str, Locale locale) {
+    public static @Nullable LocalDate parseLocalDate(@Nullable String str, @NonNull Locale locale) {
         return parseLocalDate(str, ISO_LOCAL_DATE.withLocale(locale));
     }
 
-    public static @Nullable LocalTime parseLocalTime(@Nullable String str, Locale locale) {
+    public static @Nullable LocalTime parseLocalTime(@Nullable String str, @NonNull Locale locale) {
         return parseLocalTime(str, ISO_LOCAL_TIME.withLocale(locale));
     }
 
-    public static @Nullable LocalDate parseLocalDate(@Nullable String str, DateTimeFormatter formatter) {
+    public static @Nullable LocalDate parseLocalDate(@Nullable String str, @NonNull DateTimeFormatter formatter) {
         return !StringUtils.hasText(str) ? null : LocalDate.parse(str, formatter);
     }
 
-    public static @Nullable LocalTime parseLocalTime(@Nullable String str, DateTimeFormatter formatter) {
+    public static @Nullable LocalTime parseLocalTime(@Nullable String str, @NonNull DateTimeFormatter formatter) {
         return !StringUtils.hasText(str) ? null : LocalTime.parse(str, formatter);
     }
 }

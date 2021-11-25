@@ -1,5 +1,7 @@
 package ru.jegensomme.homeaccountant.util;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.List;
@@ -8,24 +10,19 @@ import java.util.function.BiConsumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.jegensomme.homeaccountant.util.TestUtil.readListFromJsonMvcResult;
 
+@RequiredArgsConstructor
 public class TestMatcher<T> {
-    private final Class<T> clazz;
-    private final BiConsumer<T, T> assertion;
-    private final BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion;
+    private final @NonNull Class<T> clazz;
+    private final @NonNull BiConsumer<T, T> assertion;
+    private final @NonNull BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion;
 
-    public TestMatcher(Class<T> clazz, BiConsumer<T, T> assertion, BiConsumer<Iterable<T>, Iterable<T>> iterableAssertion) {
-        this.clazz = clazz;
-        this.assertion = assertion;
-        this.iterableAssertion = iterableAssertion;
-    }
-
-    public static <T> TestMatcher<T> usingEqualsComparator(Class<T> clazz) {
+    public static <T> TestMatcher<T> usingEqualsComparator(@NonNull Class<T> clazz) {
         return new TestMatcher<>(clazz,
                 (a, e) -> assertThat(a).isEqualTo(e),
                 (a, e) -> assertThat(a).isEqualTo(e));
     }
 
-    public static <T> TestMatcher<T> usingIgnoringFieldsComparator(Class<T> clazz, String... fieldsToIgnore) {
+    public static <T> TestMatcher<T> usingIgnoringFieldsComparator(@NonNull Class<T> clazz, String... fieldsToIgnore) {
         return new TestMatcher<>(clazz,
                 (a, e) -> assertThat(a).usingRecursiveComparison().ignoringFields(fieldsToIgnore).isEqualTo(e),
                 (a, e) -> assertThat(a).usingRecursiveFieldByFieldElementComparatorIgnoringFields(fieldsToIgnore).isEqualTo(e));

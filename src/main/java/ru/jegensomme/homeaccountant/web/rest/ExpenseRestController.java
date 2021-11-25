@@ -54,8 +54,7 @@ public class ExpenseRestController extends AbstractExpenseController {
 
     @Override
     @GetMapping("/{id}")
-    public @NonNull
-    Expense get(@PathVariable int id) {
+    public @NonNull Expense get(@PathVariable int id) {
         return super.get(id);
     }
 

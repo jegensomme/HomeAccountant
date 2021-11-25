@@ -21,13 +21,14 @@ import java.util.Locale;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static ru.jegensomme.homeaccountant.Profiles.POSTGRES;
 
 @SpringJUnitWebConfig({
         ApplicationConfig.class,
         WebConfig.class
 })
 @Transactional
-@ActiveProfiles("postgres")
+@ActiveProfiles(POSTGRES)
 public class AbstractControllerTest {
     private static final Locale RU_LOCALE = new Locale("en");
     private static final CharacterEncodingFilter ENCODING_FILTER = new CharacterEncodingFilter() {{

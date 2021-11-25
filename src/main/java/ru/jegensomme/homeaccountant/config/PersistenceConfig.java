@@ -26,6 +26,7 @@ import static org.hibernate.cfg.AvailableSettings.*;
 @Import(DatabaseConfig.class)
 @RequiredArgsConstructor
 public class PersistenceConfig {
+
     private final DataSource dataSource;
 
     @Value("${jpa.showSql}")

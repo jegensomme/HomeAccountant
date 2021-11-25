@@ -1,6 +1,7 @@
 package ru.jegensomme.homeaccountant.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +57,7 @@ public class ExpenseService {
         updateFromTo(expense, expenseTo, category);
     }
 
-    public Expense get(int id, int userId) {
+    public @NonNull Expense get(int id, int userId) {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
@@ -97,7 +98,7 @@ public class ExpenseService {
                 atStartOfNextDayOrMax(endExclusive));
     }
 
-    public BigDecimal getTotalAmountForCurrentMonth(int userId) {
+    public @NonNull BigDecimal getTotalAmountForCurrentMonth(int userId) {
         return repository.getTotalAmountForCurrentMonth(userId);
     }
 }

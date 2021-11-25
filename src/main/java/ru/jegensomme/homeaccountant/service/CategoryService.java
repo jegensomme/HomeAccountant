@@ -3,6 +3,7 @@ package ru.jegensomme.homeaccountant.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.model.Category;
@@ -35,11 +36,11 @@ public class CategoryService {
         checkNotFoundWithId(repository.save(category, userId), category.id());
     }
 
-    public Category get(int id, int userId) {
+    public @NonNull Category get(int id, int userId) {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
-    public Category getByName(String name, int userId) {
+    public @NonNull Category getByName(String name, int userId) {
         return checkNotFound(repository.getByName(name, userId), "name=" + name);
     }
 

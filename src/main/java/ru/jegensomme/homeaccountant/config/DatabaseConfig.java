@@ -20,17 +20,13 @@ import javax.sql.DataSource;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static ru.jegensomme.homeaccountant.Profiles.*;
+
 @Configuration
 public abstract class DatabaseConfig {
-    @Bean
-    public MethodInvokingBean methodInvokingBean() {
-        MethodInvokingBean method = new MethodInvokingBean();
-        method.setStaticMethod("org.slf4j.bridge.SLF4JBridgeHandler.install");
-        return method;
-    }
 
     @Configuration
-    @Profile("postgres")
+    @Profile(POSTGRES)
     @PropertySource(value={"classpath:db/postgres.properties"}, ignoreResourceNotFound = true)
     public static class PostgresConfig extends DatabaseConfig {
         @Value("${database.url}")
@@ -46,6 +42,13 @@ public abstract class DatabaseConfig {
         private Resource populateDBScript;
         @Value("${database.init}")
         private boolean initializerEnabled;
+
+        @Bean
+        public MethodInvokingBean methodInvokingBean() {
+            MethodInvokingBean method = new MethodInvokingBean();
+            method.setStaticMethod("org.slf4j.bridge.SLF4JBridgeHandler.install");
+            return method;
+        }
 
         @Bean
         public org.apache.tomcat.jdbc.pool.DataSource dataSource() {
@@ -79,7 +82,7 @@ public abstract class DatabaseConfig {
     }
 
     @Configuration
-    @Profile("heroku")
+    @Profile(HEROKU)
     @PropertySource(value={"classpath:db/heroku.properties"}, ignoreResourceNotFound = true)
     public static class HerokuConfig extends DatabaseConfig {
 
@@ -125,7 +128,7 @@ public abstract class DatabaseConfig {
     }
 
     @Configuration
-    @Profile("tomcat")
+    @Profile(TOMCAT)
     @PropertySource(value={"classpath:db/tomcat.properties"}, ignoreResourceNotFound = true)
     public static class TomcatConfig extends DatabaseConfig {
         @Value("${jdbc.url}")

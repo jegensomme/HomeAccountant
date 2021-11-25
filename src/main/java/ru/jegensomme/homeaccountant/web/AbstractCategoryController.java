@@ -18,7 +18,7 @@ public class AbstractCategoryController {
 
     private final CategoryService service;
 
-    public @NonNull Category create(Category category) {
+    public Category create(Category category) {
         int userId = authUserId();
         log.info("create {} for user {}", category, userId);
         return service.create(category, userId);

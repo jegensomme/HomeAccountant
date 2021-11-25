@@ -10,7 +10,6 @@ import ru.jegensomme.homeaccountant.model.Expense;
 import ru.jegensomme.homeaccountant.service.ExpenseService;
 import ru.jegensomme.homeaccountant.to.ExpenseTo;
 import ru.jegensomme.homeaccountant.web.AbstractExpenseController;
-import ru.jegensomme.homeaccountant.web.SecurityUtil;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;

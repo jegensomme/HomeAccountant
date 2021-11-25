@@ -1,5 +1,7 @@
 package ru.jegensomme.homeaccountant.util;
 
+import lombok.experimental.UtilityClass;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MvcResult;
@@ -13,28 +15,29 @@ import java.util.List;
 import static ru.jegensomme.homeaccountant.web.json.JsonUtil.readValue;
 import static ru.jegensomme.homeaccountant.web.json.JsonUtil.readValues;
 
+@UtilityClass
 public class TestUtil {
-    public static String getContent(MvcResult result) throws UnsupportedEncodingException {
+    public static String getContent(@NonNull MvcResult result) throws UnsupportedEncodingException {
         return result.getResponse().getContentAsString();
     }
 
-    public static <T> T readFromJson(ResultActions action, Class<T> clazz) throws UnsupportedEncodingException {
+    public static <T> T readFromJson(@NonNull ResultActions action, @NonNull Class<T> clazz) throws UnsupportedEncodingException {
         return readValue(getContent(action.andReturn()), clazz);
     }
 
-    public static <T> T readFromJsonMvcResult(MvcResult result, Class<T> clazz) throws UnsupportedEncodingException {
+    public static <T> T readFromJsonMvcResult(@NonNull MvcResult result, @NonNull Class<T> clazz) throws UnsupportedEncodingException {
         return readValue(getContent(result), clazz);
     }
 
-    public static <T> List<T> readListFromJsonMvcResult(MvcResult result, Class<T> clazz) throws UnsupportedEncodingException {
+    public static <T> List<T> readListFromJsonMvcResult(@NonNull MvcResult result, @NonNull Class<T> clazz) throws UnsupportedEncodingException {
         return readValues(getContent(result), clazz);
     }
 
-    public static RequestPostProcessor userHttpBasic(User user) {
+    public static RequestPostProcessor userHttpBasic(@NonNull User user) {
         return SecurityMockMvcRequestPostProcessors.httpBasic(user.getEmail(), user.getPassword());
     }
 
-    public static RequestPostProcessor userAuth(User user) {
+    public static RequestPostProcessor userAuth(@NonNull User user) {
         return SecurityMockMvcRequestPostProcessors.authentication(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
     }
 }

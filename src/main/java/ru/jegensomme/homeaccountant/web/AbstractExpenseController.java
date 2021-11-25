@@ -25,13 +25,13 @@ public class AbstractExpenseController {
 
     private final ExpenseService service;
 
-    public @NonNull Expense create(ExpenseTo expenseTo) {
+    public Expense create(ExpenseTo expenseTo) {
         int userId = authUserId();
         log.info("create from to {} for user {}", expenseTo, userId);
         return service.create(expenseTo, userId);
     }
 
-    public @NonNull Expense create(Expense expense) {
+    public Expense create(Expense expense) {
         int userId = authUserId();
         log.info("create {} for user {}", expense, userId);
         return service.create(expense, userId);

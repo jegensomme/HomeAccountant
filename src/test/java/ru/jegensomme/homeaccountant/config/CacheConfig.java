@@ -17,7 +17,8 @@ public class CacheConfig {
         return new NoOpCacheManager();
     }
 
-    @Bean public PropertyOverrideConfigurer propertyOverrideConfigurer() {
+    @Bean
+    public PropertyOverrideConfigurer propertyOverrideConfigurer() {
         PropertyOverrideConfigurer overrideConfigurer = new PropertyOverrideConfigurer();
         overrideConfigurer.setLocation(new ClassPathResource("override.properties"));
         return overrideConfigurer;

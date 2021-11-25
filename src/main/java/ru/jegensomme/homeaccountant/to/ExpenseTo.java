@@ -56,10 +56,6 @@ public class ExpenseTo extends BaseTo {
         this.excess = excess;
     }
 
-    public boolean isExcess() {
-        return excess != null && excess;
-    }
-
     @Override
     public String toString() {
         return "ExpenseTo{" +

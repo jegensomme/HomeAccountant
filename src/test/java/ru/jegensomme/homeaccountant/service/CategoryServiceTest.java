@@ -98,6 +98,5 @@ public class CategoryServiceTest extends ServiceTestBase {
         validateRootCause(() -> service.create(new Category(null, "Category", -10, Period.MONTH), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Category(null, "Category", null, Period.MONTH), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Category(null, "Category", 10, null), USER_ID), ConstraintViolationException.class);
-
     }
 }
