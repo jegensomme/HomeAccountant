@@ -62,4 +62,15 @@ class HerokuRestControllerTest extends AbstractControllerTest {
                 .andExpect(detailMessage(EXCEPTION_UPDATE_RESTRICTION))
                 .andExpect(status().isUnprocessableEntity());
     }
+
+    @Test
+    void disable() throws Exception {
+        perform(MockMvcRequestBuilders.patch(REST_URL + USER_ID)
+                .with(userHttpBasic(ADMIN))
+                .param("enabled", "false")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(detailMessage(EXCEPTION_UPDATE_RESTRICTION))
+                .andExpect(status().isUnprocessableEntity());
+    }
 }
