@@ -20,14 +20,6 @@ public class UserUtil {
         return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getMonthlyLimit(), user.getCurrency());
     }
 
-    public static UserTo asToExceptPassword(@NonNull User user) {
-        return new UserTo(user.getId(), user.getName(), user.getEmail(), "", user.getMonthlyLimit(), user.getCurrency());
-    }
-
-    public static UserTo exceptPassword(@NonNull UserTo userTo) {
-        return new UserTo(userTo.getId(), userTo.getName(), userTo.getEmail(), "", userTo.getMonthlyLimit(), userTo.getCurrency());
-    }
-
     public static User updateFromTo(@NonNull User user, @NonNull UserTo userTo) {
         user.setName(userTo.getName());
         user.setEmail(userTo.getEmail().toLowerCase());

@@ -1,100 +1,69 @@
 package ru.jegensomme.homeaccountant.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindException;
 import org.springframework.validation.DataBinder;
-import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import ru.jegensomme.homeaccountant.Identified;
 import ru.jegensomme.homeaccountant.model.User;
-import ru.jegensomme.homeaccountant.service.UserService;
-import ru.jegensomme.homeaccountant.to.UserTo;
+import ru.jegensomme.homeaccountant.repository.ExpenseRepository;
+import ru.jegensomme.homeaccountant.repository.UserRepository;
 import ru.jegensomme.homeaccountant.util.UserUtil;
-import ru.jegensomme.homeaccountant.web.validators.UniqueMailValidator;
-
-import java.util.List;
+import ru.jegensomme.homeaccountant.web.validation.UniqueMailValidator;
 
 import static ru.jegensomme.homeaccountant.util.ValidationUtil.assureIdConsistent;
-import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNew;
+import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkSingleModification;
 
+@Slf4j
+@RequiredArgsConstructor
 public abstract class AbstractUserController {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final UserRepository repository;
 
-    protected final UserService service;
-
-    private Validator validator;
+    protected final ExpenseRepository expenseRepository;
 
     private final UniqueMailValidator emailValidator;
 
-    public AbstractUserController(UserService service, UniqueMailValidator emailValidator) {
-        this.service = service;
-        this.emailValidator = emailValidator;
-    }
+    @Autowired
+    private LocalValidatorFactoryBean validator;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(emailValidator);
     }
 
-    public User create(UserTo userTo) {
-        log.info("create from to {}", userTo);
-        return service.create(UserUtil.createNewFromTo(userTo));
-    }
-
-    public @NonNull User create(User user) {
-        log.info("create {}", user);
-        checkNew(user);
-        return service.create(user);
-    }
-
     public void delete(int id) {
         log.info("delete {}", id);
-        service.delete(id);
+        expenseRepository.deleteAllInBatch(expenseRepository.getAll(id));
+        expenseRepository.flush();
+        checkSingleModification(repository.delete(id), "User id=" + id + " not found");
     }
 
-    public void update(UserTo userTo, int id) {
-        log.info("update from to {} with id={}", userTo, id);
-        service.update(userTo);
-    }
-
-    public @NonNull User get(int id) {
+    public ResponseEntity<User> get(int id) {
         log.info("get {}", id);
-        return service.get(id);
+        return ResponseEntity.of(repository.findById(id));
     }
 
-    public @NonNull User getByMail(String email) {
-        log.info("getByEmail {}", email);
-        return service.getByEmail(email);
-    }
-
-    public List<User> getAll() {
-        log.info("getAll");
-        return service.getAll();
-    }
-
-    public void enable(int id, boolean enabled) {
-        log.info(enabled ? "enable {}" : "disable {}", id);
-        service.enable(id, enabled);
+    protected User prepareAndSave(User user) {
+        return repository.save(UserUtil.prepareToSave(user, passwordEncoder));
     }
 
     protected void validateBeforeUpdate(@NonNull Identified user, int id) throws BindException {
         assureIdConsistent(user, id);
         DataBinder binder = new DataBinder(user);
         binder.addValidators(emailValidator, validator);
-        binder.validate(View.Web.class);
+        binder.validate();
         if (binder.getBindingResult().hasErrors()) {
             throw new BindException(binder.getBindingResult());
         }
-    }
-
-    @Autowired
-    @Qualifier("defaultValidator")
-    public void setValidator(Validator validator) {
-        this.validator = validator;
     }
 }

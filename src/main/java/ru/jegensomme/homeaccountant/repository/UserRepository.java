@@ -1,19 +1,20 @@
 package ru.jegensomme.homeaccountant.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.User;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
-    User save(@NonNull User user);
+@Transactional(readOnly = true)
+public interface UserRepository extends BaseRepository<User> {
 
-    boolean delete(int id);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM User u WHERE u.id=:id")
+    int delete(int id);
 
-    @Nullable User get(int id);
-
-    @Nullable User getByEmail(@NonNull String email);
-
-    List<User> getAll();
+    Optional<User> getByEmail(@NonNull String email);
 }

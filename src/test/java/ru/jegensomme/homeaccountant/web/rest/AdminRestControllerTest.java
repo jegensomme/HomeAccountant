@@ -9,26 +9,26 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.Role;
 import ru.jegensomme.homeaccountant.model.User;
-import ru.jegensomme.homeaccountant.service.UserService;
-import ru.jegensomme.homeaccountant.testdata.UserTestData;
-import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
+import ru.jegensomme.homeaccountant.repository.UserRepository;
+import ru.jegensomme.homeaccountant.UserTestData;
+import ru.jegensomme.homeaccountant.error.NotFoundException;
 import ru.jegensomme.homeaccountant.web.AbstractControllerTest;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.jegensomme.homeaccountant.testdata.UserTestData.*;
-import static ru.jegensomme.homeaccountant.util.TestUtil.*;
-import static ru.jegensomme.homeaccountant.util.exception.ErrorType.VALIDATION_ERROR;
-import static ru.jegensomme.homeaccountant.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
+import static ru.jegensomme.homeaccountant.UserTestData.*;
+import static ru.jegensomme.homeaccountant.TestUtil.*;
+import static ru.jegensomme.homeaccountant.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_EMAIL;
 
 class AdminRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminRestController.REST_URL + '/';
 
     @Autowired
-    private UserService service;
+    private UserRepository repository;
 
     @Test
     void createWithLocation() throws Exception {
@@ -43,7 +43,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newUser.setId(newId);
         USER_MATCHER.assertMatch(created, newUser);
-        USER_MATCHER.assertMatch(service.get(newId), newUser);
+        USER_MATCHER.assertMatch(repository.getExisted(newId), newUser);
     }
 
     @Test
@@ -52,7 +52,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertThrows(NotFoundException.class, () -> service.get(USER_ID));
+        assertThrows(NotFoundException.class, () -> repository.getExisted(USER_ID));
     }
 
     @Test
@@ -64,19 +64,18 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .content(jsonWithPassword(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        USER_MATCHER.assertMatch(service.get(USER_ID), updated);
+        USER_MATCHER.assertMatch(repository.getExisted(USER_ID), updated);
     }
 
     @Test
     void createInvalid() throws Exception {
-        User invalid = new User(null, null, "", "newPass", 7300, RUB, Role.USER, Role.ADMIN);
+        User invalid = new User(null, null, "", "newPass", "7300.00", RUB, Role.USER, Role.ADMIN);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(jsonWithPassword(invalid)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(VALIDATION_ERROR));
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -88,8 +87,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN))
                 .content(jsonWithPassword(invalid)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(VALIDATION_ERROR));
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -114,7 +112,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND)
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -152,8 +150,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-
-        assertFalse(service.get(USER_ID).isEnabled());
+        assertFalse(repository.getExisted(USER_ID).isEnabled());
     }
 
     @Test
@@ -165,8 +162,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN))
                 .content(jsonWithPassword(updated, "password")))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(VALIDATION_ERROR));
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -180,21 +176,19 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .content(jsonWithPassword(updated)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(VALIDATION_ERROR))
-                .andExpect(detailMessage(EXCEPTION_DUPLICATE_EMAIL));
+                .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_EMAIL)));
     }
 
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
-        User expected = new User(null, "New", "user@yandex.ru", "newPass", 2300, RUB, Role.USER, Role.ADMIN);
+        User expected = new User(null, "New", "user@yandex.ru", "newPass", "2300.00", RUB, Role.USER, Role.ADMIN);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(jsonWithPassword(expected)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(VALIDATION_ERROR))
-                .andExpect(detailMessage(EXCEPTION_DUPLICATE_EMAIL));
+                .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_EMAIL)));
     }
 }

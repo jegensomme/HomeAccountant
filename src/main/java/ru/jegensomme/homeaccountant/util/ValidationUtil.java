@@ -1,36 +1,27 @@
 package ru.jegensomme.homeaccountant.util;
 
 import lombok.experimental.UtilityClass;
-import org.slf4j.Logger;
 import org.springframework.lang.NonNull;
 import ru.jegensomme.homeaccountant.Identified;
-import ru.jegensomme.homeaccountant.util.exception.ErrorType;
-import ru.jegensomme.homeaccountant.util.exception.IllegalRequestDataException;
-import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
+import ru.jegensomme.homeaccountant.error.IllegalRequestDataException;
+import ru.jegensomme.homeaccountant.error.NotFoundException;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @UtilityClass
 public class ValidationUtil {
-    @NonNull
-    public static <T> T checkNotFoundWithId(T object, int id) {
-        checkNotFoundWithId(object != null, id);
-        return object;
+
+    public static <T> T checkNotFoundWithId(Optional<T> optional, int id) {
+        return checkNotFoundWithId(optional, "Entity with id=" + id +" not found");
     }
 
-    public static void checkNotFoundWithId(boolean found, int id) {
-        checkNotFound(found, "id=" + id);
+    public static <T> T checkNotFoundWithId(Optional<T> optional, String msg) {
+        return optional.orElseThrow(() -> new NotFoundException(msg));
     }
 
-    @NonNull
-    public static <T> T checkNotFound(T object, String msg) {
-        checkNotFound(object != null, msg);
-        return object;
-    }
-
-    public static void checkNotFound(boolean found, String msg) {
-        if (!found) {
-            throw new NotFoundException("Not found entity with " + msg);
+    public static void checkSingleModification(int count, String msg) {
+        if (count != 1) {
+            throw new NotFoundException(msg);
         }
     }
 
@@ -58,23 +49,5 @@ public class ValidationUtil {
             result = cause;
         }
         return result;
-    }
-
-    public static String getMessage(@NonNull Throwable e) {
-        return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
-    }
-
-    public static Throwable logAndGetRootCause(@NonNull Logger log,
-                                               @NonNull HttpServletRequest req,
-                                               @NonNull Exception e,
-                                               boolean logStackTrace,
-                                               @NonNull ErrorType errorType) {
-        Throwable rootCause = ValidationUtil.getRootCause(e);
-        if (logStackTrace) {
-            log.error(errorType + " at request " + req.getRequestURL(), rootCause);
-        } else {
-            log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
-        }
-        return rootCause;
     }
 }

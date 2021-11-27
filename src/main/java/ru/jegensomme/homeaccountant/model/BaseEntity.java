@@ -1,9 +1,7 @@
 package ru.jegensomme.homeaccountant.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.util.Assert;
 import ru.jegensomme.homeaccountant.Identified;
@@ -13,20 +11,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public abstract class BaseEntity implements Identified {
-    public static final int  START_SEQ = 100000;
 
     @Id
-    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
-
-    public BaseEntity (Integer id) {
-        this.id = id;
-    }
 
     // doesn't work for hibernate lazy proxy
     public int id() {
@@ -34,6 +27,7 @@ public abstract class BaseEntity implements Identified {
         return id;
     }
 
+    @JsonIgnore
     @Override
     public boolean isNew() {
         return id == null;

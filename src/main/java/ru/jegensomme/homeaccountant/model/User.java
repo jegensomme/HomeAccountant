@@ -2,13 +2,13 @@ package ru.jegensomme.homeaccountant.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import ru.jegensomme.homeaccountant.Authenticatable;
-import ru.jegensomme.homeaccountant.web.View;
-import ru.jegensomme.homeaccountant.web.validators.SafeHtml;
+import ru.jegensomme.homeaccountant.web.validation.SafeHtml;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.*;
 
 import javax.persistence.*;
@@ -31,7 +31,7 @@ public class User extends NamedEntity implements Authenticatable {
     @Email
     @NotBlank
     @Size(max = 100)
-    @SafeHtml(groups = View.Web.class)
+    @SafeHtml
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -45,10 +45,10 @@ public class User extends NamedEntity implements Authenticatable {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date registered = new Date();
 
-    @Column(name = "enabled", nullable = false)
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
 
-    @Column(name = "monthly_limit", columnDefinition = "decimal check ( monthly_limit >= 0 )")
+    @Column(name = "monthly_limit")
     @Min(0)
     private BigDecimal monthlyLimit;
 
@@ -59,11 +59,19 @@ public class User extends NamedEntity implements Authenticatable {
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique_idx")})
-    @Column(name = "role", nullable = false)
+    @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-    @BatchSize(size = 200)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinColumn(name = "user_id") //https://stackoverflow.com/a/62848296/548473
+    @OnDelete(action= OnDeleteAction.CASCADE)
     private Set<Role> roles;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Expense> expenses;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Category> categories;
 
     public User(User user) {
         this(user.id, user.name, user.email, user.password, user.enabled, user.registered, user.monthlyLimit, user.currency, user.roles);
@@ -82,10 +90,10 @@ public class User extends NamedEntity implements Authenticatable {
                 String name,
                 String email,
                 String password,
-                double monthlyLimit,
+                String monthlyLimit,
                 Currency currency,
                 Role role, Role... roles) {
-        this(id, name, email, password, true, null, BigDecimal.valueOf(monthlyLimit), currency, EnumSet.of(role, roles));
+        this(id, name, email, password, true, null, new BigDecimal(monthlyLimit), currency, EnumSet.of(role, roles));
     }
 
     public User(Integer id,
@@ -125,8 +133,8 @@ public class User extends NamedEntity implements Authenticatable {
         this.monthlyLimit = monthlyLimit;
     }
 
-    public void setMonthlyLimit(double monthlyLimit) {
-        this.monthlyLimit = BigDecimal.valueOf(monthlyLimit);
+    public void setMonthlyLimit(String monthlyLimit) {
+        this.monthlyLimit = new BigDecimal(monthlyLimit);
     }
 
     @Override

@@ -23,7 +23,6 @@ public class Expense extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
@@ -35,7 +34,7 @@ public class Expense extends BaseEntity {
     @NotNull
     private LocalDateTime dateTime;
 
-    @Column(name = "amount", nullable = false, columnDefinition = "decimal check ( amount >= 0 )")
+    @Column(name = "amount", nullable = false)
     @NotNull
     @Min(0)
     private BigDecimal amount;
@@ -47,7 +46,7 @@ public class Expense extends BaseEntity {
 
     public Expense(Integer id,
                    LocalDateTime dateTime,
-                   double amount,
+                   String amount,
                    String description) {
         this(id, null, dateTime, amount, description);
     }
@@ -55,9 +54,9 @@ public class Expense extends BaseEntity {
     public Expense(Integer id,
                    Category category,
                    LocalDateTime dateTime,
-                   double amount,
+                   String amount,
                    String description) {
-        this(id, category, dateTime, BigDecimal.valueOf(amount), description);
+        this(id, category, dateTime, new BigDecimal(amount), description);
     }
 
     public Expense(Integer id,
@@ -65,7 +64,12 @@ public class Expense extends BaseEntity {
                    LocalDateTime dateTime,
                    BigDecimal amount,
                    String description) {
+        this(id, null, category, dateTime, amount, description);
+    }
+
+    public Expense(Integer id, User user, Category category, LocalDateTime dateTime, BigDecimal amount, String description) {
         super(id);
+        this.user = user;
         this.category = category;
         this.dateTime = dateTime;
         this.amount = amount;
@@ -75,7 +79,6 @@ public class Expense extends BaseEntity {
     public LocalTime getTime() {
         return dateTime.toLocalTime();
     }
-
 
     @Override
     public String toString() {

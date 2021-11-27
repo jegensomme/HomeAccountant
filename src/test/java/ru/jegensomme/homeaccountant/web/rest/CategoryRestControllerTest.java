@@ -8,30 +8,31 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jegensomme.homeaccountant.model.Category;
-import ru.jegensomme.homeaccountant.service.CategoryService;
-import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
+import ru.jegensomme.homeaccountant.repository.CategoryRepository;
 import ru.jegensomme.homeaccountant.web.AbstractControllerTest;
-import ru.jegensomme.homeaccountant.web.json.JsonUtil;
+import ru.jegensomme.homeaccountant.util.JsonUtil;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.math.BigDecimal;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.jegensomme.homeaccountant.testdata.CategoryTestData.*;
-import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER_ID;
-import static ru.jegensomme.homeaccountant.testdata.UserTestData.USER;
-import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN_ID;
-import static ru.jegensomme.homeaccountant.testdata.UserTestData.ADMIN;
-import static ru.jegensomme.homeaccountant.util.TestUtil.*;
-import static ru.jegensomme.homeaccountant.util.exception.ErrorType.VALIDATION_ERROR;
-import static ru.jegensomme.homeaccountant.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_CATEGORY;
+import static ru.jegensomme.homeaccountant.CategoryTestData.*;
+import static ru.jegensomme.homeaccountant.UserTestData.USER_ID;
+import static ru.jegensomme.homeaccountant.UserTestData.USER;
+import static ru.jegensomme.homeaccountant.UserTestData.ADMIN_ID;
+import static ru.jegensomme.homeaccountant.UserTestData.ADMIN;
+import static ru.jegensomme.homeaccountant.TestUtil.*;
+import static ru.jegensomme.homeaccountant.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_CATEGORY;
 
 class CategoryRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = CategoryRestController.REST_URL + '/';
 
     @Autowired
-    private CategoryService service;
+    private CategoryRepository repository;
 
     @Test
     void createWithLocation() throws Exception {
@@ -46,7 +47,7 @@ class CategoryRestControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newCategory.setId(newId);
         CATEGORY_MATCHER.assertMatch(created, newCategory);
-        CATEGORY_MATCHER.assertMatch(service.get(newId, USER_ID), newCategory);
+        CATEGORY_MATCHER.assertMatch(repository.get(newId, USER_ID).orElse(null), newCategory);
     }
 
     @Test
@@ -55,7 +56,7 @@ class CategoryRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertThrows(NotFoundException.class, () -> service.get(USER_FOOD_ID, USER_ID));
+        assertFalse(repository.get(USER_FOOD_ID, USER_ID).isPresent());
     }
 
     @Test
@@ -67,7 +68,7 @@ class CategoryRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        CATEGORY_MATCHER.assertMatch(updated, service.get(USER_FOOD_ID, USER_ID));
+        CATEGORY_MATCHER.assertMatch(repository.get(USER_FOOD_ID, USER_ID).orElse(null), updated);
     }
 
     @Test
@@ -78,20 +79,18 @@ class CategoryRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(invalid))
                 .with(userHttpBasic(USER)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(VALIDATION_ERROR));
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     void updateInvalid() throws Exception {
-        Category invalid = new Category(ADMIN_FOOD_ID, "updated", 1000, null);
+        Category invalid = new Category(ADMIN_FOOD_ID, "updated", new BigDecimal("1000.00"), null);
         perform(MockMvcRequestBuilders.put(REST_URL + ADMIN_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid))
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(VALIDATION_ERROR));
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -112,10 +111,10 @@ class CategoryRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_FOOD_ID)
+        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND)
                 .with(userHttpBasic(USER)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -147,8 +146,7 @@ class CategoryRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN))
                 .content(JsonUtil.writeValue(updated)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(VALIDATION_ERROR));
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -161,7 +159,6 @@ class CategoryRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(VALIDATION_ERROR))
-                .andExpect(detailMessage(EXCEPTION_DUPLICATE_CATEGORY));
+                .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_CATEGORY)));
     }
 }

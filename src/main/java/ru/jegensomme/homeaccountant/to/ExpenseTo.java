@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.jegensomme.homeaccountant.util.DateTimeUtil;
-import ru.jegensomme.homeaccountant.web.validators.SafeHtml;
+import ru.jegensomme.homeaccountant.web.validation.SafeHtml;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -39,8 +39,8 @@ public class ExpenseTo extends BaseTo {
 
     private Boolean excess;
 
-    public ExpenseTo(Integer id, String category, LocalDateTime dateTime, double amount, String description) {
-        this(id, category, dateTime, BigDecimal.valueOf(amount), description);
+    public ExpenseTo(Integer id, String category, LocalDateTime dateTime, String amount, String description) {
+        this(id, category, dateTime, new BigDecimal(amount), description);
     }
 
     public ExpenseTo(Integer id, String category, LocalDateTime dateTime, BigDecimal amount, String description) {

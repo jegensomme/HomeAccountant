@@ -3,7 +3,7 @@ package ru.jegensomme.homeaccountant.to;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ru.jegensomme.homeaccountant.Authenticatable;
-import ru.jegensomme.homeaccountant.web.validators.SafeHtml;
+import ru.jegensomme.homeaccountant.web.validation.SafeHtml;
 
 import javax.validation.constraints.*;
 import java.io.Serial;
@@ -45,10 +45,6 @@ public final class UserTo extends BaseTo implements Authenticatable, Serializabl
 
     public UserTo(Integer id, String name, String email, String password) {
         this(id, name, email, password, null, DEFAULT_CURRENCY);
-    }
-
-    public UserTo(Integer id, String name, String email, String password, double monthlyLimit, Currency currency) {
-        this(id, name, email, password, BigDecimal.valueOf(monthlyLimit), currency);
     }
 
     public UserTo(Integer id, String name, String email, String password, BigDecimal monthlyLimit, Currency currency) {

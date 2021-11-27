@@ -1,71 +1,95 @@
 package ru.jegensomme.homeaccountant.web.rest;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.jegensomme.homeaccountant.repository.ExpenseRepository;
+import ru.jegensomme.homeaccountant.web.AuthorizedUser;
 import ru.jegensomme.homeaccountant.model.Category;
-import ru.jegensomme.homeaccountant.service.CategoryService;
-import ru.jegensomme.homeaccountant.web.AbstractCategoryController;
-import ru.jegensomme.homeaccountant.web.View;
+import ru.jegensomme.homeaccountant.repository.CategoryRepository;
+import ru.jegensomme.homeaccountant.repository.UserRepository;
+import ru.jegensomme.homeaccountant.util.ValidationUtil;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+import static ru.jegensomme.homeaccountant.util.ValidationUtil.assureIdConsistent;
+import static ru.jegensomme.homeaccountant.util.ValidationUtil.checkNotFoundWithId;
 import static ru.jegensomme.homeaccountant.web.rest.CategoryRestController.REST_URL;
 
 @RestController
 @RequestMapping(value = REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class CategoryRestController extends AbstractCategoryController {
+@Slf4j
+@RequiredArgsConstructor
+public class CategoryRestController {
     static final String REST_URL = "/rest/profile/categories";
 
-    public CategoryRestController(CategoryService service) {
-        super(service);
-    }
+    private final CategoryRepository repository;
+
+    private final UserRepository userRepository;
+
+    private final ExpenseRepository expenseRepository;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Category> createWithLocation(@Validated(View.Web.class) @RequestBody Category category) {
-        Category created = super.create(category);
+    @Transactional
+    public ResponseEntity<Category> createWithLocation(@Valid @RequestBody Category category, @AuthenticationPrincipal AuthorizedUser authUser) {
+        int userId = authUser.id();
+        log.info("create {} for user {}", category, userId);
+        category.setUser(userRepository.getById(userId));
+        Category created = repository.save(category);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
-        super.delete(id);
+    @Transactional
+    public void delete(@PathVariable int id, @AuthenticationPrincipal AuthorizedUser authUser) {
+        int userId = authUser.id();
+        log.info("delete {} for user {}", id, userId);
+        expenseRepository.getByCategory(id, userId).forEach(e -> e.setCategory(null));
+        expenseRepository.flush();
+        ValidationUtil.checkSingleModification(repository.delete(userId, id), "Expense id=" + id + " not found");
     }
 
-    @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@Validated(View.Web.class) @RequestBody Category category, @PathVariable int id) {
-        super.update(category, id);
+    public void update(@Valid @RequestBody Category category, @PathVariable int id, @AuthenticationPrincipal AuthorizedUser authUser) {
+        int userId = authUser.id();
+        checkNotFoundWithId(repository.get(id, authUser.id()), "Category id=" + id + " doesn't belong to user id=" + userId);
+        log.info("update {} for user {}", category, userId);
+        assureIdConsistent(category, id);
+        category.setUser(userRepository.getById(userId));
+        repository.save(category);
     }
 
-    @Override
     @GetMapping("/{id}")
-    public @NonNull
-    Category get(@PathVariable int id) {
-        return super.get(id);
+    public ResponseEntity<Category> get(@PathVariable int id, @AuthenticationPrincipal AuthorizedUser authUser) {
+        int userId = authUser.id();
+        log.info("get {} for user {}", id, userId);
+        return ResponseEntity.of(repository.get(userId, id));
     }
 
-    @Override
     @GetMapping("/by")
-    public @NonNull
-    Category getByName(@RequestParam String name) {
-        return super.getByName(name);
+    public ResponseEntity<Category> getByName(@RequestParam String name, @AuthenticationPrincipal AuthorizedUser authUser) {
+        int userId = authUser.id();
+        log.info("getByName {} for user {}", name, userId);
+        return ResponseEntity.of(repository.getByName(name, userId));
     }
 
-    @Override
     @GetMapping
-    public List<Category> getAll() {
-        return super.getAll();
+    public List<Category> getAll(@AuthenticationPrincipal AuthorizedUser authUser) {
+        int userId = authUser.id();
+        log.info("getAll categories for user {}", userId);
+        return repository.getAll(userId);
     }
 }
