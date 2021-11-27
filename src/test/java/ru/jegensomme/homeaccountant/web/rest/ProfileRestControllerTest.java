@@ -13,6 +13,7 @@ import ru.jegensomme.homeaccountant.to.UserTo;
 import ru.jegensomme.homeaccountant.util.UserUtil;
 import ru.jegensomme.homeaccountant.web.AbstractControllerTest;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -57,7 +58,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void update() throws Exception {
-        UserTo updated = new UserTo(null, "newName", "user@yandex.ru", "newPassword", 1000, USD);
+        UserTo updated = new UserTo(null, "newName", "user@yandex.ru", "newPassword", new BigDecimal("1000.00"), USD);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER))
@@ -85,7 +86,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void registerInvalid() throws Exception {
-        UserTo newTo = new UserTo(null, "", "foo.ru", "", -10, null);
+        UserTo newTo = new UserTo(null, "", "foo.ru", "", new BigDecimal("-10"), null);
         perform(MockMvcRequestBuilders.post(REST_URL + "/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(newTo)))
@@ -96,7 +97,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        UserTo updatedTo = new UserTo(null, null, null, "", 1000, null);
+        UserTo updatedTo = new UserTo(null, null, null, "", new BigDecimal("1000.00"), null);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER))

@@ -1,10 +1,9 @@
 package ru.jegensomme.homeaccountant;
 
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 public interface Identified {
-    @Nullable Integer getId();
+    Integer getId();
 
     void setId(Integer id);
 

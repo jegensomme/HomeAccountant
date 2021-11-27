@@ -36,7 +36,7 @@ public class ExpenseServiceTest extends ServiceTestBase {
 
     @Test
     public void duplicateDateTimeCreate() {
-        Expense newExpense = new Expense(null, EXPENSE1.getDateTime(), 1000, "new");
+        Expense newExpense = new Expense(null, EXPENSE1.getDateTime(), "1000.00", "new");
         assertThrows(DataAccessException.class, () -> service.create(newExpense, USER_ID));
     }
 
@@ -127,15 +127,15 @@ public class ExpenseServiceTest extends ServiceTestBase {
     public void testTotalAmountForCurrentMonth() {
         LocalDate now = LocalDate.now();
         LocalDateTime start = LocalDateTime.of(now.getYear(), now.getMonth(), 1, 0, 0);
-        service.create(new Expense(null, start, 1000, "new"), USER_ID);
-        service.create(new Expense(null, start.plusDays(1), 2000, "new"), USER_ID);
-        service.create(new Expense(null, start.plusDays(2), 3000, "new"), USER_ID);
-        assertEquals(BigDecimal.valueOf(6000.), service.getTotalAmountForCurrentMonth(USER_ID));
+        service.create(new Expense(null, start, "1000.00", "new"), USER_ID);
+        service.create(new Expense(null, start.plusDays(1), "2000.00", "new"), USER_ID);
+        service.create(new Expense(null, start.plusDays(2), "3000.00", "new"), USER_ID);
+        assertEquals(new BigDecimal("6000.00"), service.getTotalAmountForCurrentMonth(USER_ID));
     }
 
     @Test
     public void createWithException() {
-        validateRootCause(() -> service.create(new Expense(null, LocalDateTime.now(), -10, "New"), USER_ID), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Expense(null, LocalDateTime.now(), 10000, ""), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Expense(null, LocalDateTime.now(), "-10", "New"), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Expense(null, LocalDateTime.now(), "10000.00", ""), USER_ID), ConstraintViolationException.class);
     }
 }

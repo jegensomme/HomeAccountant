@@ -13,6 +13,8 @@ import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 import ru.jegensomme.homeaccountant.web.AbstractControllerTest;
 import ru.jegensomme.homeaccountant.web.json.JsonUtil;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -84,7 +86,7 @@ class CategoryRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        Category invalid = new Category(ADMIN_FOOD_ID, "updated", 1000, null);
+        Category invalid = new Category(ADMIN_FOOD_ID, "updated", new BigDecimal("1000.00"), null);
         perform(MockMvcRequestBuilders.put(REST_URL + ADMIN_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid))

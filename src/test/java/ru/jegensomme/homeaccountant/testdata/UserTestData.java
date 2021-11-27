@@ -25,11 +25,11 @@ public class UserTestData {
     public static final Currency RUB = Currency.getInstance("RUB");
     public static final Currency USD = Currency.getInstance("USD");
 
-    public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", 30000, RUB, Role.USER);
-    public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", 30000, USD, Role.USER, Role.ADMIN);
+    public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", "30000.00", RUB, Role.USER);
+    public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", "30000.00", USD, Role.USER, Role.ADMIN);
 
     public static User getNew() {
-        return new User(null, "New", "new@mail.ru", "newPassword", 3000, RUB, Role.USER);
+        return new User(null, "New", "new@mail.ru", "newPassword", "3000.00", RUB, Role.USER);
     }
 
     public static User getUpdated() {
@@ -37,7 +37,7 @@ public class UserTestData {
         updated.setName("Updated");
         updated.setEmail("updated@yandex.ru");
         updated.setPassword("updatedPassword");
-        updated.setMonthlyLimit(50000);
+        updated.setMonthlyLimit("50000.00");
         updated.setCurrency(USD);
         updated.setRoles(Collections.singleton(Role.ADMIN));
         return updated;

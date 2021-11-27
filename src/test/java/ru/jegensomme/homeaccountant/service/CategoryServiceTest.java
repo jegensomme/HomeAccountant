@@ -7,6 +7,7 @@ import ru.jegensomme.homeaccountant.model.*;
 import ru.jegensomme.homeaccountant.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -95,8 +96,8 @@ public class CategoryServiceTest extends ServiceTestBase {
     @Test
     public void createWithException() {
         validateRootCause(() -> service.create(new Category(null, "   "), USER_ID), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Category(null, "Category", -10, Period.MONTH), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Category(null, "Category", new BigDecimal("-10"), Period.MONTH), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Category(null, "Category", null, Period.MONTH), USER_ID), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Category(null, "Category", 10, null), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Category(null, "Category", new BigDecimal("1000.00"), null), USER_ID), ConstraintViolationException.class);
     }
 }

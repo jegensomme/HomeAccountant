@@ -69,44 +69,19 @@ public class User extends NamedEntity implements Authenticatable {
         this(user.id, user.name, user.email, user.password, user.enabled, user.registered, user.monthlyLimit, user.currency, user.roles);
     }
 
-    public User(Integer id,
-                String name,
-                String email,
-                String password,
-                Currency currency,
-                Role role, Role... roles) {
+    public User(Integer id, String name, String email, String password, Currency currency, Role role, Role... roles) {
         this(id, name, email, password, true, null, null, currency, EnumSet.of(role, roles));
     }
 
-    public User(Integer id,
-                String name,
-                String email,
-                String password,
-                double monthlyLimit,
-                Currency currency,
-                Role role, Role... roles) {
-        this(id, name, email, password, true, null, BigDecimal.valueOf(monthlyLimit), currency, EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, String monthlyLimit, Currency currency, Role role, Role... roles) {
+        this(id, name, email, password, true, null, new BigDecimal(monthlyLimit), currency, EnumSet.of(role, roles));
     }
 
-    public User(Integer id,
-                String name,
-                String email,
-                String password,
-                BigDecimal monthlyLimit,
-                Currency currency,
-                Role role, Role... roles) {
+    public User(Integer id, String name, String email, String password, BigDecimal monthlyLimit, Currency currency, Role role, Role... roles) {
         this(id, name, email, password, true, null, monthlyLimit, currency, EnumSet.of(role, roles));
     }
 
-    public User(Integer id,
-                String name,
-                String email,
-                String password,
-                boolean enabled,
-                Date registered,
-                BigDecimal monthlyLimit,
-                Currency currency,
-                Set<Role> roles) {
+    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, BigDecimal monthlyLimit, Currency currency, Set<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
@@ -125,8 +100,8 @@ public class User extends NamedEntity implements Authenticatable {
         this.monthlyLimit = monthlyLimit;
     }
 
-    public void setMonthlyLimit(double monthlyLimit) {
-        this.monthlyLimit = BigDecimal.valueOf(monthlyLimit);
+    public void setMonthlyLimit(String monthlyLimit) {
+        this.monthlyLimit = new BigDecimal(monthlyLimit);
     }
 
     @Override

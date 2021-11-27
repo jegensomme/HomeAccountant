@@ -47,7 +47,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createWithLocation() throws Exception {
-        ExpenseTo newExpenseTo = new ExpenseTo(null, USER_FOOD.getName(), of(2021, Month.JANUARY, 25, 10, 0), 10000, "New");
+        ExpenseTo newExpenseTo = new ExpenseTo(null, USER_FOOD.getName(), of(2021, Month.JANUARY, 25, 10, 0), "10000.00", "New");
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .with(userHttpBasic(USER))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -73,19 +73,19 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
 
     @Test
     void update() throws Exception {
-        ExpenseTo updated = new ExpenseTo(EXPENSE1_ID, USER_HOUSEHOLD.getName(), of(2021, Month.FEBRUARY, 15, 10, 0), 10000, "Updated");
+        ExpenseTo updated = new ExpenseTo(EXPENSE1_ID, USER_HOUSEHOLD.getName(), of(2021, Month.FEBRUARY, 15, 10, 0), "10000.00", "Updated");
         perform(MockMvcRequestBuilders.put(REST_URL + EXPENSE1_ID)
                 .with(userHttpBasic(USER))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        EXPENSE_MATCHER.assertMatch(getUpdated(), service.get(EXPENSE1_ID, USER_ID));
+        EXPENSE_MATCHER.assertMatch(service.get(EXPENSE1_ID, USER_ID), getUpdated());
     }
 
     @Test
     void createInvalid() throws Exception {
-        ExpenseTo invalid = new ExpenseTo(null, null, null, null, "");
+        ExpenseTo invalid = new ExpenseTo(null, null, null, null, "", null);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid))
@@ -97,7 +97,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        ExpenseTo invalid = new ExpenseTo(ADMIN_EXPENSE1_ID, "", null, -10, "");
+        ExpenseTo invalid = new ExpenseTo(ADMIN_EXPENSE1_ID, "", null, "-10", "");
         perform(MockMvcRequestBuilders.put(REST_URL + ADMIN_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid))
@@ -204,20 +204,20 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
     public void testTotalAmountForCurrentMonth() throws Exception {
         LocalDate now = LocalDate.now();
         LocalDateTime start = LocalDateTime.of(now.getYear(), now.getMonth(), 1, 0, 0);
-        service.create(new Expense(null, start, 1000, "new"), USER_ID);
-        service.create(new Expense(null, start.plusDays(1), 2000, "new"), USER_ID);
-        service.create(new Expense(null, start.plusDays(2), 3000, "new"), USER_ID);
+        service.create(new Expense(null, start, "1000.00", "new"), USER_ID);
+        service.create(new Expense(null, start.plusDays(1), "2000.00", "new"), USER_ID);
+        service.create(new Expense(null, start.plusDays(2), "3000.00", "new"), USER_ID);
         perform(MockMvcRequestBuilders.get(REST_URL + "month-total")
                 .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(result -> assertEquals(BigDecimal.valueOf(6000.), TestUtil.readFromJsonMvcResult(result, BigDecimal.class)));
+                .andExpect(result -> assertEquals(new BigDecimal("6000.00"), TestUtil.readFromJsonMvcResult(result, BigDecimal.class)));
     }
 
     @Test
     void updateHtmlUnsafe() throws Exception {
-        ExpenseTo updated = new ExpenseTo(EXPENSE1_ID, USER_FOOD.getName(), EXPENSE1.getDateTime(), 1000, "<script>alert(123)</script>");
+        ExpenseTo updated = new ExpenseTo(EXPENSE1_ID, USER_FOOD.getName(), EXPENSE1.getDateTime(), "1000.00", "<script>alert(123)</script>");
         perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER))
@@ -230,7 +230,7 @@ class ExpenseRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
-        ExpenseTo updatedTo = new ExpenseTo(EXPENSE1_ID, USER_FOOD.getName(), EXPENSE3.getDateTime(), 1000, "new");
+        ExpenseTo updatedTo = new ExpenseTo(EXPENSE1_ID, USER_FOOD.getName(), EXPENSE3.getDateTime(), "1000.00", "new");
         perform(MockMvcRequestBuilders.put(REST_URL + EXPENSE1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER))

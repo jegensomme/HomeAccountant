@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import ru.jegensomme.homeaccountant.web.validators.LimitPeriodConsistent;
 import ru.jegensomme.homeaccountant.web.View;
 
@@ -29,7 +27,6 @@ public class Category extends NamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @NotNull(groups = View.Persist.class)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(name = "\"limit\"", columnDefinition = "decimal check ( \"limit\" >= 0 )")
@@ -49,17 +46,7 @@ public class Category extends NamedEntity {
         this(id, name, null, null);
     }
 
-    public Category(Integer id,
-                    String name,
-                    double limit,
-                    Period period) {
-        this(id, name, BigDecimal.valueOf(limit), period);
-    }
-
-    public Category(Integer id,
-                    String name,
-                    BigDecimal limit,
-                    Period period) {
+    public Category(Integer id, String name, BigDecimal limit, Period period) {
         super(id, name);
         this.limit = limit;
         this.period = period;

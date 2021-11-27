@@ -1,8 +1,6 @@
 package ru.jegensomme.homeaccountant.model;
 
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -24,7 +22,6 @@ public class Expense extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @NotNull
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne
@@ -45,26 +42,15 @@ public class Expense extends BaseEntity {
     @Size(min = 2, max = 120)
     private String description;
 
-    public Expense(Integer id,
-                   LocalDateTime dateTime,
-                   double amount,
-                   String description) {
+    public Expense(Integer id, LocalDateTime dateTime, String amount, String description) {
         this(id, null, dateTime, amount, description);
     }
 
-    public Expense(Integer id,
-                   Category category,
-                   LocalDateTime dateTime,
-                   double amount,
-                   String description) {
-        this(id, category, dateTime, BigDecimal.valueOf(amount), description);
+    public Expense(Integer id, Category category, LocalDateTime dateTime, String amount, String description) {
+        this(id, category, dateTime, new BigDecimal(amount), description);
     }
 
-    public Expense(Integer id,
-                   Category category,
-                   LocalDateTime dateTime,
-                   BigDecimal amount,
-                   String description) {
+    public Expense(Integer id, Category category, LocalDateTime dateTime, BigDecimal amount, String description) {
         super(id);
         this.category = category;
         this.dateTime = dateTime;

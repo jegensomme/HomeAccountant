@@ -69,7 +69,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createInvalid() throws Exception {
-        User invalid = new User(null, null, "", "newPass", 7300, RUB, Role.USER, Role.ADMIN);
+        User invalid = new User(null, null, "", "newPass", "7300.00", RUB, Role.USER, Role.ADMIN);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
@@ -187,7 +187,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
-        User expected = new User(null, "New", "user@yandex.ru", "newPass", 2300, RUB, Role.USER, Role.ADMIN);
+        User expected = new User(null, "New", "user@yandex.ru", "newPass", "2300.00", RUB, Role.USER, Role.ADMIN);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
